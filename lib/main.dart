@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:typed_data';
+import 'package:bldevice_connection/view/footer_page.dart';
+import 'package:bldevice_connection/view/homepage.dart';
 import 'package:bldevice_connection/view/scanningdevice_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -22,7 +23,7 @@ class FlutterBlueApp extends StatelessWidget {
           builder: (c, snapshot) {
             final state = snapshot.data;
             if (state == BluetoothState.on) {
-              return const ScannningDevices();
+              return const Footer();
             }
             return BluetoothOffScreen(state: state);
           }),

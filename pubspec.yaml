@@ -38,6 +38,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_blue: ^0.8.0
   http: ^0.13.5
+  firebase_core: ^2.0.0
+  firebase_database: ^10.0.1
+  firebase_auth: ^4.0.1
+  cloud_firestore: ^4.0.1
+  shared_preferences: ^2.0.15
+  flutter_libphonenumber: ^1.2.4
 
 dev_dependencies:
   flutter_test:
@@ -67,7 +73,8 @@ flutter:
     - assets/images/room1.jpg
     - assets/images/room2.jpg
     - assets/images/room3.jpg
-    - assets/images/room4.jpg
+    - assets/images/room4.jpg 
+    - assets/images/splashScreen.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

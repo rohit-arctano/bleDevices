@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:bldevice_connection/view/footer_page.dart';
-import 'package:bldevice_connection/view/homepage.dart';
-import 'package:bldevice_connection/view/scanningdevice_pages.dart';
+import 'package:bldevice_connection/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const FlutterBlueApp());
 }
 
@@ -23,7 +25,7 @@ class FlutterBlueApp extends StatelessWidget {
           builder: (c, snapshot) {
             final state = snapshot.data;
             if (state == BluetoothState.on) {
-              return const Footer();
+              return const SplashScreen();
             }
             return BluetoothOffScreen(state: state);
           }),

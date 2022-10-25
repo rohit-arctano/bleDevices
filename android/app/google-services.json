@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "406573912610",
+    "firebase_url": "https://home-automation-81701-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "home-automation-81701",
+    "storage_bucket": "home-automation-81701.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406573912610:android:1e50de3d4308f0d269f07b",
+        "android_client_info": {
+          "package_name": "com.arctano.smart_switches"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406573912610-l463as06e216co28h78g7i4i7lnfq5s4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpD3JmrL-ZSzSuWDaonqSM0y_89xnNx8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "406573912610-l463as06e216co28h78g7i4i7lnfq5s4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "406573912610-74d5cieool7upioahv7asb3q40nu89nd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.arctano.smartSwitches"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406573912610:android:ba9bbc273ca6ab7269f07b",
+        "android_client_info": {
+          "package_name": "com.example.bldevice_connection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406573912610-l463as06e216co28h78g7i4i7lnfq5s4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpD3JmrL-ZSzSuWDaonqSM0y_89xnNx8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "406573912610-l463as06e216co28h78g7i4i7lnfq5s4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "406573912610-74d5cieool7upioahv7asb3q40nu89nd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.arctano.smartSwitches"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

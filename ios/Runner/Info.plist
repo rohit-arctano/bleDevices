@@ -35,6 +35,9 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
+	<key>NSAllowsArbitraryLoads</key><true/>
+	key>NSAppTransportSecurity</key>
+	
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
@@ -49,3 +52,6 @@
 	<true/>
 </dict>
 </plist>
+
+
+

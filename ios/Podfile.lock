@@ -663,6 +663,7 @@ PODS:
   - flutter_blue/Protos (0.0.1):
     - Flutter
     - Protobuf (~> 3.11.4)
+<<<<<<< HEAD
   - flutter_libphonenumber (0.0.1):
     - Flutter
     - PhoneNumberKit/PhoneNumberKitCore (~> 3.3.3)
@@ -791,10 +792,24 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_database:
     :path: ".symlinks/plugins/firebase_database/ios"
+=======
+  - Protobuf (3.11.4)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_blue (from `.symlinks/plugins/flutter_blue/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Protobuf
+
+EXTERNAL SOURCES:
+>>>>>>> 6c36ed318455c8f7741803f2c1c4d0ade3d8126d
   Flutter:
     :path: Flutter
   flutter_blue:
     :path: ".symlinks/plugins/flutter_blue/ios"
+<<<<<<< HEAD
   flutter_libphonenumber:
     :path: ".symlinks/plugins/flutter_libphonenumber/ios"
   shared_preferences_ios:
@@ -827,6 +842,13 @@ SPEC CHECKSUMS:
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
+=======
+
+SPEC CHECKSUMS:
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_blue: eeb381dc4727a0954dede73515f683865494b370
+  Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
+>>>>>>> 6c36ed318455c8f7741803f2c1c4d0ade3d8126d
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 

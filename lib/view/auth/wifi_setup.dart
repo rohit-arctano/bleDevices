@@ -102,7 +102,7 @@ class _WifiSetUpState extends State<WifiSetUp> {
                         label: const Text("Password"),
                         labelStyle: MaterialStateTextStyle.resolveWith(
                             (Set<MaterialState> states) {
-                          return TextStyle(letterSpacing: 1.3);
+                          return const TextStyle(letterSpacing: 1.3);
                         }),
                         contentPadding:
                             const EdgeInsets.fromLTRB(16, 10, 16, 10),

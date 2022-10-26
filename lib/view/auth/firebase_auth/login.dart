@@ -130,9 +130,9 @@ class _LoginScreenState extends State<LoginScreen> {
       'seller': currentUser?.uid
     };
 
-    fname = loginData["name"];
-    fsellerUid = loginData["seller"];
-    await SavePreferences().setUserData(fname ?? "");
+    // fname = loginData["name"];
+    // fsellerUid = loginData["seller"];
+    // await SavePreferences().setUserData(fname ?? "");
     await Navigator.pushReplacement(
         context2, MaterialPageRoute(builder: (context) => const Footer()));
   }

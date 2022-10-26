@@ -1,3 +1,6 @@
+// To get flutter_blue to compile for android on M1
+// Go to Flutter Plugins > flutter_blue > build.gradle
+
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:bldevice_connection/view/splash_screen.dart';

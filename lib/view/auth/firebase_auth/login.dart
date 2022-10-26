@@ -6,6 +6,8 @@ import 'package:bldevice_connection/widget/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../repository/login_repo.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
   @override
@@ -19,8 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   Future<void> formValidation(
-      {required BuildContext context, required String phone}) async {
-    if (phone.length < 3) {
+      {required BuildContext context, required String email}) async {
+    if (email.length < 8) {
       await showDialog(
           context: context,
           builder: (c) => ErrorMessage(
@@ -28,31 +30,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 pos: false,
               ));
     } else {
-      await loginNow(ctx: context, email: emailcontroller);
+      await AuthUserLogin().sendEmailLink(email: email);
     }
   }
 
-  ActionCodeSettings acs = ActionCodeSettings(
-      // URL you want to redirect back to. The domain (www.example.com) for this
-      // URL must be whitelisted in the Firebase Console.
-      url: 'https://www.example.com/finishSignUp?cartId=1234',
-      // This must be true
-      handleCodeInApp: true,
-      iOSBundleId: 'com.example.ios',
-      androidPackageName: "com.example.bldevice_connection",
-      // installIfNotAvailable
-      androidInstallApp: true,
-      // minimumVersion
-      androidMinimumVersion: '9');
+  // await auth.signInWithEmailLink(
+  //   email: emailcontroller.text,
+  // );
 
-  Future loginNow(
-      {required BuildContext ctx, required TextEditingController email}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-
-    // await auth.signInWithEmailLink(
-    //   email: emailcontroller.text,
-    // );
-  }
   // auth.verifyPhoneNumber(
   //     phoneNumber: "+91 9999181009",
   //     timeout: const Duration(seconds: 60),
@@ -162,9 +147,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: () {
                     // final email = emailcontroller.text.trim();
-                    // formValidation(context: context, phone: email);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Footer()));
+                    formValidation(
+                        context: context, email: emailcontroller.text);
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => Footer()));
                   },
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(

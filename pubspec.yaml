@@ -44,6 +44,8 @@ dependencies:
   cloud_firestore: ^4.0.1
   shared_preferences: ^2.0.15
   flutter_libphonenumber: ^1.2.4
+  firebase_dynamic_links: ^5.0.2
+  
 
 dev_dependencies:
   flutter_test:

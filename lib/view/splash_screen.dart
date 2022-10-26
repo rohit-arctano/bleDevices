@@ -14,12 +14,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  bool? _userSignedIn;
+  bool _userSignedIn = false;
 
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((Duration dur) async {
-      _userSignedIn = await SavePreferences().getLogInStatus();
+      _userSignedIn =
+          _userSignedIn = (await SavePreferences().getLogInStatus()) ?? false;
       // FbUser userData = await SavePreferences().getUserData();
       // print(userData);
       Timer(const Duration(seconds: 1), () => setState(() {}));
@@ -42,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ),
             )
-          : _userSignedIn!
+          : _userSignedIn
               ? const Footer()
               : const LoginScreen(),
     );

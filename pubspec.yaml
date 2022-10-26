@@ -45,6 +45,7 @@ dependencies:
   flutter_libphonenumber: ^1.2.4
   firebase_dynamic_links: ^5.0.2
   flutter_blue: ^0.8.0
+  app_settings: ^4.1.8
   
 
 dev_dependencies:

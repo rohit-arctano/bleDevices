@@ -15,29 +15,30 @@ class SavePreferences {
   static const String _userdataKey = "userData";
 
 //set data into shared preferences like this
-  Future<bool> setUserData(String data) async {
+  Future<bool> setUserData({required String data}) async {
     final SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
-    return await prefs.setString("userData", data);
+    return await prefs.setString(_userdataKey, data);
   }
 
 //get value from shared preferences
-  Future<FbUser> getUserData() async {
-    final SharedPreferences prefs;
-    prefs = await SharedPreferences.getInstance();
-    String? datatrue = prefs.getString(_userdataKey);
-    Map<String, dynamic> jsonData = jsonDecode(datatrue ?? "");
-    FbUser userData = FbUser.fromJson(json: jsonData);
+  // Future<FbUser> getUserData() async {
+  //   final SharedPreferences prefs;
+  //   prefs = await SharedPreferences.getInstance();
+  //   String? datatrue = prefs.getString(_userdataKey);
+  //   print(datatrue);
+  //   print(datatrue);
+  //   Map<String, dynamic> jsonData = jsonDecode(datatrue ?? "");
+  //   FbUser userData = FbUser.fromJson(json: jsonData);
 
-    // print("the user data is $userData");
-    return userData;
-  }
+  //   // print("the user data is $userData");
+  //   return userData;
+  // }
 
   Future<bool> saveUserData(User user) async {
     final SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
     FbUser userData = FbUser.fromUser(user: user);
-    print(userData);
     Map<String, dynamic> userjson = userData.toJson();
     String userString = jsonEncode(userjson);
     bool datatrue = await prefs.setString(_userdataKey, userString);
@@ -48,7 +49,7 @@ class SavePreferences {
   Future<bool> logIn() async {
     final SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
-    return await prefs.setBool(_logInKey, true);
+    return prefs.setBool(_logInKey, true);
   }
 
   /// Returns true when log out successful

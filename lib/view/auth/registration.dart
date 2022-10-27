@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:bldevice_connection/global/global.dart';
-import 'package:bldevice_connection/view/auth/firebase_auth/login.dart';
+import 'package:bldevice_connection/view/auth/login.dart';
 import 'package:bldevice_connection/widget/customTextField.dart';
 import 'package:bldevice_connection/widget/error_msg.dart';
 import 'package:bldevice_connection/widget/loading_screen.dart';
@@ -182,21 +182,21 @@ class _RegisterState extends State<Register> {
                     data: Icons.person,
                     controller: namecontroller,
                     hintText: "Enter the username",
-                    isObsecure: false,
+                    isObscure: false,
                     enabled: true,
                   ),
                   CustomTextField(
                     data: Icons.email,
                     controller: emailcontroller,
                     hintText: "Enter the email",
-                    isObsecure: false,
+                    isObscure: false,
                     enabled: true,
                   ),
                   CustomTextField(
                     data: Icons.lock,
                     controller: passwordcontroller,
                     hintText: "Enter the password",
-                    isObsecure: true,
+                    isObscure: true,
                     enabled: true,
                   ),
                 ],

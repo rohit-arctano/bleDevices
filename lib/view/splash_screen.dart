@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((Duration dur) async {
-      _userSignedIn = await SavePreferences().getLogInStatus();
+      _userSignedIn = await SavePreferences().getLogInStatus() ?? false;
       // FbUser userData = await SavePreferences().getUserData();
       // print(userData);
       Timer(const Duration(seconds: 1), () => setState(() {}));

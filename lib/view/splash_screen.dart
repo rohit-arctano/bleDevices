@@ -31,7 +31,9 @@ class _SplashScreenState extends State<SplashScreen> {
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
           transitionBuilder: (Widget child, Animation<double> animation) {
-            Animation<Offset> offsetAnimation = Tween<Offset>(begin: const Offset(1.1, 0), end: const Offset(0, 0)).animate(animation);
+            Animation<Offset> offsetAnimation = Tween<Offset>(
+                    begin: const Offset(1.1, 0), end: const Offset(0, 0))
+                .animate(animation);
             return SlideTransition(
               position: offsetAnimation,
               child: child,

@@ -1,5 +1,8 @@
 import 'package:bldevice_connection/constant/colors_const.dart';
-import 'package:bldevice_connection/view/homepage.dart';
+import 'package:bldevice_connection/view/auth/dashboard/homepage.dart';
+import 'package:bldevice_connection/view/auth/dashboard/places.dart';
+import 'package:bldevice_connection/view/auth/dashboard/profile_page.dart';
+import 'package:bldevice_connection/view/auth/dashboard/spaces.dart';
 import 'package:flutter/material.dart';
 
 class Footer extends StatefulWidget {
@@ -14,9 +17,9 @@ class _FooterState extends State<Footer> {
   Widget currentPage = const Footer();
   final tabs = [
     const HomePage(),
-    // const CartPage(),
-    // const SearchPage(),
-    // const ProfilePage(),
+    const Spaces(),
+    const PlaceAdded(),
+    const ProfilePage(),
   ];
 
   int _selectedIndex = 0;

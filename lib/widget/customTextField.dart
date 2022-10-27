@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  CustomTextField(
-      {Key? key,
-      this.controller,
-      this.data,
-      this.hintText,
-      this.enabled,
-      this.isObsecure})
-      : super(key: key);
+  const CustomTextField({
+    Key? key,
+    required this.controller,
+    required this.data,
+    required this.hintText,
+    this.enabled = true,
+    this.isObscure = true,
+    this.onValidation,
+  }) : super(key: key);
+
   final TextEditingController? controller;
   final IconData? data;
   final String? hintText;
-  bool? isObsecure = true;
-  bool? enabled = true;
+  final bool isObscure;
+  final bool enabled;
+  final String? Function(String?)? onValidation;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,9 +29,10 @@ class CustomTextField extends StatelessWidget {
       margin: const EdgeInsets.all(10),
       child: TextFormField(
         enabled: enabled,
-        obscureText: isObsecure!,
+        obscureText: isObscure,
         controller: controller,
         cursorColor: Theme.of(context).primaryColor,
+        validator: onValidation,
         decoration: InputDecoration(
             border: InputBorder.none,
             prefixIcon: Icon(

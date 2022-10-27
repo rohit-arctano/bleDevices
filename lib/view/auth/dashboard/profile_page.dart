@@ -138,17 +138,17 @@ class _ProfilePageState extends State<ProfilePage> {
               validator: (value) {},
               decoration: InputDecoration(
                   hintText: 'nicola@gmail.com',
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                   filled: true,
                   fillColor: Colors.white70,
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
                     borderSide: BorderSide(color: Colors.grey, width: 2),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
                     borderSide: BorderSide(color: Colors.pink, width: 2),
                   ),
@@ -176,17 +176,17 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               decoration: InputDecoration(
                   hintText: '999918***',
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                   filled: true,
                   fillColor: Colors.white70,
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
                     borderSide: BorderSide(color: Colors.grey, width: 2),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
                     borderSide: BorderSide(color: Colors.pink, width: 2),
                   ),

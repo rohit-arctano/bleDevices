@@ -1,6 +1,10 @@
+import 'dart:async';
+
+import 'package:bldevice_connection/constant/string_constant.dart';
 import 'package:bldevice_connection/constant/widget.dart';
 import 'package:bldevice_connection/model/enums/enums.dart';
 import 'package:bldevice_connection/view/auth/registration.dart';
+import 'package:bldevice_connection/view/footer_page.dart';
 import 'package:bldevice_connection/widget/widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   dynamic result;
   User? currentUser;
+  User? user;
+  Timer? timer;
   Future<void> _signIn() async {
     bool isValidated = _formKey.currentState?.validate() ?? false;
     if (isValidated) {
@@ -32,10 +38,32 @@ class _LoginScreenState extends State<LoginScreen> {
           password: _passwordController.text);
 
       if (result is UserCredential) {
+        currentUser = (result as UserCredential).user;
+        print(currentUser?.emailVerified);
         if (currentUser != null) {
-          currentUser = (result as UserCredential).user;
-          await AuthUserLogin().readAndSaveDataLocally(
-              currentUser: currentUser!, context: context);
+          if (currentUser!.emailVerified == true) {
+            await AuthUserLogin().readAndSaveDataLocally(
+                currentUser: currentUser!, context: context);
+          } else if (currentUser!.emailVerified == false) {
+            // show the dialog
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text("Error"),
+                  content: const Text(emailVerifyError),
+                  actions: [
+                    TextButton(
+                      child: const Text("OK"),
+                      onPressed: () async {
+                        await emailverify();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         }
       } else if (result is SignInExceptions) {
         switch (result) {
@@ -57,6 +85,24 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       }
     }
+  }
+
+  Future<void> emailverify() async {
+    final auth = FirebaseAuth.instance;
+    currentUser = auth.currentUser;
+    await currentUser?.sendEmailVerification();
+
+    timer = Timer.periodic(const Duration(seconds: 2), (timer) async {
+      await currentUser?.reload();
+      user = auth.currentUser;
+      if (currentUser!.emailVerified) {
+        print("the current user is $currentUser");
+
+        timer.cancel();
+        await FirebaseAuth.instance.signOut();
+        Navigator.pop(context);
+      }
+    });
   }
 
   @override
@@ -111,7 +157,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await _signIn();
+                    // await _signIn();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Footer()));
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: kPrimaryColor,
@@ -120,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: const Text("Log in"),
                 ),
                 const SizedBox(
-                  height: 270,
+                  height: 150,
                 ),
                 Center(
                   child: Text.rich(TextSpan(

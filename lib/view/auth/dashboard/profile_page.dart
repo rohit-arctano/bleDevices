@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bldevice_connection/constant/colors_const.dart';
+import 'package:bldevice_connection/constant/textstyle_constant.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -14,84 +15,28 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(children: [
-        Column(children: [
+      body: SafeArea(
+        child: Column(children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Center(
-              child: Container(
-                child: Stack(
-                  children: [
-                    const CircleAvatar(
-                        radius: 60,
-                        child: Text(
-                          'No Image captured',
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 16,
-                          ),
-                        )
-                        // : CircleAvatar(
-                        //     radius: 20,
-                        //     child: Image.asset(
-                        //         'android/Assests/Images/ProfileIcon.png')),
-                        ),
-                    Container(
-                      height: MediaQuery.of(context).size.width / 2.5,
-                      width: MediaQuery.of(context).size.width / 2.5,
-                      child: Stack(
-                        children: [],
+            child: Stack(
+              children: const [
+                CircleAvatar(
+                    backgroundColor: kDarkGreyColor,
+                    radius: 60,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        'No Image captured',
+                        style: kWhiteLrgTextStyle,
                       ),
+                    )
+                    // : CircleAvatar(
+                    //     radius: 20,
+                    //     child: Image.asset(
+                    //         'android/Assests/Images/ProfileIcon.png')),
                     ),
-                    Positioned(
-                        bottom: 5,
-                        right: 5,
-                        child: Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                // border: Border.all(color: Colors.pink),
-                                color: kPrimaryColor),
-                            child: Column(
-                              children: [
-                                Container(
-                                  child: PopupMenuButton<String>(
-                                    color: Colors.pink[20],
-                                    onSelected: (value) {
-                                      print(value);
-                                    },
-                                    itemBuilder: (BuildContext contesxt) {
-                                      return [
-                                        PopupMenuItem(
-                                            child: ListTile(
-                                          leading: TextButton(
-                                              onPressed: () {},
-                                              //  getImage,
-                                              child: Text(
-                                                'Camera',
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              )),
-                                        )),
-                                        PopupMenuItem(
-                                            child: ListTile(
-                                          leading: TextButton(
-                                              onPressed: () {},
-                                              // getImageFromGallery,
-                                              child: Text(
-                                                'Gallery',
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              )),
-                                        )),
-                                      ];
-                                    },
-                                  ),
-                                )
-                              ],
-                            )))
-                  ],
-                ),
-              ),
+              ],
             ),
           ),
 
@@ -204,12 +149,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 55,
                 width: 150,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) {
-                    //   return HomePage();
-                    // }));
-                  },
+                  onPressed: () async {},
                   child: Text(
                     'Save',
                     style: TextStyle(fontSize: 18),
@@ -226,8 +166,8 @@ class _ProfilePageState extends State<ProfilePage> {
           //   RaisedButton(onPressed: (){},
           //   child:Text('Get data ')
           // ),
-        ])
-      ]),
+        ]),
+      ),
     );
   }
 

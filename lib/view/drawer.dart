@@ -16,18 +16,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
   User? userData;
   String? profileImage;
   Map? loginData;
-  // Future<Map?> getCurrentUser() async {
-  //   userData = firebaseAuth.currentUser;
-
-  //   loginData = {
-  //     'name': userData?.displayName,
-  //     'email': userData?.email,
-  //     'profile': userData?.photoURL,
-  //   };
-  //   print(" User name is ${loginData?["email"]}");
-
-  //   return loginData;
-  // }
 
   @override
   Widget build(BuildContext context) {

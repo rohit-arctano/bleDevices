@@ -1,15 +1,8 @@
 import 'dart:convert';
-
-import 'package:bldevice_connection/global/global.dart';
 import 'package:bldevice_connection/shared_preferences/shared_preferences.dart';
 import 'package:bldevice_connection/view/footer_page.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:developer' as developer;
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/model.dart';
 

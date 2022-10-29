@@ -1,5 +1,6 @@
 import 'package:bldevice_connection/constant/colors_const.dart';
-import 'package:bldevice_connection/global/global.dart';
+import 'package:bldevice_connection/constant/textstyle_constant.dart';
+import 'package:bldevice_connection/model/fb_user.dart';
 import 'package:bldevice_connection/shared_preferences/shared_preferences.dart';
 import 'widget_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,15 +8,15 @@ import 'package:flutter/material.dart';
 
 class DrawerScreen extends StatefulWidget {
   const DrawerScreen({super.key});
-
   @override
   State<DrawerScreen> createState() => _DrawerScreenState();
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
-  User? userData;
-  String? profileImage;
-  Map? loginData;
+  FbUser? userData;
+  Future getData() async {
+    userData = await SavePreferences().getUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,25 +24,28 @@ class _DrawerScreenState extends State<DrawerScreen> {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20.0, 40.0, 0.0, 0.0),
         child: ListView(padding: EdgeInsets.zero, children: [
-          // FutureBuilder(
-          //     future: getCurrentUser(),
-          //     builder: (context, snapshot) {
-          //       return ListTile(
-          //         leading: const CircleAvatar(
-          //           radius: 30,
-          //           backgroundColor: kPrimaryColor,
-          //           //   foregroundImage: NetworkImage(loginData?['profile'] ??
-          //           //       "https://st.depositphotos.com/2101611/3925/v/600/depositphotos_39258143-stock-illustration-businessman-avatar-profile-picture.jpg"),
-          //         ),
-          //         title: Text(
-          //           loginData?["email"],
-          //           style: const TextStyle(
-          //               color: kDarkGreyColor,
-          //               fontWeight: FontWeight.bold,
-          //               fontSize: 16),
-          //         ),
-          //       );
-          //     }),
+          FutureBuilder(
+              future: getData(),
+              builder: (context, snapshot) {
+                return ListTile(
+                  title: Text(
+                    userData?.name.toUpperCase() ?? "Profile",
+                    style: kDBXLTextStyle,
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        userData?.email ?? "Profile",
+                        style: kBXLTextStyle,
+                      ),
+                    ],
+                  ),
+                );
+              }),
           const SizedBox(
             height: 60,
           ),
@@ -107,10 +111,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
             child: IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () async {
-                await SavePreferences().logOut();
-                await FirebaseAuth.instance.signOut();
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
+                await getData();
+                // await SavePreferences().logOut();
+                // await FirebaseAuth.instance.signOut();
+                // Navigator.pushReplacement(context,
+                //     MaterialPageRoute(builder: (context) => LoginScreen()));
               },
               color: Colors.black,
             ),

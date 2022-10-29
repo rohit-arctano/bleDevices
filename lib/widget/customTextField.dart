@@ -8,12 +8,14 @@ class CustomTextField extends StatelessWidget {
     required this.hintText,
     this.enabled = true,
     this.isObscure = true,
+    this.labelText,
     this.onValidation,
   }) : super(key: key);
 
   final TextEditingController? controller;
   final IconData? data;
   final String? hintText;
+  final Widget? labelText;
   final bool isObscure;
   final bool enabled;
   final String? Function(String?)? onValidation;
@@ -34,6 +36,7 @@ class CustomTextField extends StatelessWidget {
         cursorColor: Theme.of(context).primaryColor,
         validator: onValidation,
         decoration: InputDecoration(
+            label: labelText,
             border: InputBorder.none,
             prefixIcon: Icon(
               data,

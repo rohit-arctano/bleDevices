@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (result is UserCredential) {
         currentUser = (result as UserCredential).user;
-        print(currentUser?.emailVerified);
+        print("the user data is $currentUser");
         if (currentUser != null) {
           if (currentUser!.emailVerified == true) {
             await AuthUserLogin().readAndSaveDataLocally(
@@ -157,11 +157,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    // await _signIn();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Footer()));
+                    await _signIn();
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const Footer()));
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: kPrimaryColor,

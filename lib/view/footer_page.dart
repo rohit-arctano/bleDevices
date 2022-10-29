@@ -1,8 +1,8 @@
 import 'package:bldevice_connection/constant/colors_const.dart';
-import 'package:bldevice_connection/view/auth/dashboard/homepage.dart';
-import 'package:bldevice_connection/view/auth/dashboard/places.dart';
-import 'package:bldevice_connection/view/auth/dashboard/profile_page.dart';
-import 'package:bldevice_connection/view/auth/dashboard/spaces.dart';
+import 'package:bldevice_connection/view/dashboard/homepage.dart';
+import 'package:bldevice_connection/view/dashboard/places.dart';
+import 'package:bldevice_connection/view/dashboard/profile_page.dart';
+import 'package:bldevice_connection/view/dashboard/spaces.dart';
 import 'package:flutter/material.dart';
 
 class Footer extends StatefulWidget {

@@ -22,18 +22,18 @@ class SavePreferences {
   }
 
 //get value from shared preferences
-  // Future<FbUser> getUserData() async {
-  //   final SharedPreferences prefs;
-  //   prefs = await SharedPreferences.getInstance();
-  //   String? datatrue = prefs.getString(_userdataKey);
-  //   print(datatrue);
-  //   print(datatrue);
-  //   Map<String, dynamic> jsonData = jsonDecode(datatrue ?? "");
-  //   FbUser userData = FbUser.fromJson(json: jsonData);
+  Future<FbUser> getUserData() async {
+    final SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    String? datatrue = prefs.getString(_userdataKey);
 
-  //   // print("the user data is $userData");
-  //   return userData;
-  // }
+    Map<String, dynamic> jsonData = jsonDecode(datatrue ?? "");
+    // print(" the save Data $jsonData");
+    FbUser userData = FbUser.fromJson(json: jsonData);
+
+    // print("the user data is $userData");
+    return userData;
+  }
 
   Future<bool> saveUserData(User user) async {
     final SharedPreferences prefs;

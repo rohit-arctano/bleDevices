@@ -1,15 +1,14 @@
 import 'dart:convert';
 import 'package:bldevice_connection/shared_preferences/shared_preferences.dart';
 import 'package:bldevice_connection/view/footer_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../model/model.dart';
 
 class AuthUserLogin {
-  /// Returns UserCredential on successful sign in
-  ///
-  /// Returns SignInException on failure
   User? user;
   Future<dynamic> signInWithEmailAndPassword({
     required String emailAddress,
@@ -35,13 +34,19 @@ class AuthUserLogin {
 
   Future<void> readAndSaveDataLocally(
       {required User currentUser, required BuildContext context}) async {
+    final data = FirebaseFirestore.instance.collection("user").get();
+    // await data.then((value) => value.docs.forEach((element) {
+    //       element.currentUser.;
+    //     }));
     FbUser userData = FbUser(
+        uid: currentUser.uid,
         email: currentUser.email ?? "",
         name: currentUser.displayName ?? "",
-        url: currentUser.photoURL ?? "");
+        mobileNo: currentUser.phoneNumber ?? "");
     String encodedMap = jsonEncode(userData);
-    await SavePreferences().setUserData(data: encodedMap);
     await SavePreferences().logIn();
+    await SavePreferences().setUserData(data: encodedMap);
+
     Route newRoute = MaterialPageRoute(builder: (c) => const Footer());
     Navigator.pushReplacement(context, newRoute);
   }

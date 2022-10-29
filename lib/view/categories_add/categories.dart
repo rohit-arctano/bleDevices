@@ -1,6 +1,7 @@
-import 'package:bldevice_connection/global/global.dart';
 import 'package:bldevice_connection/main.dart';
+import 'package:bldevice_connection/model/fb_user.dart';
 import 'package:bldevice_connection/repository/firebasedevice_add.dart';
+import 'package:bldevice_connection/shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -13,9 +14,10 @@ class CreateCategories extends StatefulWidget {
 
 class _CreateCategoriesState extends State<CreateCategories> {
   Future<DatabaseReference> getAdddedPlaceList() async {
+    FbUser data = await SavePreferences().getUserData();
     DatabaseReference document = FirebaseDatabase.instance
-        .ref("users")
-        .child(fsellerUid!)
+        .ref("places")
+        .child(data.uid)
         .child("home")
         // .child("SWITCHES")
         .ref;
@@ -40,13 +42,13 @@ class _CreateCategoriesState extends State<CreateCategories> {
           // }
           return GestureDetector(
             onTap: () async {
-              final String result = await Navigator.push(
+              String result = await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => const FullScreenDialog(),
                     fullscreenDialog: true,
                   ));
-              AddCategory().addResidence(result);
+              // AddCategory().addResidence(result);
             },
             child: Center(
               child: Column(

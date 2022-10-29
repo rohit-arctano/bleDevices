@@ -1,7 +1,7 @@
-import 'package:bldevice_connection/constant/colors_const.dart';
 import 'package:bldevice_connection/constant/textstyle_constant.dart';
-import 'package:bldevice_connection/model/space_model.dart';
-import 'package:bldevice_connection/view/auth/dashboard/spaces_add.dart/add_spaces.dart';
+import 'package:bldevice_connection/main.dart';
+import 'package:bldevice_connection/view/dashboard/spaces_add.dart/add_spaces.dart';
+import 'package:bldevice_connection/view/dashboard/spaces_add.dart/device_add.dart';
 import 'package:bldevice_connection/widget/main_image_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +13,44 @@ class Spaces extends StatefulWidget {
 }
 
 class _SpacesState extends State<Spaces> {
+  void showMemberMenu() async {
+    await showMenu(
+      context: context,
+      position: const RelativeRect.fromLTRB(300, 50, 20, 0),
+      items: [
+        PopupMenuItem(
+            value: 1,
+            child: TextButton(
+              child: const Text(
+                "Place",
+                style: kBLTextStyle,
+              ),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const AddDevice()));
+              },
+            )),
+        PopupMenuItem(
+            value: 1,
+            child: TextButton(
+              child: const Text(
+                "Device",
+                style: kBLTextStyle,
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FindDevicesScreen()));
+              },
+            )),
+      ],
+      elevation: 8.0,
+    ).then((value) {
+      if (value != null) print(value);
+    });
+  }
+
   @override
   Widget build(BuildContext ctx) {
     double deviceHeight = MediaQuery.of(ctx).size.height;
@@ -43,41 +81,7 @@ class _SpacesState extends State<Spaces> {
                   ),
                   IconButton(
                       onPressed: () {
-                        showMenu<String>(
-                          context: ctx,
-                          position: const RelativeRect.fromLTRB(25.0, 25.0, 0.0,
-                              0.0), //position where you want to show the menu on screen
-                          items: [
-                            PopupMenuItem<String>(
-                              onTap: () async {
-                                // print("hello how are you");
-                                // await Navigator.push(ctx,
-                                //     MaterialPageRoute(builder: (context) {
-                                //   print("hello");
-                                //   return Container(
-                                //     height: 100,
-                                //     width: 100,
-                                //     color: kPrimaryColor,
-                                //     child: const AddDevice(),
-                                //   );
-                                // }));
-                                print("hello how are you2");
-                              },
-                              value: '1',
-                              child: const Text('New Room'),
-                            ),
-                            PopupMenuItem<String>(
-                                onTap: () {},
-                                child: const Text('New Device'),
-                                value: '2'),
-                          ],
-                          elevation: 8.0,
-                        );
-
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const AddDevice()));
+                        showMemberMenu();
                       },
                       icon: const Icon(Icons.add))
                 ],

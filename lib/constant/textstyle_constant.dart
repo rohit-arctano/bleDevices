@@ -22,7 +22,7 @@ const TextStyle kXLTextStyle = TextStyle(
 
 const TextStyle kDXLTextStyle = TextStyle(
   color: kBlackColor,
-  fontSize: 20,
+  fontSize: kTXlsize,
 );
 
 // white normal size Text style
@@ -90,9 +90,7 @@ const TextStyle kWXLTextStyle = TextStyle(
     fontSize: kTextSizeLargeMedium,
     fontWeight: FontWeight.w500);
 const TextStyle kWBXLTextStyle = TextStyle(
-    color: kPrimaryColor,
-    fontSize: kTextSizeLargeMedium,
-    fontWeight: FontWeight.w500);
+    color: kPrimaryColor, fontSize: kTXlsize, fontWeight: FontWeight.w500);
 
 //label test
 const TextStyle kLabelTextStyle = TextStyle(
@@ -113,7 +111,7 @@ const double kTextSizeSmall = 12.0;
 const double kTextSizeSMedium = 14.0;
 const double kTextSizeMedium = 16.0;
 const double kTextSizeLargeMedium = 18.0;
-const double kTextSizeNormal = 20.0;
+const double kTXlsize = 20.0;
 const double kTextSizeLarge = 24.0;
 const double kTextSizeXLarge = 30.0;
 const double kTextSizeXXLarge = 35.0;

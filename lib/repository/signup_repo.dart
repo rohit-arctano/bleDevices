@@ -1,28 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/material.dart';
 import '../model/debug.dart';
-import '../model/enums/sign_in_exceptions.dart';
 import '../model/enums/signup_enum.dart';
 
-// Map actionCodeSettings = {
-//   url: 'https://www.example.com/?email=',
-//   iOS: {
-//     bundleId: 'com.example.ios'
-//   },
-//   android: {
-//     packageName: 'com.example.android',
-//     installApp: true,
-//     minimumVersion: '12'
-//   },
-//   handleCodeInApp: true,
-//   // When multiple custom dynamic link domains are defined, specify which
-//   // one to use.
-//   dynamicLinkDomain: "example.page.link"
-// };
 class FbAuthSignUp {
   User? user;
   Future<dynamic> createSignUpAuth(
@@ -45,24 +25,24 @@ class FbAuthSignUp {
     return se.name.replaceAll(RegExp(r'_'), '-');
   }
 
-  Future<dynamic> SaveSignUpData(
+  static Future<dynamic> saveSignUpData(
       {required String name,
       required String mobile,
       required User currentUser,
+      required String password,
       required BuildContext context}) async {
-    await FirebaseFirestore.instance
-        .collection("sellers")
-        .doc(currentUser.uid)
-        .set({
-      "sellerUID": user?.uid,
-      "sellerName": name,
-      "sellerEmail": user?.email,
-      "phone": mobile,
-      "sellerPassword": mobile,
-      "status": "approved",
-      "earnings": 0.0,
-    });
-    Navigator.pop(context);
+    await currentUser.updateDisplayName(name);
+    // await FirebaseFirestore.instance
+    //     .collection("users")
+    //     .doc(currentUser.uid)
+    //     .set({
+    //   "userID": currentUser.uid,
+    //   "userName": name,
+    //   "userEmail": currentUser.email,
+    //   "phone": mobile,
+    //   "userPassword": password,
+    //   "status": "approved",
+    // });
   }
 }
 

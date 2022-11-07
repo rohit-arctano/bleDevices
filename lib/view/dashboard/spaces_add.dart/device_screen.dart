@@ -3,6 +3,8 @@ import 'package:bldevice_connection/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
+import '../../../widget/dialogbox.dart';
+
 // ignore: must_be_immutable
 class DeviceScreen extends StatelessWidget {
   DeviceScreen({Key? key, required this.device}) : super(key: key);
@@ -42,20 +44,20 @@ class DeviceScreen extends StatelessWidget {
                     characteristic: c,
                     onReadPressed: () => c.read(),
                     onWritePressed: () async {
-                      var result = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                FullScreenDialog(),
-                            fullscreenDialog: true,
-                          ));
-                      if (result != null) {
-                        if (result is String) {
-                          await c.write(result.codeUnits,
-                              withoutResponse: true);
-                          await c.read();
-                        }
-                      }
+                      // var result = await Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (BuildContext context) =>
+                      //           const FullScreenDialog(),
+                      //       fullscreenDialog: true,
+                      //     ));
+                      // if (result != null) {
+                      //   if (result is String) {
+                      //     await c.write(result.codeUnits,
+                      //         withoutResponse: true);
+                      //     await c.read();
+                      //   }
+                      // }
                     },
                     onNotificationPressed: () async {
                       await c.setNotifyValue(!c.isNotifying);
@@ -67,20 +69,20 @@ class DeviceScreen extends StatelessWidget {
                               descriptor: d,
                               onReadPressed: () => d.read(),
                               onWritePressed: () async {
-                                var result = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          FullScreenDialog(),
-                                      fullscreenDialog: true,
-                                    ));
-                                if (result != null) {
-                                  if (result is String) {
-                                    await c.write(result.codeUnits,
-                                        withoutResponse: true);
-                                    await c.read();
-                                  }
-                                }
+                                // var result = await Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (BuildContext context) =>
+                                //           const FullScreenDialog(),
+                                //       fullscreenDialog: true,
+                                //     ));
+                                // if (result != null) {
+                                //   if (result is String) {
+                                //     await c.write(result.codeUnits,
+                                //         withoutResponse: true);
+                                //     await c.read();
+                                //   }
+                                // }
                               }),
                         )
                         .toList(),
@@ -201,12 +203,11 @@ class DeviceScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               ElevatedButton(
                   onPressed: () {
                     device.discoverServices();
                   },
-                  child: Text("SHow the services")),
+                  child: const Text("SHow the services")),
               StreamBuilder<List<BluetoothService>>(
                 stream: device.services,
                 initialData: const [],

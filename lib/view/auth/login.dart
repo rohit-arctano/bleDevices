@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:bldevice_connection/constant/string_constant.dart';
 import 'package:bldevice_connection/constant/widget.dart';
 import 'package:bldevice_connection/model/enums/enums.dart';
 import 'package:bldevice_connection/view/auth/registration.dart';
-import 'package:bldevice_connection/view/footer_page.dart';
 import 'package:bldevice_connection/widget/widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (result is UserCredential) {
         currentUser = (result as UserCredential).user;
-        print("the user data is $currentUser");
+
         if (currentUser != null) {
           if (currentUser!.emailVerified == true) {
             await AuthUserLogin().readAndSaveDataLocally(
@@ -91,14 +89,12 @@ class _LoginScreenState extends State<LoginScreen> {
     final auth = FirebaseAuth.instance;
     currentUser = auth.currentUser;
     await currentUser?.sendEmailVerification();
-
     timer = Timer.periodic(const Duration(seconds: 2), (timer) async {
       await currentUser?.reload();
       user = auth.currentUser;
       if (currentUser!.emailVerified) {
-        print("the current user is $currentUser");
-
         timer.cancel();
+
         await FirebaseAuth.instance.signOut();
         Navigator.pop(context);
       }

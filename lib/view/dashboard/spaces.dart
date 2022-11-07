@@ -1,9 +1,11 @@
 import 'package:bldevice_connection/constant/textstyle_constant.dart';
-import 'package:bldevice_connection/main.dart';
-import 'package:bldevice_connection/view/dashboard/spaces_add.dart/add_spaces.dart';
-import 'package:bldevice_connection/view/dashboard/spaces_add.dart/device_add.dart';
+import 'package:bldevice_connection/model/fb_user.dart';
+import 'package:bldevice_connection/view/widget_view.dart';
 import 'package:bldevice_connection/widget/main_image_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import '../../shared_preferences/shared_preferences.dart';
 
 class Spaces extends StatefulWidget {
   const Spaces({super.key});
@@ -13,6 +15,23 @@ class Spaces extends StatefulWidget {
 }
 
 class _SpacesState extends State<Spaces> {
+  FbUser? userData;
+  // Future getInstance() async {
+  //   userData = await SavePreferences().getUserData();
+  //   print(
+  //       "the folowing data is ${userData!.uid} ${widget.placeId} ${widget.roomId}");
+  //   deviceList = FirebaseFirestore.instance
+  //       .collection("users")
+  //       .doc(userData?.uid)
+  //       .collection("places")
+  //       .doc(widget.placeId)
+  //       .collection("rooms")
+  //       .doc(widget.roomId)
+  //       .collection("devices")
+  //       .snapshots();
+  //   return userData;
+  // }
+
   void showMemberMenu() async {
     await showMenu(
       context: context,
@@ -56,13 +75,6 @@ class _SpacesState extends State<Spaces> {
     double deviceHeight = MediaQuery.of(ctx).size.height;
     double deviceWidth = MediaQuery.of(ctx).size.width;
     return Scaffold(
-      // appBar: AppBar(
-      //   actions: [IconButton(onPressed: () {}, icon: Icon(Icons.add))],
-      //   title: const Text(
-      //     "Spaces",
-      //     textAlign: TextAlign.center,
-      //   ),
-      // ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -86,57 +98,23 @@ class _SpacesState extends State<Spaces> {
                       icon: const Icon(Icons.add))
                 ],
               ),
-
               const Padding(
                 padding: EdgeInsets.only(left: 8.0),
                 child: Text.rich(
                   TextSpan(
                       text: "ROOM",
-                      style: kDBXLTextStyle,
+                      style: kBLTextStyle,
                       children: [TextSpan(text: "(4)", style: kLTextStyle)]),
                 ),
               ),
               const SizedBox(
                 height: 8,
               ),
-              // FutureBuilder(
-              //     //  future: getAdddedPlaceList(),
-              //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-              //   if (snapshot.connectionState == ConnectionState.done) {
-              //     // if (snapshot.hasData) {
-              //     return
-              MainImageWidget(
-                imageHeight: deviceHeight * 0.45,
-                imageWidth: deviceWidth * 0.5,
-                mainboxHeight: deviceHeight * 0.45,
-                textcontainerWidth: deviceWidth * 0.5,
-              ),
-              // } else {
-              //   return Container(
-              //     height: deviceHeight * 0.5,
-              //     width: deviceWidth * 0.6,
-              //     decoration: BoxDecoration(
-              //         color: kLightBlue,
-              //         borderRadius: BorderRadius.circular(20)),
-              //     child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: const [
-              //         Text(
-              //           "Add Device",
-              //           style: kBXLTextStyle,
-              //         ),
-              //         Icon(
-              //           Icons.add,
-              //           size: 50,
-              //         )
-              //       ],
-              //     ),
-              //   );
-              // }
-              // } else {
-              //   return const CircularProgressIndicator();
-              // }
-              // }
+              // MainImageWidget(
+              //   imageHeight: deviceHeight * 0.45,
+              //   imageWidth: deviceWidth * 0.5,
+              //   mainboxHeight: deviceHeight * 0.45,
+              //   textcontainerWidth: deviceWidth * 0.5,
               // ),
               const Padding(
                 padding: EdgeInsets.only(left: 8.0),

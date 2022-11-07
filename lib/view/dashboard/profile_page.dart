@@ -4,6 +4,7 @@ import 'package:bldevice_connection/constant/colors_const.dart';
 import 'package:bldevice_connection/constant/textstyle_constant.dart';
 import 'package:bldevice_connection/model/fb_user.dart';
 import 'package:bldevice_connection/shared_preferences/shared_preferences.dart';
+import 'package:bldevice_connection/widget/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   FbUser? data;
   getUser() async {
-    final auth = FirebaseAuth.instance.currentUser;
+    // User? auth = FirebaseAuth.instance.currentUser;
     data = await SavePreferences().getUserData();
   }
 
@@ -38,21 +39,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           const SizedBox(
                             height: 100,
                           ),
-                          const CircleAvatar(
-                              backgroundColor: kDarkGreyColor,
-                              radius: 60,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 10.0),
-                                child: Text(
-                                  'No Image captured',
-                                  style: kWhiteLrgTextStyle,
-                                ),
-                              )
-                              // : CircleAvatar(
-                              //     radius: 10,
-                              //     child: Image.asset(
-                              //         'android/Assests/Images/ProfileIcon.png')),
-                              ),
+                          Image.asset('assets/images/arctanoLogoFull.png',
+                              width: 120, height: 80, fit: BoxFit.fill),
                           const SizedBox(
                             height: 100,
                           ),
@@ -133,23 +121,6 @@ class _ProfilePageState extends State<ProfilePage> {
           //     style: TextStyle(color: Colors.pink,
           //     fontSize: 18,
           //     fontWeight: FontWeight.w500)),
-
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-            child: ElevatedButton(
-              onPressed: () async {},
-              child: Text(
-                'Save',
-                style: TextStyle(fontSize: 18),
-              ),
-              // color: kPrimaryColor,
-              // textColor: Colors.white,
-              // shape: RoundedRectangleBorder(
-              //   borderRadius: new BorderRadius.circular(30.0),
-              // ),
-              // padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
-            ),
-          ),
         ]),
       ),
     );

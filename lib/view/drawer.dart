@@ -1,4 +1,3 @@
-import 'package:bldevice_connection/constant/colors_const.dart';
 import 'package:bldevice_connection/constant/textstyle_constant.dart';
 import 'package:bldevice_connection/model/fb_user.dart';
 import 'package:bldevice_connection/shared_preferences/shared_preferences.dart';
@@ -40,7 +39,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       ),
                       Text(
                         userData?.email ?? "Profile",
-                        style: kBXLTextStyle,
+                        style: kBLTextStyle,
                       ),
                     ],
                   ),
@@ -52,10 +51,10 @@ class _DrawerScreenState extends State<DrawerScreen> {
           const DivideLine(),
           ListTile(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const CreateCategories()));
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) =>  CreateCategories()));
             },
             leading: const Icon(Icons.home),
             title: const Text(
@@ -111,11 +110,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
             child: IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () async {
-                await getData();
-                // await SavePreferences().logOut();
-                // await FirebaseAuth.instance.signOut();
-                // Navigator.pushReplacement(context,
-                //     MaterialPageRoute(builder: (context) => LoginScreen()));
+                // await getData();
+                await SavePreferences().logOut();
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
               },
               color: Colors.black,
             ),

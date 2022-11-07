@@ -53,17 +53,13 @@ const TextStyle kBSTextStyle = TextStyle(
 const TextStyle kBMTextStyle = TextStyle(
     color: kBlackColor, fontSize: kTextSizeSmall, fontWeight: FontWeight.w500);
 const TextStyle kBLTextStyle = TextStyle(
-    color: kBlackColor,
-    fontSize: kTextSizeSMedium,
-    fontWeight: FontWeight.bold);
+    color: kBlackColor, fontSize: kTextSizeMedium, fontWeight: FontWeight.w500);
 const TextStyle kBXLTextStyle = TextStyle(
     color: kBlackColor,
     fontSize: kTextSizeLargeMedium,
     fontWeight: FontWeight.bold);
 const TextStyle kDBXLTextStyle = TextStyle(
-    color: kBlackColor,
-    fontSize: kTextSizeLargeMedium,
-    fontWeight: FontWeight.bold);
+    color: kBlackColor, fontSize: kTXlsize, fontWeight: FontWeight.w500);
 
 // bold text
 const TextStyle kDataCellTextStyle =
@@ -82,7 +78,7 @@ const TextStyle kWMTextStyle = TextStyle(
     fontSize: kTextSizeSmall,
     fontWeight: FontWeight.w500);
 const TextStyle kWLTextStyle = TextStyle(
-    color: kPrimaryColor,
+    color: kWhiteColor,
     fontSize: kTextSizeSMedium,
     fontWeight: FontWeight.w500);
 const TextStyle kWXLTextStyle = TextStyle(

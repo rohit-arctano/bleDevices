@@ -1,9 +1,12 @@
 import 'package:bldevice_connection/constant/widget.dart';
-import 'package:bldevice_connection/model/space_model.dart';
 import 'package:bldevice_connection/view/drawer.dart';
 import 'package:bldevice_connection/widget/main_image_widget.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
+
+import '../../model/fb_user.dart';
+import '../../shared_preferences/shared_preferences.dart';
+import '../categories_add/categories.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,8 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // late List<dynamic> place;
-  // late Map<dynamic, dynamic> listofPlace;
   bool buttonSelected = false;
   Size? screenSize;
   var position = 0;
@@ -22,33 +23,23 @@ class _HomePageState extends State<HomePage> {
   double yOffset = 0;
 
   bool isDrawerOpen = false;
-
-  Future getAdddedPlaceList() async {
-    final document = FirebaseDatabase.instance
-        .ref("users")
-        .child("home")
-        // .child(widget.dev)
-        // .child("SWITCHES")
-        .ref;
-
-    Map<dynamic, dynamic> pla = {};
-    await document.once().then((DatabaseEvent value) {
-      value.snapshot.value as Map<dynamic, dynamic>;
-      pla.addAll({
-        "home": {
-          "image": "",
-          "room": {
-            "device": {
-              "switch": {
-                1: {"icon": "", "name": "", "status": ""}
-              }
-            }
-          }
-        }
-      });
-    });
-    print("the data is $pla");
-    return document;
+  late final Stream<QuerySnapshot<Map<String, dynamic>>> firebaseIntance;
+  String placeName = "";
+  FbUser? userData;
+  Future getData() async {
+    userData = await SavePreferences().getUserData();
+    placeName = (await SavePreferences().getplace())!;
+    if (placeName != "") {
+      firebaseIntance = FirebaseFirestore.instance
+          .collection("users")
+          .doc(userData?.uid)
+          .collection("places")
+          .doc(placeName)
+          .collection("rooms")
+          .snapshots();
+      print("the place name is $placeName");
+    }
+    return userData;
   }
 
   @override
@@ -93,55 +84,85 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const Text(
                           "Hello! \nGood morning Caretto",
-                          style: kDBXLTextStyle,
+                          style: kBXLTextStyle,
                         ),
-                        const CircleAvatar(
+                        CircleAvatar(
                           radius: 35.0,
-                          backgroundImage: NetworkImage(
-                              'https://media.istockphoto.com/photos/millennial-male-team-leader-organize-virtual-workshop-with-employees-picture-id1300972574?b=1&k=20&m=1300972574&s=170667a&w=0&h=2nBGC7tr0kWIU8zRQ3dMg-C5JLo9H2sNUuDjQ5mlYfo='),
                           backgroundColor: Colors.transparent,
+                          child: Image.asset(
+                            'assets/images/arctanoLogoFull.png',
+                          ),
                         )
                       ],
                     ),
                   ),
-                  // FutureBuilder(
-                  //     future: getAdddedPlaceList(),
-                  //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  //       if (snapshot.connectionState == ConnectionState.done) {
-                  //         // if (snapshot.hasData) {
-                  //         return const
-                  MainImageWidget(
-                    imageHeight: deviceHeight * 0.6,
-                    imageWidth: deviceWidth * 0.7,
-                    mainboxHeight: deviceHeight * 0.60,
-                    textcontainerWidth: deviceWidth * 0.7,
-                  )
-                  // } else {
-                  //   return Container(
-                  //     height: deviceHeight * 0.5,
-                  //     width: deviceWidth * 0.6,
-                  //     decoration: BoxDecoration(
-                  //         color: kLightBlue,
-                  //         borderRadius: BorderRadius.circular(20)),
-                  //     child: Column(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       children: const [
-                  //         Text(
-                  //           "Add Device",
-                  //           style: kBXLTextStyle,
-                  //         ),
-                  //         Icon(
-                  //           Icons.add,
-                  //           size: 50,
-                  //         )
-                  //       ],
-                  //     ),
-                  //   );
-                  // }
-                  //   } else {
-                  //     return const CircularProgressIndicator();
-                  //   }
-                  // }),
+                  CreateCategories(
+                    placeId: placeName,
+                    onSelected: () {
+                      getData();
+                    },
+                  ),
+                  FutureBuilder(
+                      future: getData(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        // if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasData) {
+                          return StreamBuilder(
+                              stream: firebaseIntance,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                // Map<String, dynamic>? data = snapshot.data?.data();
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                }
+                                print(snapshot.connectionState);
+
+                                if (snapshot.connectionState ==
+                                        ConnectionState.done ||
+                                    snapshot.connectionState ==
+                                        ConnectionState.active) {
+                                  print(" the data is ${snapshot.data!.docs}");
+                                  return MainImageWidget(
+                                    placeName: placeName,
+                                    snapshotData: snapshot.data,
+                                    imageHeight: deviceHeight * 0.6,
+                                    imageWidth: deviceWidth * 0.7,
+                                    mainboxHeight: deviceHeight * 0.60,
+                                    textcontainerWidth: deviceWidth * 0.7,
+                                  );
+                                } else {
+                                  return Text(
+                                      'Connection status : ${snapshot.connectionState.name}');
+                                }
+
+                                // Column(children: getExpenseItems(snapshot));
+                              });
+                          // } else {
+                          //   return Container(
+                          //     height: deviceHeight * 0.5,
+                          //     width: deviceWidth * 0.6,
+                          //     decoration: BoxDecoration(
+                          //         color: kLightBlue,
+                          //         borderRadius: BorderRadius.circular(20)),
+                          //     child: Column(
+                          //       mainAxisAlignment: MainAxisAlignment.center,
+                          //       children: const [
+                          //         Text(
+                          //           "Add Device",
+                          //           style: kBXLTextStyle,
+                          //         ),
+                          //         Icon(
+                          //           Icons.add,
+                          //           size: 50,
+                          //         )
+                          //       ],
+                          //     ),
+                          //   );
+                          // }
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      }),
                 ],
               ),
             )));

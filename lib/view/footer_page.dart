@@ -18,7 +18,6 @@ class _FooterState extends State<Footer> {
   final tabs = [
     const HomePage(),
     const Spaces(),
-    const PlaceAdded(),
     const ProfilePage(),
   ];
 
@@ -53,10 +52,7 @@ class _FooterState extends State<Footer> {
               icon: Icon(Icons.space_bar, size: 18),
               label: 'Space',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings, size: 18),
-              label: 'Setting',
-            ),
+         
             BottomNavigationBarItem(
               icon: Icon(Icons.person, size: 18),
               label: 'Profile',

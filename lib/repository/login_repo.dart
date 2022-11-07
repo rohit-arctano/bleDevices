@@ -3,10 +3,10 @@ import 'package:bldevice_connection/shared_preferences/shared_preferences.dart';
 import 'package:bldevice_connection/view/footer_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../model/model.dart';
+import '../widget/loader.dart';
 
 class AuthUserLogin {
   User? user;
@@ -34,7 +34,6 @@ class AuthUserLogin {
 
   Future<void> readAndSaveDataLocally(
       {required User currentUser, required BuildContext context}) async {
-    final data = FirebaseFirestore.instance.collection("user").get();
     // await data.then((value) => value.docs.forEach((element) {
     //       element.currentUser.;
     //     }));
@@ -46,6 +45,14 @@ class AuthUserLogin {
     String encodedMap = jsonEncode(userData);
     await SavePreferences().logIn();
     await SavePreferences().setUserData(data: encodedMap);
+    showDialog(
+        context: context,
+        builder: (context) => const Center(
+                child: Loader(
+              height: 50,
+              width: 50,
+            )),
+        barrierDismissible: false);
 
     Route newRoute = MaterialPageRoute(builder: (c) => const Footer());
     Navigator.pushReplacement(context, newRoute);

@@ -65,4 +65,16 @@ class SavePreferences {
     prefs = await SharedPreferences.getInstance();
     return prefs.getBool(_logInKey);
   }
+
+  Future<bool?> setplace(String? placeName) async {
+    final SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    return prefs.setString("placeId", placeName ?? "");
+  }
+
+  Future<String?> getplace() async {
+    final SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    return prefs.getString("placeId");
+  }
 }

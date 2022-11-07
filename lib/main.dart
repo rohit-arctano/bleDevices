@@ -7,6 +7,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:bldevice_connection/constant/colors_const.dart';
+import 'package:bldevice_connection/repository/firebasedevice_add.dart';
 import 'package:bldevice_connection/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -50,52 +51,6 @@ class FlutterBlueApp extends StatelessWidget {
 // ignore: must_be_immutable
 
 // ignore: must_be_immutable
-class FullScreenDialog extends StatefulWidget {
-  const FullScreenDialog({super.key});
-
-  @override
-  FullScreenDialogState createState() => FullScreenDialogState();
-}
-
-class FullScreenDialogState extends State<FullScreenDialog> {
-  TextEditingController textController = TextEditingController();
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    textController;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("PLease send the Text"),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: ListView(
-            children: [
-              TextField(
-                controller: textController,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                      child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(textController.text);
-                    },
-                    child: const Text("Save"),
-                  ))
-                ],
-              )
-            ],
-          ),
-        ));
-  }
-}
 
 class CharacteristicTile extends StatelessWidget {
   final BluetoothCharacteristic characteristic;

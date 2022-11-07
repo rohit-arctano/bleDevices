@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
     this.enabled = true,
     this.isObscure = true,
     this.labelText,
+    this.suffixAdd,
     this.onValidation,
   }) : super(key: key);
 
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? labelText;
   final bool isObscure;
   final bool enabled;
+  final Widget? suffixAdd;
   final String? Function(String?)? onValidation;
 
   @override
@@ -36,6 +38,7 @@ class CustomTextField extends StatelessWidget {
         cursorColor: Theme.of(context).primaryColor,
         validator: onValidation,
         decoration: InputDecoration(
+            suffixIcon: suffixAdd,
             label: labelText,
             border: InputBorder.none,
             prefixIcon: Icon(

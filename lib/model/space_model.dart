@@ -25,14 +25,14 @@ List<SpacesList> spaceList = [
     deviceData: {},
     id: 2,
     image: "assets/images/room2.jpg",
-    spaceName: "Kitchen",
+    spaceName: "BedRoom",
     deviceNo: 3,
   ),
   SpacesList(
     deviceData: {},
     id: 2,
     image: "assets/images/room3.jpg",
-    spaceName: "BedRoom",
+    spaceName: "Kitchen",
     deviceNo: 3,
   ),
   SpacesList(

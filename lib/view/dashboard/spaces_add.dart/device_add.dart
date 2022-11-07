@@ -1,9 +1,9 @@
 import 'package:bldevice_connection/constant/colors_const.dart';
 import 'package:bldevice_connection/constant/textstyle_constant.dart';
+import 'package:bldevice_connection/view/auth/wifi_credential/wifi_setup.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 
-import 'device_screen.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 class FindDevicesScreen extends StatelessWidget {
   const FindDevicesScreen({super.key});
@@ -21,6 +21,7 @@ class FindDevicesScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 40,
@@ -28,7 +29,9 @@ class FindDevicesScreen extends StatelessWidget {
                     children: [
                       GestureDetector(
                         child: const Icon(Icons.arrow_back, color: Colors.grey),
-                        // onTap: () => scaffoldKey.currentState?.openDrawer(),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
                       ),
                       const SizedBox(
                         width: 100,
@@ -39,9 +42,6 @@ class FindDevicesScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
                 ),
                 StreamBuilder<List<BluetoothDevice>>(
                   stream: Stream.periodic(const Duration(seconds: 1))
@@ -59,12 +59,24 @@ class FindDevicesScreen extends StatelessWidget {
                                   if (snapshot.data ==
                                       BluetoothDeviceState.connected) {
                                     return ElevatedButton(
-                                      child: const Text('OPEN'),
-                                      onPressed: () => Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: (context) =>
-                                                  DeviceScreen(device: d))),
-                                    );
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    kPrimaryColor),
+                                            textStyle:
+                                                MaterialStateProperty.all(
+                                                    const TextStyle(
+                                                        fontSize:
+                                                            kTextSizeSmall))),
+                                        child: const Text('OPEN'),
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      WifiSetUp(
+                                                        device: d,
+                                                      )));
+                                        });
                                   }
                                   return Text(snapshot.data.toString());
                                 },
@@ -72,6 +84,14 @@ class FindDevicesScreen extends StatelessWidget {
                             ))
                         .toList(),
                   ),
+                ),
+                const Divider(),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  "Device Scan List",
+                  style: kDBXLTextStyle,
                 ),
                 StreamBuilder<List<ScanResult>>(
                   stream: FlutterBlue.instance.scanResults,
@@ -82,35 +102,38 @@ class FindDevicesScreen extends StatelessWidget {
                         ? snapshot.data!.map((r) {
                             if (r.device.name.contains("De")) {
                               return ListTile(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) {
-                                    r.device.connect();
-                                    return DeviceScreen(device: r.device);
-                                  }));
+                                onTap: () async {
+                                  await r.device.connect(
+                                      autoConnect: true,
+                                      timeout: const Duration(seconds: 2));
+                                  print("your bluetooth device is coonected");
+                                  // Navigator.of(context).push(
+                                  //     MaterialPageRoute(builder: (context) {
+                                  //   r.device.connect();
+                                  //   return WifiSetUp(device: r.device);
+                                  // }));
                                 },
-                                title:
-                                    Text(r.device.name, style: kDBXLTextStyle),
+                                title: Text(r.device.name, style: kLTextStyle),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(r.device.id.toString(),
-                                        style: kBXLTextStyle),
+                                        style: kLTextStyle),
                                     Text(
                                       r.device.type.toString(),
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w300,
-                                          fontSize: 18),
+                                          fontSize: 16),
                                     ),
                                   ],
                                 ),
                                 trailing: const CircleAvatar(
                                     radius: 25,
-                                    backgroundColor: kDarkGreyColor,
+                                    backgroundColor: kPrimaryColor,
                                     child: Icon(
                                       Icons.bluetooth,
                                       color: kWhiteColor,
-                                      size: 30,
+                                      size: 25,
                                     )),
                               );
                             } else {

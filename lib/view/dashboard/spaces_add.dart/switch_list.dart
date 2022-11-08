@@ -1,8 +1,4 @@
-import 'dart:ffi';
-
-import 'package:bldevice_connection/constant/colors_const.dart';
 import 'package:bldevice_connection/constant/textstyle_constant.dart';
-import 'package:bldevice_connection/main.dart';
 import 'package:bldevice_connection/model/firebase_data.dart';
 import 'package:bldevice_connection/widget/switch_buttton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

@@ -56,102 +56,79 @@ class _AddDeviceState extends State<AddDevice>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: FutureBuilder(
-            future: getData(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
+    return FutureBuilder(
+        future: getData(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+
+                    // isroomAdd
+                    //     ?
+
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            GestureDetector(
-                              child: const Icon(Icons.arrow_back,
-                                  color: Colors.grey),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                            const SizedBox(
-                              width: 150,
-                            ),
-                            const Text(
-                              "Spaces",
-                              style: kDBXLTextStyle,
-                            ),
-                          ],
+                        const Text(
+                          "Place List",
+                          style: kBLTextStyle,
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
+                        StreamBuilder(
+                            stream: firebaseIntance,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              // Map<String, dynamic>? data = snapshot.data?.data();
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
 
-                        // isroomAdd
-                        //     ?
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                  return const Text('No data');
+                                case ConnectionState.waiting:
+                                  return const Text('Awaiting...');
+                                case ConnectionState.active:
 
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Place List",
-                              style: kBLTextStyle,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            StreamBuilder(
-                                stream: firebaseIntance,
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                                  // Map<String, dynamic>? data = snapshot.data?.data();
-                                  if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  }
-
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.none:
-                                      return const Text('No data');
-                                    case ConnectionState.waiting:
-                                      return const Text('Awaiting...');
-                                    case ConnectionState.active:
-
-                                    case ConnectionState.done:
-                                      print(
-                                          " the data is ${snapshot.data?.docs}");
-                                      return selectDevice(snapshot, context);
-                                  }
-                                  // Column(children: getExpenseItems(snapshot));
-                                }),
-                            CustomTextField(
-                              controller: placeName,
-                              data: Icons.place,
-                              hintText: 'Place Name',
-                              isObscure: false,
-                              suffixAdd: CustomButton(
-                                onTap: () {
-                                  setConfi();
-                                  isroomAdd = true;
-                                  setState(() {});
-                                },
-                                childWidget: const Icon(Icons.add),
-                              ),
-                            ),
-                          ],
+                                case ConnectionState.done:
+                                  print(" the data is ${snapshot.data?.docs}");
+                                  return selectDevice(snapshot, context);
+                              }
+                              // Column(children: getExpenseItems(snapshot));
+                            }),
+                        CustomTextField(
+                          controller: placeName,
+                          data: Icons.place,
+                          hintText: 'Place Name',
+                          isObscure: false,
+                          suffixAdd: CustomButton(
+                            onTap: () {
+                              setConfi();
+                              isroomAdd = true;
+                              setState(() {});
+                            },
+                            childWidget: const Icon(Icons.add),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                );
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            }),
-      ),
-    );
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        });
   }
 
   selectDevice(

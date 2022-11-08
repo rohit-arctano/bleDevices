@@ -1,6 +1,6 @@
 import 'package:bldevice_connection/constant/colors_const.dart';
 import 'package:bldevice_connection/constant/textstyle_constant.dart';
-import 'package:bldevice_connection/view/dashboard/spaces_add.dart/switch_list.dart';
+import 'package:bldevice_connection/view/dashboard/home_switch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +50,11 @@ class _DeviceSelectState extends State<DeviceSelect> {
           Row(
             children: [
               GestureDetector(
-                child: const Icon(Icons.arrow_back, color: Colors.grey),
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.grey,
+                  size: 30,
+                ),
                 onTap: () {
                   Navigator.pop(context);
                 },
@@ -63,6 +67,9 @@ class _DeviceSelectState extends State<DeviceSelect> {
                 style: kDBXLTextStyle,
               ),
             ],
+          ),
+          const SizedBox(
+            height: 20,
           ),
           FutureBuilder(
               future: getInstance(),
@@ -97,7 +104,7 @@ class _DeviceSelectState extends State<DeviceSelect> {
                         }
                       });
                 } else {
-                  return const CircularProgressIndicator();
+                  return const Center(child: CircularProgressIndicator());
                 }
               }),
         ],
@@ -111,26 +118,34 @@ class _DeviceSelectState extends State<DeviceSelect> {
         itemCount: docs.length,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: ListTile(
-              onTap: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => SwitchesList(
-                //             placeId: widget.placeId,
-                //             roomId: widget.roomId,
-                //             deviceId: docs[index].id)));
-              },
-              title: Text(
-                docs[index].id.toUpperCase(),
-                style: kDBXLTextStyle,
-              ),
-              trailing: const CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.keyboard_arrow_right,
-                  color: kPrimaryColor,
+            padding: const EdgeInsets.only(left: 12.0, right: 12),
+            child: Card(
+              margin: const EdgeInsets.all(8),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: ListTile(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomeSwitch(
+                                placeId: widget.placeId,
+                                roomId: widget.roomId,
+                                deviceId: docs[index].id)));
+                  },
+                  title: Text(
+                    docs[index].id.toUpperCase(),
+                    style: kDBXLTextStyle,
+                  ),
+                  trailing: const CircleAvatar(
+                    radius: 17,
+                    backgroundColor: kLightGreyColor,
+                    child: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: kLightBlack,
+                      size: 30,
+                    ),
+                  ),
                 ),
               ),
             ),

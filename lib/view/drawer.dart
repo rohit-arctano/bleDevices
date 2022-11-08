@@ -49,21 +49,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
             height: 60,
           ),
           const DivideLine(),
-          ListTile(
-            onTap: () {
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) =>  CreateCategories()));
-            },
-            leading: const Icon(Icons.home),
-            title: const Text(
-              "Add the Device",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-            ),
-          ),
-          const DivideLine(),
           const ListTile(
             leading: Icon(Icons.home),
             title: Text(
@@ -74,18 +59,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
           ),
           const DivideLine(),
           const ListTile(
-            leading: Icon(Icons.leaderboard_rounded),
-            title: Text(
-              "Leaderboard",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-            ),
-          ),
-          const DivideLine(),
-          const ListTile(
             leading: Icon(Icons.comment),
             title: Text(
-              "About",
+              "About us",
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
             ),
@@ -94,31 +70,42 @@ class _DrawerScreenState extends State<DrawerScreen> {
           const ListTile(
             leading: Icon(Icons.phone),
             title: Text(
-              "Contact",
+              "Contact us",
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            ),
+          ),
+          const DivideLine(),
+          const ListTile(
+            leading: Icon(Icons.share),
+            title: Text(
+              "Share the App",
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
             ),
           ),
           const DivideLine(),
           const SizedBox(
-            height: 50,
+            height: 20,
           ),
           ListTile(
-              leading: CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.grey,
-            child: IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: () async {
-                // await getData();
-                await SavePreferences().logOut();
-                await FirebaseAuth.instance.signOut();
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
-              },
-              color: Colors.black,
+            leading: CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.grey,
+              child: IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: () async {
+                  // await getData();
+                  await SavePreferences().logOut();
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()));
+                },
+                color: Colors.black,
+              ),
             ),
-          )),
+            title: Text("LogOut"),
+          ),
         ]),
       ),
     );

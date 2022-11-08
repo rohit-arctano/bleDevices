@@ -1,11 +1,10 @@
+import 'package:bldevice_connection/constant/colors_const.dart';
+import 'package:bldevice_connection/constant/container_design.dart';
 import 'package:bldevice_connection/constant/textstyle_constant.dart';
 import 'package:bldevice_connection/model/fb_user.dart';
 import 'package:bldevice_connection/view/widget_view.dart';
 import 'package:bldevice_connection/widget/main_image_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import '../../shared_preferences/shared_preferences.dart';
 
 class Spaces extends StatefulWidget {
   const Spaces({super.key});
@@ -80,54 +79,45 @@ class _SpacesState extends State<Spaces> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    child: const Icon(Icons.arrow_back, color: Colors.grey),
-                    // onTap: () => scaffoldKey.currentState?.openDrawer(),
-                  ),
-                  const Text(
-                    "Spaces",
-                    style: kDBXLTextStyle,
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        showMemberMenu();
-                      },
-                      icon: const Icon(Icons.add))
-                ],
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Text.rich(
-                  TextSpan(
-                      text: "ROOM",
-                      style: kBLTextStyle,
-                      children: [TextSpan(text: "(4)", style: kLTextStyle)]),
-                ),
-              ),
               const SizedBox(
-                height: 8,
+                height: 20,
+              ),
+
+              DefaultTabController(
+                length: 2,
+                initialIndex: 0,
+                child: Column(
+                  children: [
+                    const TabBar(
+                      labelColor: Colors.green,
+                      unselectedLabelColor: Colors.black,
+                      tabs: [
+                        Tab(text: 'Places'),
+                        Tab(text: 'Devices'),
+                      ],
+                    ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height *
+                            0.8, //height of TabBarView
+
+                        child: const TabBarView(children: <Widget>[
+                          AddDevice(),
+
+                          FindDevicesScreen()
+                          //   );
+                          // }),
+                        ])),
+                  ],
+                ),
               ),
               // MainImageWidget(
               //   imageHeight: deviceHeight * 0.45,
               //   imageWidth: deviceWidth * 0.5,
               //   mainboxHeight: deviceHeight * 0.45,
               //   textcontainerWidth: deviceWidth * 0.5,
+              //   placeName: '',
+              //   snapshotData: null,
               // ),
-              const Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Text.rich(
-                  TextSpan(
-                      text: "Devices",
-                      style: kDBXLTextStyle,
-                      children: [TextSpan(text: "(12)", style: kLTextStyle)]),
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
             ],
           ),
         ),

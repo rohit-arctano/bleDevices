@@ -49,10 +49,9 @@ class _FooterState extends State<Footer> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.space_bar, size: 18),
-              label: 'Space',
+              icon: Icon(Icons.settings, size: 18),
+              label: 'Setting',
             ),
-         
             BottomNavigationBarItem(
               icon: Icon(Icons.person, size: 18),
               label: 'Profile',

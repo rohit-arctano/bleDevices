@@ -37,12 +37,19 @@ class _ProfilePageState extends State<ProfilePage> {
                       return Column(
                         children: [
                           const SizedBox(
-                            height: 100,
+                            height: 50,
                           ),
-                          Image.asset('assets/images/arctanoLogoFull.png',
-                              width: 120, height: 80, fit: BoxFit.fill),
+                          CircleAvatar(
+                            radius: 65,
+                            backgroundColor: kl2,
+                            child: Image.asset(
+                                'assets/images/arctanoLogoFull.png',
+                                width: 100,
+                                height: 70,
+                                fit: BoxFit.fill),
+                          ),
                           const SizedBox(
-                            height: 100,
+                            height: 50,
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),

@@ -4,24 +4,24 @@ import 'package:bldevice_connection/constant/colors_const.dart';
 import 'package:flutter/material.dart';
 
 const TextStyle kXSmallTextStyle =
-    TextStyle(color: kBlackColor, fontSize: kTextSiseXSmallText);
+    TextStyle(color: kLightBlack, fontSize: kTextSiseXSmallText);
 const TextStyle kSmallTextStyle =
-    TextStyle(color: kBlackColor, fontSize: kTextSizeSmall);
+    TextStyle(color: kLightBlack, fontSize: kTextSizeSmall);
 const TextStyle kMediumTextStyle =
-    TextStyle(color: kBlackColor, fontSize: kTextSizeSMedium);
+    TextStyle(color: kLightBlack, fontSize: kTextSizeSMedium);
 
 const TextStyle kLTextStyle = TextStyle(
-  color: kBlackColor,
+  color: kLightBlack,
   fontSize: kTextSizeLargeMedium,
 );
 
 const TextStyle kXLTextStyle = TextStyle(
-  color: kBlackColor,
+  color: kLightBlack,
   fontSize: kTextSizeLargeMedium,
 );
 
 const TextStyle kDXLTextStyle = TextStyle(
-  color: kBlackColor,
+  color: kLightBlack,
   fontSize: kTXlsize,
 );
 
@@ -57,7 +57,7 @@ const TextStyle kBLTextStyle = TextStyle(
 const TextStyle kBXLTextStyle = TextStyle(
     color: kBlackColor,
     fontSize: kTextSizeLargeMedium,
-    fontWeight: FontWeight.bold);
+    fontWeight: FontWeight.w500);
 const TextStyle kDBXLTextStyle = TextStyle(
     color: kBlackColor, fontSize: kTXlsize, fontWeight: FontWeight.w500);
 

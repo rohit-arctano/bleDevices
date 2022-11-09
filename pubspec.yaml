@@ -44,6 +44,7 @@ dependencies:
   shared_preferences: ^2.0.15
   flutter_blue: ^0.8.0
   app_settings: ^4.1.8
+  flutter_slidable: ^2.0.0
   
 
 dev_dependencies:

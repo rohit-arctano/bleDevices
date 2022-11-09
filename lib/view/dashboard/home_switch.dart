@@ -195,7 +195,7 @@ class _HomeSwitchState extends State<HomeSwitch> {
                                                                           status
                                                                     };
 
-                                                                    Firestore.switchUpdat(
+                                                                    Firestore.editName(
                                                                         deviceList,
                                                                         documentSnapshot
                                                                             .id,

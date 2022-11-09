@@ -56,6 +56,7 @@ class SavePreferences {
   Future<bool> logOut() async {
     final SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
     return prefs.setBool(_logInKey, false);
     // print(userData);
   }

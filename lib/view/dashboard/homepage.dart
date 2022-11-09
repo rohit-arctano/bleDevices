@@ -121,7 +121,6 @@ class _HomePageState extends State<HomePage> {
                                     if (snapshot.hasError) {
                                       return Text('Error: ${snapshot.error}');
                                     }
-                                    print(snapshot.connectionState);
 
                                     if (snapshot.connectionState ==
                                             ConnectionState.done ||

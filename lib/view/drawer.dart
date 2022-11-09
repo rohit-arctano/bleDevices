@@ -1,4 +1,5 @@
 import 'package:bldevice_connection/constant/textstyle_constant.dart';
+import 'package:bldevice_connection/constant/widget.dart';
 import 'package:bldevice_connection/model/fb_user.dart';
 import 'package:bldevice_connection/shared_preferences/shared_preferences.dart';
 import 'widget_view.dart';
@@ -20,94 +21,107 @@ class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(20.0, 40.0, 0.0, 0.0),
-        child: ListView(padding: EdgeInsets.zero, children: [
-          FutureBuilder(
-              future: getData(),
-              builder: (context, snapshot) {
-                return ListTile(
-                  title: Text(
-                    userData?.name.toUpperCase() ?? "Profile",
-                    style: kDBXLTextStyle,
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        userData?.email ?? "Profile",
-                        style: kBLTextStyle,
-                      ),
-                    ],
-                  ),
-                );
-              }),
-          const SizedBox(
-            height: 60,
+      body: Column(children: [
+        FutureBuilder(
+            future: getData(),
+            builder: (context, snapshot) {
+              return UserAccountsDrawerHeader(
+                decoration: const BoxDecoration(
+                  color: kDarkGreyColor,
+                ),
+                accountName: Text(
+                  userData?.name.toUpperCase() ?? "Profile",
+                  style: kWBXLTextStyle,
+                ),
+                accountEmail: Text(
+                  userData?.email ?? "Profile",
+                  style: kWLTextStyle,
+                ),
+                currentAccountPicture: CircleAvatar(
+                  radius: 70,
+                  backgroundColor: kl2,
+                  child: Image.asset('assets/images/arctanoLogoFull.png',
+                      width: 60, height: 45, fit: BoxFit.fill),
+                ),
+                // currentAccountPictureSize: const Size.square(30.0),
+              );
+            }),
+        const SizedBox(
+          height: 60,
+        ),
+        const DivideLine(),
+        const ListTile(
+          leading: Icon(Icons.home),
+          title: Text(
+            "Home",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           ),
-          const DivideLine(),
-          const ListTile(
-            leading: Icon(Icons.home),
-            title: Text(
-              "Home",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+        const DivideLine(),
+        const ListTile(
+          leading: Icon(Icons.comment),
+          title: Text(
+            "About us",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ),
+        const DivideLine(),
+        const ListTile(
+          leading: Icon(Icons.phone),
+          title: Text(
+            "Contact us",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ),
+        const DivideLine(),
+        const ListTile(
+          leading: Icon(Icons.share),
+          title: Text(
+            "Share the App",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ),
+        const DivideLine(),
+        const SizedBox(
+          height: 20,
+        ),
+        ListTile(
+          leading: CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.grey,
+            child: IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
+                // await getData();
+                await SavePreferences().logOut();
+                await FirebaseAuth.instance.signOut();
+
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
+              },
+              color: Colors.black,
             ),
           ),
-          const DivideLine(),
-          const ListTile(
-            leading: Icon(Icons.comment),
-            title: Text(
-              "About us",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-            ),
-          ),
-          const DivideLine(),
-          const ListTile(
-            leading: Icon(Icons.phone),
-            title: Text(
-              "Contact us",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-            ),
-          ),
-          const DivideLine(),
-          const ListTile(
-            leading: Icon(Icons.share),
-            title: Text(
-              "Share the App",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-            ),
-          ),
-          const DivideLine(),
-          const SizedBox(
-            height: 20,
-          ),
-          ListTile(
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.grey,
-              child: IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: () async {
-                  // await getData();
-                  await SavePreferences().logOut();
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()));
-                },
-                color: Colors.black,
+          title: const Text("LogOut"),
+        ),
+        Spacer(),
+        Container(
+          decoration: BoxDecoration(
+              shape: BoxShape.circle, color: kWhiteColor.withOpacity(0.2)),
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text("Arctano Switch", style: kLTextStyle),
+                ],
               ),
-            ),
-            title: Text("LogOut"),
+              const Text("v 1.0", style: kLTextStyle)
+            ],
           ),
-        ]),
-      ),
+        ),
+      ]),
     );
   }
 }

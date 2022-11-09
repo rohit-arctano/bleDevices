@@ -1,3 +1,4 @@
+import 'package:bldevice_connection/constant/textstyle_constant.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -36,8 +37,13 @@ class CustomTextField extends StatelessWidget {
         obscureText: isObscure,
         controller: controller,
         cursorColor: Theme.of(context).primaryColor,
-        validator: onValidation,
+        validator: (String? value) {
+          if (onValidation != null) {
+            return onValidation!(value);
+          }
+        },
         decoration: InputDecoration(
+            hintStyle: kLTextStyle,
             suffixIcon: suffixAdd,
             label: labelText,
             border: InputBorder.none,

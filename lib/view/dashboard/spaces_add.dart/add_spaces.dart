@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../../repository/firebasedevice_add.dart';
 import '../../../shared_preferences/shared_preferences.dart';
 import 'package:bldevice_connection/widget/widget.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class AddDevice extends StatefulWidget {
   const AddDevice({super.key});
@@ -16,9 +17,7 @@ class AddDevice extends StatefulWidget {
 
 class _AddDeviceState extends State<AddDevice>
     with SingleTickerProviderStateMixin {
-  final TextEditingController placeName = TextEditingController();
-
-  final TextEditingController deviceName = TextEditingController();
+  final TextEditingController placeNameCntrl = TextEditingController();
   final TextEditingController switchCollectionName = TextEditingController();
 
   bool? value;
@@ -27,31 +26,31 @@ class _AddDeviceState extends State<AddDevice>
   bool isDeviceAdd = false;
   bool isSwitch = false;
   FbUser? user;
+  final formKey = GlobalKey<FormState>();
+  late final CollectionReference<Map<String, dynamic>> fireStorePlaceInstance;
   late final Stream<QuerySnapshot<Map<String, dynamic>>> firebaseIntance;
 
   @override
   void dispose() {
-    deviceName;
-    switchCollectionName;
-    placeName;
+    placeNameCntrl;
     super.dispose();
   }
 
   FbUser? userData;
   Future getData() async {
     userData = await SavePreferences().getUserData();
-    firebaseIntance = FirebaseFirestore.instance
+    fireStorePlaceInstance = FirebaseFirestore.instance
         .collection("users")
         .doc(userData?.uid)
-        .collection("places")
-        .snapshots();
+        .collection("places");
+    firebaseIntance = fireStorePlaceInstance.snapshots();
+
     return userData;
   }
 
-  Future setConfi() async {
-    String spacename = placeName.text;
-    await Firestore.addEntryofPlace(spacename);
-    placeName.clear();
+  Future setConfi(String place) async {
+    await Firestore.addEntryofPlace(place);
+    placeNameCntrl.clear();
   }
 
   @override
@@ -105,19 +104,49 @@ class _AddDeviceState extends State<AddDevice>
                               }
                               // Column(children: getExpenseItems(snapshot));
                             }),
-                        CustomTextField(
-                          controller: placeName,
-                          data: Icons.place,
-                          hintText: 'Place Name',
-                          isObscure: false,
-                          suffixAdd: CustomButton(
-                            onTap: () {
-                              setConfi();
-                              isroomAdd = true;
-                              setState(() {});
+                        Form(
+                          key: formKey,
+                          child: CustomTextField(
+                            onValidation: (value) {
+                              return value == null || value == ""
+                                  ? 'Please fill the Place Name'
+                                  : null;
                             },
-                            childWidget: const Icon(Icons.add),
+                            controller: placeNameCntrl,
+                            data: Icons.place,
+                            hintText: 'Place Name',
+                            isObscure: false,
                           ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomButton(
+                              colors: kPrimaryColor,
+                              onTap: () {
+                                print(
+                                    'formkey status: ${formKey.currentState == null}');
+                                if (formKey.currentState!.validate()) {
+                                  setConfi(placeNameCntrl.text.toLowerCase());
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text('Place is Added')));
+                                }
+                              },
+                              childWidget: Row(
+                                children: const [
+                                  Text(
+                                    "Add Place",
+                                    style: kWLTextStyle,
+                                  ),
+                                  Icon(
+                                    Icons.add,
+                                    color: kWhiteColor,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -135,28 +164,80 @@ class _AddDeviceState extends State<AddDevice>
       AsyncSnapshot<QuerySnapshot<Object?>> snapshot, BuildContext context) {
     return ListView.builder(
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: snapshot.data!.docs.length,
         itemBuilder: (context, index) {
           final id = snapshot.data!.docs[index];
           return Padding(
             padding: const EdgeInsets.all(4.0),
-            child: Card(
-              child: ListTile(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RoomList(placeId: id.id)));
-                },
-                title: Text(
-                  snapshot.data!.docs[index].id.toUpperCase(),
-                  style: kBXLTextStyle,
-                ),
-                trailing: const CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  child: Icon(
-                    Icons.keyboard_arrow_right,
-                    color: kPrimaryColor,
+            child: Slidable(
+              endActionPane: ActionPane(
+                motion: const ScrollMotion(),
+                children: [
+                  SlidableAction(
+                    onPressed: (BuildContext ctx) async {
+                      await fireStorePlaceInstance.doc(id.id).delete();
+                      // Navigator.pop(context);
+                    },
+                    backgroundColor: kl2,
+                    foregroundColor: Colors.white,
+                    icon: Icons.delete,
+                    label: 'Delete',
+                  ),
+                ],
+              ),
+              startActionPane: ActionPane(
+                // A motion is a widget used to control how the pane animates.
+                motion: const ScrollMotion(),
+
+                // A pane can dismiss the Slidable.
+                dismissible: DismissiblePane(onDismissed: () {}),
+
+                // All actions are defined in the children parameter.
+                children: [
+                  // A SlidableAction can have an icon and/or a label.
+                  SlidableAction(
+                    onPressed: (BuildContext ctx) async {
+                      var result = await Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (context, __, _) => PopUpTemplate(
+                              hintText: "Change the place Name",
+                            ),
+                          ));
+                      fireStorePlaceInstance.doc(id.id).update(result);
+
+                      // await fireStorePlaceInstance.doc(id.id).delete();
+                      // Navigator.pop(context);
+                    },
+                    backgroundColor: kPrimaryColor,
+                    foregroundColor: Colors.white,
+                    icon: Icons.edit,
+                    label: 'Edit',
+                  ),
+                ],
+              ),
+              enabled: true,
+              direction: Axis.horizontal,
+              child: Card(
+                child: ListTile(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RoomList(placeId: id.id)));
+                  },
+                  title: Text(
+                    snapshot.data!.docs[index].id.toUpperCase(),
+                    style: kBXLTextStyle,
+                  ),
+                  trailing: const CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    child: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: kPrimaryColor,
+                    ),
                   ),
                 ),
               ),
@@ -164,4 +245,9 @@ class _AddDeviceState extends State<AddDevice>
           );
         });
   }
+
+  Future<void> deletePlaces(
+      QueryDocumentSnapshot<Object?> documentSnapshot) async {}
+
+  editplaceName() {}
 }

@@ -75,14 +75,14 @@ const TextStyle kWSTextStyle = TextStyle(
 
 const TextStyle kWMTextStyle = TextStyle(
     color: kPrimaryColor,
-    fontSize: kTextSizeSmall,
+    fontSize: kTextSizeSMedium,
     fontWeight: FontWeight.w500);
 const TextStyle kWLTextStyle = TextStyle(
     color: kWhiteColor,
     fontSize: kTextSizeSMedium,
     fontWeight: FontWeight.w500);
 const TextStyle kWXLTextStyle = TextStyle(
-    color: kPrimaryColor,
+    color: kWhiteColor,
     fontSize: kTextSizeLargeMedium,
     fontWeight: FontWeight.w500);
 const TextStyle kWBXLTextStyle = TextStyle(

@@ -31,6 +31,13 @@ class Firestore {
     print("your room is iadded");
   }
 
+  static Future addDevice(String device) async {
+    FbUser? userData;
+    userData = await SavePreferences().getUserData();
+
+    print("your Device is iadded");
+  }
+
   static Future addSwitch(String switchName, data) async {
     FbUser? userData;
     String deviceId = "6EsFwFN9SealdHqBK2ui";
@@ -50,10 +57,8 @@ class Firestore {
   }
 
   // updates an existing entry (missing fields won't be touched on update), document must exist
-  static Future switchUpdat(
-      CollectionReference<Map<String, dynamic>> collection,
-      String documentId,
-      Map<String, dynamic> data) async {
+  static Future editName(CollectionReference<Map<String, dynamic>> collection,
+      String documentId, Map<String, dynamic> data) async {
     await collection.doc(documentId).update(data);
   }
 

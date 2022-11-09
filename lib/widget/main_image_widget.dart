@@ -1,6 +1,6 @@
-import 'package:bldevice_connection/constant/colors_const.dart';
-import 'package:bldevice_connection/constant/textstyle_constant.dart';
+import 'package:bldevice_connection/constant/widget.dart';
 import 'package:bldevice_connection/view/dashboard/device_list.dart';
+import 'package:bldevice_connection/widget/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -31,8 +31,6 @@ class _MainImageWidgetState extends State<MainImageWidget> {
   String? selectPlace;
   @override
   Widget build(BuildContext context) {
-    double deviceHeight = MediaQuery.of(context).size.height;
-    double deviceWidth = MediaQuery.of(context).size.width;
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(32)),
       height: widget.mainboxHeight,
@@ -83,7 +81,7 @@ class _MainImageWidgetState extends State<MainImageWidget> {
                                 width: widget.imageWidth,
                               )),
                     Container(
-                      height: 100,
+                      height: 70,
                       decoration: BoxDecoration(
                           color: kBlackColor.withOpacity(0.5),
                           borderRadius: const BorderRadius.only(
@@ -97,20 +95,12 @@ class _MainImageWidgetState extends State<MainImageWidget> {
                             children: [
                               Text(
                                 roomList.id,
-                                style: kWhiteLrgTextStyle,
+                                style: kWtXtaTstSte,
                               ),
                               const Spacer(),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
                               Container(
-                                height: 40,
-                                width: 40,
+                                height: 50,
+                                width: 50,
                                 decoration: BoxDecoration(
                                   color: buttonSelected
                                       ? kWhiteColor.withOpacity(0.5)
@@ -123,19 +113,29 @@ class _MainImageWidgetState extends State<MainImageWidget> {
                                   ),
                                 ),
                                 child: IconButton(
-                                    iconSize: 20,
-                                    onPressed: () {
+                                    iconSize: 30,
+                                    onPressed: () async {
+                                      String result = await Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            opaque: false,
+                                            pageBuilder: (context, __, _) =>
+                                                PopUpTemplate(
+                                              hintText: "Change the Room Name",
+                                            ),
+                                          ));
+
                                       setState(() {
                                         buttonSelected = !buttonSelected;
                                       });
                                     },
                                     icon: const Icon(
-                                      Icons.hot_tub,
+                                      Icons.edit,
                                       color: kWhiteColor,
                                     )),
                               ),
                             ],
-                          )
+                          ),
                         ]),
                       ),
                     )

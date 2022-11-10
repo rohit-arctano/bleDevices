@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
 
   bool isDrawerOpen = false;
   Stream<QuerySnapshot<Map<String, dynamic>>>? firebaseIntance;
+  CollectionReference<Map<String, dynamic>>? roomFirebaseInstance;
   String? placeName;
   FbUser? userData;
   Future getData() async {
@@ -30,13 +31,13 @@ class _HomePageState extends State<HomePage> {
     placeName = await SavePreferences().getplace();
     print("the place name is $placeName");
     if (placeName != null) {
-      firebaseIntance = FirebaseFirestore.instance
+      roomFirebaseInstance = FirebaseFirestore.instance
           .collection("users")
           .doc(userData?.uid)
           .collection("places")
           .doc(placeName)
-          .collection("rooms")
-          .snapshots();
+          .collection("rooms");
+      firebaseIntance = roomFirebaseInstance?.snapshots();
       print("the place name is $placeName");
     }
     return userData;
@@ -129,6 +130,7 @@ class _HomePageState extends State<HomePage> {
                                       print(
                                           " the data is ${snapshot.data!.docs}");
                                       return MainImageWidget(
+                                        fireinstance: roomFirebaseInstance,
                                         placeName: placeName ?? "",
                                         snapshotData: snapshot.data,
                                         imageHeight: deviceHeight * 0.6,

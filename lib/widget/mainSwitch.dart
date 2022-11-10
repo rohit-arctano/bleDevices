@@ -64,7 +64,7 @@ class _CustomSwitchState extends State<CustomSwitch>
                 child: Container(
                   width: 30.0,
                   height: 30.0,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       shape: BoxShape.circle, color: Colors.white),
                 ),
               ),

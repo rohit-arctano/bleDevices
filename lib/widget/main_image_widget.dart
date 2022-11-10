@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MainImageWidget extends StatefulWidget {
+  CollectionReference<Map<String, dynamic>>? fireinstance;
   QuerySnapshot<Object?>? snapshotData;
   double? mainboxHeight;
   double? mainboxWidth;
@@ -14,7 +15,8 @@ class MainImageWidget extends StatefulWidget {
   String placeName;
 
   MainImageWidget(
-      {required this.placeName,
+      {required this.fireinstance,
+      required this.placeName,
       required this.snapshotData,
       this.textcontainerWidth,
       this.mainboxWidth,
@@ -29,158 +31,154 @@ class MainImageWidget extends StatefulWidget {
 
 class _MainImageWidgetState extends State<MainImageWidget> {
   String? selectPlace;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(32)),
-      height: widget.mainboxHeight,
-      width: widget.mainboxWidth,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: widget.snapshotData!.docs.length,
-          itemBuilder: (context, index) {
-            final roomList = widget.snapshotData!.docs[index];
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DeviceSelect(
-                              placeId: widget.placeName,
-                              roomId: widget.snapshotData!.docs[index].id,
-                            )));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        // ignore: unnecessary_null_comparison
-                        child: roomImageList != null
-                            ? Image.asset(
-                                roomImageList.firstWhere((element) =>
-                                    element["spaceName"]
-                                        .toString()
-                                        .toLowerCase()
-                                        .contains(roomList.id
-                                            .toLowerCase()))["images"],
-                                // spaceList[index].image,
-                                fit: BoxFit.fitHeight,
-                                height: widget.imageHeight,
-                                width: widget.imageWidth,
-                              )
-                            : Image.asset(
-                                roomImageList.firstWhere((element) =>
-                                    element["spaceName"] ==
-                                    roomList.id.toUpperCase())["images"],
-                                // spaceList[index].image,
-                                fit: BoxFit.fitHeight,
-                                height: widget.imageHeight,
-                                width: widget.imageWidth,
-                              )),
-                    Container(
-                      height: 70,
-                      decoration: BoxDecoration(
-                          color: kBlackColor.withOpacity(0.5),
-                          borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(32),
-                              bottomRight: Radius.circular(32))),
-                      width: widget.textcontainerWidth,
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Column(children: [
-                          Row(
-                            children: [
-                              Text(
-                                roomList.id,
-                                style: kWtXtaTstSte,
-                              ),
-                              const Spacer(),
-                              Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  color: buttonSelected
-                                      ? kWhiteColor.withOpacity(0.5)
-                                      : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(32),
-                                  border: Border.all(
-                                    width: 2,
-                                    color: Colors.white,
-                                    style: BorderStyle.solid,
-                                  ),
-                                ),
-                                child: IconButton(
-                                    iconSize: 30,
-                                    onPressed: () async {
-                                      String result = await Navigator.push(
-                                          context,
-                                          PageRouteBuilder(
-                                            opaque: false,
-                                            pageBuilder: (context, __, _) =>
-                                                PopUpTemplate(
-                                              hintText: "Change the Room Name",
-                                            ),
-                                          ));
+  late DocumentReference<Map<String, dynamic>> roomFirebaseInstance;
+  DocumentSnapshot<Map<String, dynamic>>? firebaseIntance;
 
-                                      setState(() {
-                                        buttonSelected = !buttonSelected;
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.edit,
-                                      color: kWhiteColor,
-                                    )),
-                              ),
-                            ],
-                          ),
-                        ]),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
-          }
-
-          // onPageChanged: (index) {
-          //   setState(() {
-          //     position = index;
-          //   });
-          // },
-          ),
-    );
+  Future<Map<String, dynamic>> getData() async {
+    roomFirebaseInstance =
+        FirebaseFirestore.instance.collection("roomType").doc("roomImages");
+    firebaseIntance = await roomFirebaseInstance.get();
+    return firebaseIntance?.data() ?? {};
   }
 
-  List<Map<String, dynamic>> roomImageList = [
-    {
-      "id": "1",
-      "images": "assets/images/room1.jpg",
-      "spaceName": "KITCHEN",
-    },
-    {
-      "id": "2",
-      "images": "assets/images/room2.jpg",
-      "spaceName": "BED ROOM",
-    },
-    {
-      "id": "3",
-      "images": "assets/images/room3.jpg",
-      "spaceName": "LIVING ROOM",
-    },
-    {
-      "id": "4",
-      "images": "assets/images/room4.jpg",
-      "spaceName": "BALCONY",
-    },
-    {
-      "id": "5",
-      "images": "assets/images/room5.jpg",
-      "spaceName": "WASH ROOM",
-    },
-  ];
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Map<String, dynamic>>(
+        future: getData(),
+        builder: (context, snp) {
+          if (snp.hasData) {
+            if (snp.data == null) {
+              return const Loader();
+            }
+            return Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(32)),
+              height: widget.mainboxHeight,
+              width: widget.mainboxWidth,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.snapshotData!.docs.length,
+                  itemBuilder: (context, index) {
+                    final roomList = widget.snapshotData!.docs[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DeviceSelect(
+                                      placeId: widget.placeName,
+                                      roomId:
+                                          widget.snapshotData!.docs[index].id,
+                                    )));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Stack(
+                          alignment: Alignment.bottomCenter,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              // ignore: unnecessary_null_comparison
+
+                              child: Image.network(
+                                snp.data!.containsKey(roomList.id)
+                                    ? snp.data![roomList.id]["url"]
+                                    : snp.data!["other"]["url"],
+                                fit: BoxFit.fill,
+                                height: widget.imageHeight,
+                                width: widget.imageWidth,
+                              ),
+                            ),
+                            Container(
+                              height: 60,
+                              decoration: BoxDecoration(
+                                  color: kBlackColor.withOpacity(0.5),
+                                  borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(32),
+                                      bottomRight: Radius.circular(32))),
+                              width: widget.textcontainerWidth,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Column(children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        roomList.id,
+                                        style: kWhiteLrgTextStyle,
+                                      ),
+                                      const Spacer(),
+                                      Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                          color: buttonSelected
+                                              ? kWhiteColor.withOpacity(0.5)
+                                              : Colors.transparent,
+                                          borderRadius:
+                                              BorderRadius.circular(32),
+                                          border: Border.all(
+                                            width: 2,
+                                            color: Colors.white,
+                                            style: BorderStyle.solid,
+                                          ),
+                                        ),
+                                        child: IconButton(
+                                            iconSize: 20,
+                                            onPressed: () async {
+                                              // String newroomName = await Navigator.push(
+                                              //     context,
+                                              //     PageRouteBuilder(
+                                              //       opaque: false,
+                                              //       pageBuilder: (context, __, _) =>
+                                              //           PopUpTemplate(
+                                              //         hintText: "Change the Room Name",
+                                              //       ),
+                                              //     ));
+                                              // DocumentSnapshot<Map<String, dynamic>>
+                                              //     data = await widget.fireinstance!
+                                              //         .doc(roomList.id)
+                                              //         .get();
+
+                                              // await widget.fireinstance!
+                                              //     .doc(newroomName)
+                                              //     .set(data.data() ?? {});
+                                              // await widget.fireinstance!
+                                              //     .doc(roomList.id)
+                                              //     .delete();
+
+                                              // await getData();
+                                              // setState(() {
+                                              //   buttonSelected = !buttonSelected;
+                                              // });
+                                            },
+                                            icon: const Icon(
+                                              Icons.edit,
+                                              color: kWhiteColor,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                ]),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+
+                  // onPageChanged: (index) {
+                  //   setState(() {
+                  //     position = index;
+                  //   });
+                  // },
+                  ),
+            );
+          } else {
+            return const Loader();
+          }
+        });
+  }
 
   bool buttonSelected = false;
 }

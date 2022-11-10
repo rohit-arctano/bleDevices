@@ -117,3 +117,9 @@ const double kDefaultPadding = 15.0;
 const double kwidth = 80;
 
 // display mediaquery size
+
+// Textformfield  textstyle
+const TextStyle kGreyTextStyle = TextStyle(
+  color: kDarkGreyColor,
+  fontSize: kTextSizeMedium,
+);

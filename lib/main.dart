@@ -4,10 +4,7 @@
 // protoc:3.17.3
 // protobuf-javalite:3.17.3
 
-import 'dart:async';
 import 'dart:typed_data';
-import 'package:bldevice_connection/constant/colors_const.dart';
-import 'package:bldevice_connection/repository/firebasedevice_add.dart';
 import 'package:bldevice_connection/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';

@@ -82,7 +82,6 @@ class _SpacesState extends State<Spaces> {
               const SizedBox(
                 height: 20,
               ),
-
               DefaultTabController(
                 length: 2,
                 initialIndex: 0,
@@ -110,14 +109,6 @@ class _SpacesState extends State<Spaces> {
                   ],
                 ),
               ),
-              // MainImageWidget(
-              //   imageHeight: deviceHeight * 0.45,
-              //   imageWidth: deviceWidth * 0.5,
-              //   mainboxHeight: deviceHeight * 0.45,
-              //   textcontainerWidth: deviceWidth * 0.5,
-              //   placeName: '',
-              //   snapshotData: null,
-              // ),
             ],
           ),
         ),

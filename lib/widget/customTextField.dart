@@ -31,7 +31,7 @@ class CustomTextField extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
-      margin: const EdgeInsets.all(10),
+      // margin: const EdgeInsets.all(5),
       child: TextFormField(
         enabled: enabled,
         obscureText: isObscure,
@@ -41,9 +41,10 @@ class CustomTextField extends StatelessWidget {
           if (onValidation != null) {
             return onValidation!(value);
           }
+          return null;
         },
         decoration: InputDecoration(
-            hintStyle: kLTextStyle,
+            hintStyle: kGreyTextStyle,
             suffixIcon: suffixAdd,
             label: labelText,
             border: InputBorder.none,

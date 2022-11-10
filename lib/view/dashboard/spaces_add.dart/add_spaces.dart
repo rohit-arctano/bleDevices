@@ -42,8 +42,14 @@ class _AddDeviceState extends State<AddDevice>
     fireStorePlaceInstance = FirebaseFirestore.instance
         .collection("users")
         .doc(userData?.uid)
-        .collection("places");
-    firebaseIntance = fireStorePlaceInstance.snapshots();
+        .collection("places")
+        .doc("flat")
+        .collection("rooms");
+    firebaseIntance = FirebaseFirestore.instance
+        .collection("users")
+        .doc(userData?.uid)
+        .collection("places")
+        .snapshots();
 
     return userData;
   }
@@ -99,7 +105,6 @@ class _AddDeviceState extends State<AddDevice>
                                 case ConnectionState.active:
 
                                 case ConnectionState.done:
-                                  print(" the data is ${snapshot.data?.docs}");
                                   return selectDevice(snapshot, context);
                               }
                               // Column(children: getExpenseItems(snapshot));
@@ -124,8 +129,6 @@ class _AddDeviceState extends State<AddDevice>
                             CustomButton(
                               colors: kPrimaryColor,
                               onTap: () {
-                                print(
-                                    'formkey status: ${formKey.currentState == null}');
                                 if (formKey.currentState!.validate()) {
                                   setConfi(placeNameCntrl.text.toLowerCase());
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -176,7 +179,13 @@ class _AddDeviceState extends State<AddDevice>
                 children: [
                   SlidableAction(
                     onPressed: (BuildContext ctx) async {
-                      await fireStorePlaceInstance.doc(id.id).delete();
+                      QuerySnapshot<Map<String, dynamic>> res =
+                          await fireStorePlaceInstance.get();
+                      for (QueryDocumentSnapshot<Map<String, dynamic>> i
+                          in res.docs) {
+                        await i.reference.delete();
+                      }
+                      // await fireStorePlaceInstance.doc(id.id).delete();
                       // Navigator.pop(context);
                     },
                     backgroundColor: kl2,
@@ -198,7 +207,7 @@ class _AddDeviceState extends State<AddDevice>
                   // A SlidableAction can have an icon and/or a label.
                   SlidableAction(
                     onPressed: (BuildContext ctx) async {
-                      var result = await Navigator.push(
+                      String newplaceName = await Navigator.push(
                           context,
                           PageRouteBuilder(
                             opaque: false,
@@ -206,7 +215,17 @@ class _AddDeviceState extends State<AddDevice>
                               hintText: "Change the place Name",
                             ),
                           ));
-                      fireStorePlaceInstance.doc(id.id).update(result);
+                      // DocumentSnapshot<Map<String, dynamic>> data =
+                      //     await fireStorePlaceInstance.
+                      //     doc(snapshot.data!.docs[index].id)
+                      //         .
+
+                      // await fireStorePlaceInstance
+                      //     .doc(newplaceName)
+                      //     .set(data.data() ?? {});
+                      // print("the setdata is ${data.data() ?? {}}");
+
+                      // await fireStorePlaceInstance.doc(id.id).delete();
 
                       // await fireStorePlaceInstance.doc(id.id).delete();
                       // Navigator.pop(context);

@@ -46,12 +46,12 @@ class PopUpTemplate extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: Container(
-                      height: 75,
+                      height: 60,
                       decoration: productCon,
                       child: CustomTextField(
                           isObscure: false,
                           controller: textController,
-                          data: Icons.device_thermostat,
+                          data: Icons.room_preferences_sharp,
                           hintText: hintText),
                     ),
                   ),
@@ -67,7 +67,7 @@ class PopUpTemplate extends StatelessWidget {
                       padding: EdgeInsets.only(left: 15, right: 15),
                       child: Text(
                         "Save",
-                        style: kWXLTextStyle,
+                        style: kWLTextStyle,
                       ),
                     ),
                   )

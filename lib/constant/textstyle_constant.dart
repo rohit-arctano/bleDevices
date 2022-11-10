@@ -4,25 +4,25 @@ import 'package:bldevice_connection/constant/colors_const.dart';
 import 'package:flutter/material.dart';
 
 const TextStyle kXSmallTextStyle =
-    TextStyle(color: kBlackColor, fontSize: kTextSiseXSmallText);
+    TextStyle(color: kLightBlack, fontSize: kTextSiseXSmallText);
 const TextStyle kSmallTextStyle =
-    TextStyle(color: kBlackColor, fontSize: kTextSizeSmall);
+    TextStyle(color: kLightBlack, fontSize: kTextSizeSmall);
 const TextStyle kMediumTextStyle =
-    TextStyle(color: kBlackColor, fontSize: kTextSizeSMedium);
+    TextStyle(color: kLightBlack, fontSize: kTextSizeSMedium);
 
 const TextStyle kLTextStyle = TextStyle(
-  color: kBlackColor,
+  color: kLightBlack,
   fontSize: kTextSizeLargeMedium,
 );
 
 const TextStyle kXLTextStyle = TextStyle(
-  color: kBlackColor,
+  color: kLightBlack,
   fontSize: kTextSizeLargeMedium,
 );
 
 const TextStyle kDXLTextStyle = TextStyle(
-  color: kBlackColor,
-  fontSize: 20,
+  color: kLightBlack,
+  fontSize: kTXlsize,
 );
 
 // white normal size Text style
@@ -53,17 +53,13 @@ const TextStyle kBSTextStyle = TextStyle(
 const TextStyle kBMTextStyle = TextStyle(
     color: kBlackColor, fontSize: kTextSizeSmall, fontWeight: FontWeight.w500);
 const TextStyle kBLTextStyle = TextStyle(
-    color: kBlackColor,
-    fontSize: kTextSizeSMedium,
-    fontWeight: FontWeight.bold);
+    color: kBlackColor, fontSize: kTextSizeMedium, fontWeight: FontWeight.w500);
 const TextStyle kBXLTextStyle = TextStyle(
     color: kBlackColor,
     fontSize: kTextSizeLargeMedium,
-    fontWeight: FontWeight.bold);
+    fontWeight: FontWeight.w500);
 const TextStyle kDBXLTextStyle = TextStyle(
-    color: kBlackColor,
-    fontSize: kTextSizeLargeMedium,
-    fontWeight: FontWeight.bold);
+    color: kBlackColor, fontSize: kTXlsize, fontWeight: FontWeight.w500);
 
 // bold text
 const TextStyle kDataCellTextStyle =
@@ -79,20 +75,18 @@ const TextStyle kWSTextStyle = TextStyle(
 
 const TextStyle kWMTextStyle = TextStyle(
     color: kPrimaryColor,
-    fontSize: kTextSizeSmall,
+    fontSize: kTextSizeSMedium,
     fontWeight: FontWeight.w500);
 const TextStyle kWLTextStyle = TextStyle(
-    color: kPrimaryColor,
+    color: kWhiteColor,
     fontSize: kTextSizeSMedium,
     fontWeight: FontWeight.w500);
 const TextStyle kWXLTextStyle = TextStyle(
-    color: kPrimaryColor,
+    color: kWhiteColor,
     fontSize: kTextSizeLargeMedium,
     fontWeight: FontWeight.w500);
 const TextStyle kWBXLTextStyle = TextStyle(
-    color: kPrimaryColor,
-    fontSize: kTextSizeLargeMedium,
-    fontWeight: FontWeight.w500);
+    color: kPrimaryColor, fontSize: kTXlsize, fontWeight: FontWeight.w500);
 
 //label test
 const TextStyle kLabelTextStyle = TextStyle(
@@ -113,7 +107,7 @@ const double kTextSizeSmall = 12.0;
 const double kTextSizeSMedium = 14.0;
 const double kTextSizeMedium = 16.0;
 const double kTextSizeLargeMedium = 18.0;
-const double kTextSizeNormal = 20.0;
+const double kTXlsize = 20.0;
 const double kTextSizeLarge = 24.0;
 const double kTextSizeXLarge = 30.0;
 const double kTextSizeXXLarge = 35.0;
@@ -123,3 +117,9 @@ const double kDefaultPadding = 15.0;
 const double kwidth = 80;
 
 // display mediaquery size
+
+// Textformfield  textstyle
+const TextStyle kGreyTextStyle = TextStyle(
+  color: kDarkGreyColor,
+  fontSize: kTextSizeMedium,
+);

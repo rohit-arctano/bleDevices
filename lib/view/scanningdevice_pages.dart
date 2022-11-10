@@ -1,5 +1,5 @@
 import "package:bldevice_connection/main.dart";
-import "package:bldevice_connection/view/auth/wifi_setup.dart";
+import 'package:bldevice_connection/view/auth/wifi_credential/wifi_setup.dart';
 import "package:flutter/material.dart";
 import "package:flutter_blue/flutter_blue.dart";
 
@@ -99,11 +99,11 @@ class _ScannningDevicesState extends State<ScannningDevices> {
                                       ),
                                       ElevatedButton(
                                           onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const WifiSetUp()));
+                                            // Navigator.push(
+                                            //     context,
+                                            //     MaterialPageRoute(
+                                            //         builder: (context) =>
+                                            //             const WifiSetUp()));
                                           },
                                           child:
                                               Text("Next page to WIfi set uup"))

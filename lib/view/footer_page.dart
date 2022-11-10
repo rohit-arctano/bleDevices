@@ -1,8 +1,8 @@
 import 'package:bldevice_connection/constant/colors_const.dart';
-import 'package:bldevice_connection/view/auth/dashboard/homepage.dart';
-import 'package:bldevice_connection/view/auth/dashboard/places.dart';
-import 'package:bldevice_connection/view/auth/dashboard/profile_page.dart';
-import 'package:bldevice_connection/view/auth/dashboard/spaces.dart';
+import 'package:bldevice_connection/view/dashboard/homepage.dart';
+import 'package:bldevice_connection/view/dashboard/places.dart';
+import 'package:bldevice_connection/view/dashboard/profile_page.dart';
+import 'package:bldevice_connection/view/dashboard/spaces.dart';
 import 'package:flutter/material.dart';
 
 class Footer extends StatefulWidget {
@@ -18,7 +18,6 @@ class _FooterState extends State<Footer> {
   final tabs = [
     const HomePage(),
     const Spaces(),
-    const PlaceAdded(),
     const ProfilePage(),
   ];
 
@@ -42,23 +41,19 @@ class _FooterState extends State<Footer> {
       bottomNavigationBar: SizedBox(
         height: 60,
         child: BottomNavigationBar(
-          selectedLabelStyle: const TextStyle(fontSize: 10),
-          unselectedFontSize: 9,
+          selectedLabelStyle: const TextStyle(fontSize: 14),
+          unselectedFontSize: 13,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home, size: 18),
+              icon: Icon(Icons.home, size: 25),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.space_bar, size: 18),
-              label: 'Space',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings, size: 18),
+              icon: Icon(Icons.settings, size: 25),
               label: 'Setting',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person, size: 18),
+              icon: Icon(Icons.person, size: 25),
               label: 'Profile',
             ),
           ],

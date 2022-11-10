@@ -1,13 +1,15 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart' as flutter_blue;
 import 'dart:convert';
-
-import '../../model/wifisetup_model.dart';
+import '../../../model/wifisetup_model.dart';
+import '../../dashboard/spaces_add.dart/add_spaces.dart';
 
 class WifiSetUp extends StatefulWidget {
-  const WifiSetUp({super.key});
-
+  // ignore: prefer_const_constructors_in_immutables
+  const WifiSetUp({Key? key, required this.device}) : super(key: key);
+  final flutter_blue.BluetoothDevice device;
   @override
   State<WifiSetUp> createState() => _WifiSetUpState();
 }
@@ -17,12 +19,58 @@ class _WifiSetUpState extends State<WifiSetUp> {
   final TextEditingController ssidController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  late final flutter_blue.BluetoothDevice _device;
+
+  @override
+  void initState() {
+    super.initState();
+    _device = widget.device;
+    _device.requestMtu(512);
+
+    print("the devie is $_device");
+  }
+
   @override
   void dispose() {
     super.dispose();
     userAccountController.dispose();
     ssidController.dispose();
     passwordController.dispose();
+  }
+
+  Future login() async {
+    List<flutter_blue.BluetoothService> services =
+        await _device.discoverServices();
+    for (flutter_blue.BluetoothService service in services) {
+      for (flutter_blue.BluetoothCharacteristic characteristic
+          in service.characteristics) {
+        if (characteristic.properties.write) {
+          final data = await sendCommandToDevice();
+          await characteristic.write(data, withoutResponse: true);
+        }
+        if (characteristic.properties.read) {
+          List<int> message = await characteristic.read();
+          print("the success message is $message");
+
+          print(
+              "the success message is ${String.fromCharCodes(Uint8List.fromList(message))}");
+        }
+      }
+    }
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const AddDevice()));
+  }
+
+  sendCommandToDevice() async {
+    CustomDeviceCredentials cd = CustomDeviceCredentials(
+        user: userAccountController.text,
+        ssid: ssidController.text,
+        password: passwordController.text);
+    Map<String, dynamic> cdMap = cd.toJson();
+
+    String cdString = jsonEncode(cdMap);
+    final Uint8List convertedCommand = Uint8List.fromList(cdString.codeUnits);
+    return convertedCommand;
   }
 
   @override
@@ -107,7 +155,6 @@ class _WifiSetUpState extends State<WifiSetUp> {
                         contentPadding:
                             const EdgeInsets.fromLTRB(16, 10, 16, 10),
                         hintText: "Enter the Password",
-                        // hintStyle: const TextStyle(color: kGreyColor),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4),
                         ),
@@ -122,16 +169,9 @@ class _WifiSetUpState extends State<WifiSetUp> {
                         Expanded(
                             child: ElevatedButton(
                           onPressed: () {
-                            // login(device);
-                            // otpSend();
-
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => OtpScreen()));
-                            // toasty(context, "Sign in clicked");
+                            login();
                           },
-                          child: Text("Sign in "),
+                          child: const Text("Sign in "),
                         )),
                       ],
                     ),
@@ -143,40 +183,5 @@ class _WifiSetUpState extends State<WifiSetUp> {
         ),
       ),
     );
-  }
-
-  sendCommandToDevice() async {
-    // Map data = {
-    //   'newid': userAccountController.text,
-    //   "new password": ssidController.text,
-    //   'user iD': passwordController.text,
-    // };
-    CustomDeviceCredentials cd = CustomDeviceCredentials(
-        user: userAccountController.text,
-        ssid: ssidController.text,
-        password: passwordController.text);
-    Map<String, dynamic> cdMap = cd.toJson();
-    String cdString = jsonEncode(cdMap);
-    final Uint8List convertedCommand = Uint8List.fromList(cdString.codeUnits);
-    print(convertedCommand);
-    return convertedCommand;
-  }
-
-  Future login(flutter_blue.BluetoothDevice device) async {
-    await device.connect();
-    List<flutter_blue.BluetoothService> services =
-        await device.discoverServices();
-    for (flutter_blue.BluetoothService service in services) {
-      for (flutter_blue.BluetoothCharacteristic characteristic
-          in service.characteristics) {
-        if (characteristic.properties.write) {
-          final data = sendCommandToDevice();
-          print(data);
-        }
-      }
-    }
-
-    // Navigator.pushReplacement(
-    //     context, MaterialPageRoute(builder: (context) => FooterPage()));
   }
 }

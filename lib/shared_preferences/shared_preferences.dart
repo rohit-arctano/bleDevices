@@ -15,10 +15,10 @@ class SavePreferences {
   static const String _userdataKey = "userData";
 
 //set data into shared preferences like this
-  Future<bool> setUserData(String data) async {
+  Future<bool> setUserData({required String data}) async {
     final SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
-    return await prefs.setString("userData", data);
+    return await prefs.setString(_userdataKey, data);
   }
 
 //get value from shared preferences
@@ -26,7 +26,9 @@ class SavePreferences {
     final SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
     String? datatrue = prefs.getString(_userdataKey);
+
     Map<String, dynamic> jsonData = jsonDecode(datatrue ?? "");
+    // print(" the save Data $jsonData");
     FbUser userData = FbUser.fromJson(json: jsonData);
 
     // print("the user data is $userData");
@@ -37,7 +39,6 @@ class SavePreferences {
     final SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
     FbUser userData = FbUser.fromUser(user: user);
-    print(userData);
     Map<String, dynamic> userjson = userData.toJson();
     String userString = jsonEncode(userjson);
     bool datatrue = await prefs.setString(_userdataKey, userString);
@@ -48,13 +49,14 @@ class SavePreferences {
   Future<bool> logIn() async {
     final SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
-    return await prefs.setBool(_logInKey, true);
+    return prefs.setBool(_logInKey, true);
   }
 
   /// Returns true when log out successful
   Future<bool> logOut() async {
     final SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
     return prefs.setBool(_logInKey, false);
     // print(userData);
   }
@@ -63,5 +65,17 @@ class SavePreferences {
     final SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
     return prefs.getBool(_logInKey);
+  }
+
+  Future<bool?> setplace(String? placeName) async {
+    final SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    return prefs.setString("placeId", placeName ?? "");
+  }
+
+  Future<String?> getplace() async {
+    final SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    return prefs.getString("placeId");
   }
 }

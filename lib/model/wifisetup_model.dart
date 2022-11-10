@@ -4,8 +4,8 @@ class CustomDeviceCredentials {
   final String password;
 
   static const String _userKey = 'UserID';
-  static String _ssid = 'newid';
-  static String _password = "new password";
+  static const String _ssid = 'newid';
+  static const String _password = "newpassword";
 
   const CustomDeviceCredentials(
       {required this.user, required this.ssid, required this.password});

@@ -2,18 +2,21 @@ import 'package:bldevice_connection/model/fb_user.dart';
 import 'package:bldevice_connection/shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Fucntionality {
+class Functionality {
   late final CollectionReference<Map<String, dynamic>> fireStoreroomInstance;
   late final CollectionReference<Map<String, dynamic>> fireStoreDeviceInstance;
   late final Stream<QuerySnapshot<Map<String, dynamic>>> firebaseIntance;
   late final DocumentReference<Map<String, dynamic>> fireStorePlaceInstance;
   late final DocumentReference<Map<String, dynamic>> fireStorePlaceEditInstance;
   FbUser? userData;
+  Map<String, dynamic> switchesConfig = {};
+  FirebaseFirestore instance = FirebaseFirestore.instance;
 
-  late final DocumentSnapshot<Map<String, dynamic>> switchesData;
+  DocumentSnapshot<Map<String, dynamic>>? switchesData;
 
-  late final DocumentSnapshot<Map<String, dynamic>> deviceData;
-  late final DocumentSnapshot<Map<String, dynamic>> roomData;
+  DocumentSnapshot<Map<String, dynamic>>? deviceData;
+  DocumentSnapshot<Map<String, dynamic>>? roomData;
+  num roomCount = 0;
 // delete the place from our firebasefirestore
   Future deletePlace(String doc) async {
     userData = await SavePreferences().getUserData();
@@ -44,15 +47,8 @@ class Fucntionality {
     }
   }
 
-  Future editThePlace(String doc, String editdoc) async {
+  Future getThePlace(String doc) async {
     userData = await SavePreferences().getUserData();
-    final FirebaseFirestore instance = FirebaseFirestore.instance;
-
-    fireStorePlaceEditInstance = instance
-        .collection("users")
-        .doc(userData?.uid)
-        .collection("places")
-        .doc(editdoc);
 
     fireStorePlaceInstance = instance
         .collection("users")
@@ -71,31 +67,44 @@ class Fucntionality {
             await j.reference.collection("switches").get();
         for (QueryDocumentSnapshot<Map<String, dynamic>> k in switchList.docs) {
           switchesData = await k.reference.get();
+          switchesConfig = switchesData!.data()!;
         }
         deviceData = await j.reference.get();
+        print("device data is $deviceData");
       }
       roomData = await i.reference.get();
+      roomCount = getRoom.size;
+      // print("room data is $roomData");
 
-      //   if (r != null) {
-      //     for (var roomtype in roomData){
-      //       fireStorePlaceEditInstance
-      //           .collection("rooms")
-      //           .doc(roomtype)
-      //           .set({}, SetOptions(merge: false));
-      //   }
-      //   // }
     }
+  }
 
-//  for()   {fireStorePlaceEditInstance
-//               .collection("rooms")
-//               .doc(roomData.id)
-//               .set({}, SetOptions(merge: false));}
+  Future setTheRoom(String addDoc) async {
+    final CollectionReference<Map<String, dynamic>> roomInstance = instance
+        .collection("users")
+        .doc(userData?.uid)
+        .collection("places")
+        .doc(addDoc)
+        .collection("rooms");
+    for (int m = 0; m < roomCount; m++) {
+      await roomInstance.doc(roomData!.id).set({}, SetOptions(merge: false));
+      final deviceInstance =
+          roomInstance.doc(roomData!.id).collection("devices");
+      print("the roomdata   is $m: ${roomData!.id}");
+// print("the roomData is ${roomDa}")
 
-    //   for (var roomtype in fireStoreroomInstance){
-    //     fireStorePlaceEditInstance
-    //         .collection("rooms")
-    //         .doc(roomtype)
-    //         .set({}, SetOptions(merge: false));
-    // }
+      for (int n = 0; n < deviceData!.id.length; n++) {
+        await deviceInstance
+            .doc(deviceData!.id)
+            .set({}, SetOptions(merge: false));
+        final switchInstance =
+            deviceInstance.doc(deviceData!.id).collection("switches");
+        for (int k = 0; k < switchesData!.id.length; k++) {
+          await switchInstance
+              .doc(switchesData!.id)
+              .set(switchesConfig, SetOptions(merge: false));
+        }
+      }
+    }
   }
 }

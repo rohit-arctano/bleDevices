@@ -187,7 +187,7 @@ class _AddDeviceState extends State<AddDevice>
                 children: [
                   SlidableAction(
                     onPressed: (BuildContext ctx) async {
-                      Fucntionality().deletePlace(id.id);
+                      Functionality().deletePlace(id.id);
                       await fireStorePlaceInstance.doc(id.id).delete();
                     },
                     backgroundColor: kl2,
@@ -217,6 +217,9 @@ class _AddDeviceState extends State<AddDevice>
                               hintText: "Change the place Name",
                             ),
                           ));
+                      await setConfi(newplaceName);
+                      await Functionality().getThePlace(id.id);
+                      await Functionality().setTheRoom(newplaceName);
                       // DocumentSnapshot<Map<String, dynamic>> data =
                       //     await fireStorePlaceInstance.
                       //     doc(snapshot.data!.docs[index].id)

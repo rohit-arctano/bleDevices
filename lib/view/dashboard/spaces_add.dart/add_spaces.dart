@@ -1,4 +1,5 @@
 import 'package:bldevice_connection/model/fb_user.dart';
+import 'package:bldevice_connection/utilities/delete_update.dart';
 import 'package:bldevice_connection/view/dashboard/spaces_add.dart/room_list.dart';
 import 'package:bldevice_connection/constant/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,6 +29,7 @@ class _AddDeviceState extends State<AddDevice>
   FbUser? user;
   final formKey = GlobalKey<FormState>();
   late final CollectionReference<Map<String, dynamic>> fireStorePlaceInstance;
+  late final CollectionReference<Map<String, dynamic>> fireStoreroomInstance;
   late final Stream<QuerySnapshot<Map<String, dynamic>>> firebaseIntance;
 
   @override
@@ -36,21 +38,27 @@ class _AddDeviceState extends State<AddDevice>
     super.dispose();
   }
 
+  late WriteBatch batch;
   FbUser? userData;
   Future getData() async {
     userData = await SavePreferences().getUserData();
-    fireStorePlaceInstance = FirebaseFirestore.instance
+    final FirebaseFirestore instance = FirebaseFirestore.instance;
+    batch = instance.batch();
+    fireStorePlaceInstance =
+        instance.collection("users").doc(userData?.uid).collection("places");
+
+    fireStoreroomInstance = instance
         .collection("users")
         .doc(userData?.uid)
         .collection("places")
         .doc("flat")
         .collection("rooms");
+
     firebaseIntance = FirebaseFirestore.instance
         .collection("users")
         .doc(userData?.uid)
         .collection("places")
         .snapshots();
-
     return userData;
   }
 
@@ -179,14 +187,8 @@ class _AddDeviceState extends State<AddDevice>
                 children: [
                   SlidableAction(
                     onPressed: (BuildContext ctx) async {
-                      QuerySnapshot<Map<String, dynamic>> res =
-                          await fireStorePlaceInstance.get();
-                      for (QueryDocumentSnapshot<Map<String, dynamic>> i
-                          in res.docs) {
-                        await i.reference.delete();
-                      }
-                      // await fireStorePlaceInstance.doc(id.id).delete();
-                      // Navigator.pop(context);
+                      Fucntionality().deletePlace(id.id);
+                      await fireStorePlaceInstance.doc(id.id).delete();
                     },
                     backgroundColor: kl2,
                     foregroundColor: Colors.white,

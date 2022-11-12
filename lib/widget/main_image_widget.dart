@@ -4,6 +4,8 @@ import 'package:bldevice_connection/widget/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../utilities/room_update_delete.dart';
+
 class MainImageWidget extends StatefulWidget {
   CollectionReference<Map<String, dynamic>>? fireinstance;
   QuerySnapshot<Object?>? snapshotData;
@@ -80,14 +82,19 @@ class _MainImageWidgetState extends State<MainImageWidget> {
                               borderRadius: BorderRadius.circular(20),
                               // ignore: unnecessary_null_comparison
 
-                              child: Image.network(
-                                snp.data!.containsKey(roomList.id)
-                                    ? snp.data![roomList.id]["url"]
-                                    : snp.data!["other"]["url"],
-                                fit: BoxFit.fill,
-                                height: widget.imageHeight,
-                                width: widget.imageWidth,
-                              ),
+                              child: snp.data!.containsKey(roomList.id)
+                                  ? Image.network(
+                                      snp.data![roomList.id]["url"],
+                                      fit: BoxFit.fill,
+                                      height: widget.imageHeight,
+                                      width: widget.imageWidth,
+                                    )
+                                  : Image.network(
+                                      snp.data!["other"]["url"],
+                                      fit: BoxFit.contain,
+                                      height: 600,
+                                      width: 200,
+                                    ),
                             ),
                             Container(
                               height: 60,
@@ -102,59 +109,73 @@ class _MainImageWidgetState extends State<MainImageWidget> {
                                 child: Column(children: [
                                   Row(
                                     children: [
-                                      Text(
-                                        roomList.id,
-                                        style: kWhiteLrgTextStyle,
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: Text(
+                                          roomList.id,
+                                          style: kWhiteLrgTextStyle,
+                                        ),
                                       ),
                                       const Spacer(),
-                                      Container(
-                                        height: 40,
-                                        width: 40,
-                                        decoration: BoxDecoration(
-                                          color: buttonSelected
-                                              ? kWhiteColor.withOpacity(0.5)
-                                              : Colors.transparent,
-                                          borderRadius:
-                                              BorderRadius.circular(32),
-                                          border: Border.all(
-                                            width: 2,
-                                            color: Colors.white,
-                                            style: BorderStyle.solid,
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: Container(
+                                          height: 40,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                            color: buttonSelected
+                                                ? kWhiteColor.withOpacity(0.5)
+                                                : Colors.transparent,
+                                            borderRadius:
+                                                BorderRadius.circular(32),
+                                            border: Border.all(
+                                              width: 2,
+                                              color: Colors.white,
+                                              style: BorderStyle.solid,
+                                            ),
                                           ),
+                                          child: IconButton(
+                                              iconSize: 20,
+                                              onPressed: () async {
+                                                String newplaceName =
+                                                    await Navigator.push(
+                                                        context,
+                                                        PageRouteBuilder(
+                                                          opaque: false,
+                                                          pageBuilder: (context,
+                                                                  __, _) =>
+                                                              PopUpTemplate(
+                                                            hintText:
+                                                                "Change the place Name",
+                                                          ),
+                                                        ));
+                                                widget.fireinstance!
+                                                    .doc(newplaceName)
+                                                    .set(
+                                                        {},
+                                                        SetOptions(
+                                                            merge: false));
+
+                                                await RoomFunctionality()
+                                                    .getTheRoom(
+                                                        widget.placeName,
+                                                        roomList.id,
+                                                        newplaceName);
+                                                await RoomFunctionality()
+                                                    .deleteRoom(
+                                                        widget.placeName,
+                                                        roomList.id);
+                                                await widget.fireinstance!
+                                                    .doc(roomList.id)
+                                                    .delete();
+                                              },
+                                              icon: const Icon(
+                                                Icons.edit,
+                                                color: kWhiteColor,
+                                              )),
                                         ),
-                                        child: IconButton(
-                                            iconSize: 20,
-                                            onPressed: () async {
-                                              // String newroomName = await Navigator.push(
-                                              //     context,
-                                              //     PageRouteBuilder(
-                                              //       opaque: false,
-                                              //       pageBuilder: (context, __, _) =>
-                                              //           PopUpTemplate(
-                                              //         hintText: "Change the Room Name",
-                                              //       ),
-                                              //     ));
-                                              // DocumentSnapshot<Map<String, dynamic>>
-                                              //     data = await widget.fireinstance!
-                                              //         .doc(roomList.id)
-                                              //         .get();
-
-                                              // await widget.fireinstance!
-                                              //     .doc(newroomName)
-                                              //     .set(data.data() ?? {});
-                                              // await widget.fireinstance!
-                                              //     .doc(roomList.id)
-                                              //     .delete();
-
-                                              // await getData();
-                                              // setState(() {
-                                              //   buttonSelected = !buttonSelected;
-                                              // });
-                                            },
-                                            icon: const Icon(
-                                              Icons.edit,
-                                              color: kWhiteColor,
-                                            )),
                                       ),
                                     ],
                                   ),
@@ -165,14 +186,7 @@ class _MainImageWidgetState extends State<MainImageWidget> {
                         ),
                       ),
                     );
-                  }
-
-                  // onPageChanged: (index) {
-                  //   setState(() {
-                  //     position = index;
-                  //   });
-                  // },
-                  ),
+                  }),
             );
           } else {
             return const Loader();

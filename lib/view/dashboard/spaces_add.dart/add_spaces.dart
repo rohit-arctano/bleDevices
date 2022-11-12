@@ -1,5 +1,5 @@
 import 'package:bldevice_connection/model/fb_user.dart';
-import 'package:bldevice_connection/utilities/delete_update.dart';
+import 'package:bldevice_connection/utilities/place_delete_update.dart';
 import 'package:bldevice_connection/view/dashboard/spaces_add.dart/room_list.dart';
 import 'package:bldevice_connection/constant/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -187,7 +187,7 @@ class _AddDeviceState extends State<AddDevice>
                 children: [
                   SlidableAction(
                     onPressed: (BuildContext ctx) async {
-                      Functionality().deletePlace(id.id);
+                      PlaceFunctionality().deletePlace(id.id);
                       await fireStorePlaceInstance.doc(id.id).delete();
                     },
                     backgroundColor: kl2,
@@ -218,8 +218,11 @@ class _AddDeviceState extends State<AddDevice>
                             ),
                           ));
                       await setConfi(newplaceName);
-                      await Functionality().getThePlace(id.id);
-                      await Functionality().setTheRoom(newplaceName);
+                      await PlaceFunctionality()
+                          .getThePlace(id.id, newplaceName);
+                      PlaceFunctionality().deletePlace(id.id);
+                      await fireStorePlaceInstance.doc(id.id).delete();
+
                       // DocumentSnapshot<Map<String, dynamic>> data =
                       //     await fireStorePlaceInstance.
                       //     doc(snapshot.data!.docs[index].id)

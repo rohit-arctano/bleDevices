@@ -143,7 +143,7 @@ class _HomeSwitchState extends State<HomeSwitch> {
                                                         children: [
                                                           const Text(
                                                             "Switch Name",
-                                                            style: kXLTextStyle,
+                                                            style: kLTextStyle,
                                                           ),
                                                           const Spacer(),
                                                           documentSnapshot

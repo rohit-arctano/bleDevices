@@ -47,8 +47,8 @@ class _CustomSwitchState extends State<CustomSwitch>
                 : widget.onChanged(false);
           },
           child: Container(
-            width: 65.0,
-            height: 35.0,
+            width: 50.0,
+            height: 30.0,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24.0),
               color: _circleAnimation!.value == Alignment.centerLeft
@@ -57,7 +57,7 @@ class _CustomSwitchState extends State<CustomSwitch>
             ),
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 3.0, bottom: 3.0, right: 3.0, left: 3.0),
+                  top: 2.0, bottom: 2.0, right: 2.0, left: 2.0),
               child: Container(
                 alignment:
                     widget.value ? Alignment.centerRight : Alignment.centerLeft,

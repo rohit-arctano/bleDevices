@@ -1,4 +1,5 @@
 import 'package:bldevice_connection/constant/textstyle_constant.dart';
+import 'package:bldevice_connection/constant/widget.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -25,35 +26,53 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-      ),
-      // margin: const EdgeInsets.all(5),
-      child: TextFormField(
-        enabled: enabled,
-        obscureText: isObscure,
-        controller: controller,
-        cursorColor: Theme.of(context).primaryColor,
-        validator: (String? value) {
-          if (onValidation != null) {
-            return onValidation!(value);
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-            hintStyle: kGreyTextStyle,
-            suffixIcon: suffixAdd,
-            label: labelText,
-            border: InputBorder.none,
-            prefixIcon: Icon(
-              data,
-              color: Colors.cyan,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: 55,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          // color: kWhiteColor,
+          color: Colors.white,
+
+          boxShadow: [
+            BoxShadow(
+              color: kDarkGreyColor.withOpacity(0.4),
+              spreadRadius: 2,
+              blurRadius: 2,
+              offset: const Offset(0, 0), // changes position of shadow
             ),
-            focusColor: Theme.of(context).primaryColor,
-            hintText: hintText),
+          ],
+          border: Border.all(
+            color: kLightGreyColor,
+            width: 1,
+          ),
+        ),
+        // margin: const EdgeInsets.all(5),
+        child: TextFormField(
+          enabled: enabled,
+          obscureText: isObscure,
+          controller: controller,
+          cursorColor: Theme.of(context).primaryColor,
+          validator: (String? value) {
+            if (onValidation != null) {
+              return onValidation!(value);
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+              hintStyle: kGreyTextStyle,
+              suffixIcon: suffixAdd,
+              label: labelText,
+              border: InputBorder.none,
+              prefixIcon: Icon(
+                data,
+                color: Colors.cyan,
+              ),
+              focusColor: Theme.of(context).primaryColor,
+              hintText: hintText),
+        ),
       ),
     );
   }

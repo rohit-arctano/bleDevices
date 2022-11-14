@@ -131,33 +131,36 @@ class _AddDeviceState extends State<AddDevice>
                             isObscure: false,
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomButton(
-                              colors: kPrimaryColor,
-                              onTap: () {
-                                if (formKey.currentState!.validate()) {
-                                  setConfi(placeNameCntrl.text.toLowerCase());
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text('Place is Added')));
-                                }
-                              },
-                              childWidget: Row(
-                                children: const [
-                                  Text(
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Center(
+                          child: CustomButton(
+                            colors: kPrimaryColor,
+                            onTap: () {
+                              if (formKey.currentState!.validate()) {
+                                setConfi(placeNameCntrl.text.toLowerCase());
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Place is Added')));
+                              }
+                            },
+                            childWidget: Row(
+                              children: const [
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
                                     "Add Place",
                                     style: kWLTextStyle,
                                   ),
-                                  Icon(
-                                    Icons.add,
-                                    color: kWhiteColor,
-                                  ),
-                                ],
-                              ),
+                                ),
+                                Icon(
+                                  Icons.add,
+                                  color: kWhiteColor,
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
@@ -222,21 +225,6 @@ class _AddDeviceState extends State<AddDevice>
                           .getThePlace(id.id, newplaceName);
                       PlaceFunctionality().deletePlace(id.id);
                       await fireStorePlaceInstance.doc(id.id).delete();
-
-                      // DocumentSnapshot<Map<String, dynamic>> data =
-                      //     await fireStorePlaceInstance.
-                      //     doc(snapshot.data!.docs[index].id)
-                      //         .
-
-                      // await fireStorePlaceInstance
-                      //     .doc(newplaceName)
-                      //     .set(data.data() ?? {});
-                      // print("the setdata is ${data.data() ?? {}}");
-
-                      // await fireStorePlaceInstance.doc(id.id).delete();
-
-                      // await fireStorePlaceInstance.doc(id.id).delete();
-                      // Navigator.pop(context);
                     },
                     backgroundColor: kPrimaryColor,
                     foregroundColor: Colors.white,
@@ -272,9 +260,4 @@ class _AddDeviceState extends State<AddDevice>
           );
         });
   }
-
-  Future<void> deletePlaces(
-      QueryDocumentSnapshot<Object?> documentSnapshot) async {}
-
-  editplaceName() {}
 }

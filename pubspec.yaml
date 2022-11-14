@@ -45,6 +45,7 @@ dependencies:
   flutter_blue: ^0.8.0
   app_settings: ^4.1.8
   flutter_slidable: ^2.0.0
+  url_launcher: ^6.1.6
   
 
 dev_dependencies:
@@ -79,6 +80,13 @@ flutter:
     - assets/images/room5.jpg 
     - assets/images/splashScreen.png
     - assets/images/arctanoLogoFull.png
+    - assets/bag.png
+    - assets/globe.PNG
+    - assets/handshake.png
+    - assets/smile.png
+    - assets/facebook.png
+    - assets/insta.png
+    - assets/link.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

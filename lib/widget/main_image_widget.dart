@@ -78,32 +78,36 @@ class _MainImageWidgetState extends State<MainImageWidget> {
                         child: Stack(
                           alignment: Alignment.bottomCenter,
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              // ignore: unnecessary_null_comparison
-
-                              child: snp.data!.containsKey(roomList.id)
-                                  ? Image.network(
-                                      snp.data![roomList.id]["url"],
-                                      fit: BoxFit.fill,
-                                      height: widget.imageHeight,
-                                      width: widget.imageWidth,
-                                    )
-                                  : Image.network(
-                                      snp.data!["other"]["url"],
-                                      fit: BoxFit.contain,
-                                      height: 600,
-                                      width: 200,
-                                    ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(28),
+                                  border:
+                                      Border.all(width: 1, color: kGreyColor)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: snp.data!.containsKey(roomList.id)
+                                    ? Image.network(
+                                        snp.data![roomList.id]["url"],
+                                        fit: BoxFit.fill,
+                                        height: widget.imageHeight,
+                                        width: widget.imageWidth,
+                                      )
+                                    : Image.network(
+                                        snp.data!["other"]["url"],
+                                        fit: BoxFit.contain,
+                                        height: 600,
+                                        width: widget.textcontainerWidth,
+                                      ),
+                              ),
                             ),
                             Container(
                               height: 60,
                               decoration: BoxDecoration(
                                   color: kBlackColor.withOpacity(0.5),
                                   borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(32),
-                                      bottomRight: Radius.circular(32))),
-                              width: widget.textcontainerWidth,
+                                      bottomLeft: Radius.circular(25),
+                                      bottomRight: Radius.circular(25))),
+                              width: widget.textcontainerWidth!,
                               child: Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: Column(children: [
@@ -113,7 +117,7 @@ class _MainImageWidgetState extends State<MainImageWidget> {
                                         padding:
                                             const EdgeInsets.only(left: 8.0),
                                         child: Text(
-                                          roomList.id,
+                                          roomList.id.toUpperCase(),
                                           style: kWhiteLrgTextStyle,
                                         ),
                                       ),

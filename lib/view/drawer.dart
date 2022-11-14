@@ -1,7 +1,8 @@
-import 'package:bldevice_connection/constant/textstyle_constant.dart';
 import 'package:bldevice_connection/constant/widget.dart';
 import 'package:bldevice_connection/model/fb_user.dart';
 import 'package:bldevice_connection/shared_preferences/shared_preferences.dart';
+import 'dashboard/drawer_item/aboutus_page.dart';
+import 'dashboard/drawer_item/contactus_page.dart';
 import 'widget_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -50,33 +51,49 @@ class _DrawerScreenState extends State<DrawerScreen> {
           height: 60,
         ),
         const DivideLine(),
-        const ListTile(
-          leading: Icon(Icons.home),
-          title: Text(
+        ListTile(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => Footer(currentTab: 0)));
+          },
+          leading: const Icon(Icons.home),
+          title: const Text(
             "Home",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ),
         const DivideLine(),
-        const ListTile(
-          leading: Icon(Icons.comment),
-          title: Text(
+        ListTile(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const AboutUs()));
+          },
+          leading: const Icon(Icons.comment),
+          title: const Text(
             "About us",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ),
         const DivideLine(),
-        const ListTile(
-          leading: Icon(Icons.phone),
-          title: Text(
+        ListTile(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const ContactUs()));
+          },
+          leading: const Icon(Icons.phone),
+          title: const Text(
             "Contact us",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ),
         const DivideLine(),
-        const ListTile(
-          leading: Icon(Icons.share),
-          title: Text(
+        ListTile(
+          onTap: () {
+            // Share.share(
+            //     'https://play.google.com/store/apps/details?id=com.quickplayers.quickplayers');
+          },
+          leading: const Icon(Icons.share),
+          title: const Text(
             "Share the App",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           ),
@@ -96,15 +113,17 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 await SavePreferences().logOut();
                 await FirebaseAuth.instance.signOut();
 
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()));
               },
               color: Colors.black,
             ),
           ),
           title: const Text("LogOut"),
         ),
-        Spacer(),
+        const Spacer(),
         Container(
           decoration: BoxDecoration(
               shape: BoxShape.circle, color: kWhiteColor.withOpacity(0.2)),
@@ -114,10 +133,10 @@ class _DrawerScreenState extends State<DrawerScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  Text("Arctano Switch", style: kLTextStyle),
+                  Text("Arctano Switch", style: kMediumTextStyle),
                 ],
               ),
-              const Text("v 1.0", style: kLTextStyle)
+              const Text("v 1.0", style: kMediumTextStyle)
             ],
           ),
         ),

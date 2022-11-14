@@ -1,8 +1,6 @@
 import 'package:bldevice_connection/constant/widget.dart';
 import 'package:bldevice_connection/repository/firebasedevice_add.dart';
 import 'package:bldevice_connection/widget/mainSwitch.dart';
-import 'package:bldevice_connection/widget/switch_buttton.dart';
-import 'package:bldevice_connection/widget/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -54,8 +52,6 @@ class _HomeSwitchState extends State<HomeSwitch> {
         switchName: switchNameCntrl.text,
         switchStatus: false,
         switchEnable: false);
-
-    print("the json data is $json");
     await Firestore.addSwitch(switchNameCntrl.text, json.toJson());
     switchNameCntrl.clear();
   }

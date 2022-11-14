@@ -1,4 +1,3 @@
-import 'package:bldevice_connection/constant/widget.dart';
 import 'package:bldevice_connection/view/drawer.dart';
 import 'package:bldevice_connection/widget/main_image_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -38,7 +37,6 @@ class _HomePageState extends State<HomePage> {
           .doc(placeName)
           .collection("rooms");
       firebaseIntance = roomFirebaseInstance?.snapshots();
-      print("the place name is $placeName");
     }
     return userData;
   }
@@ -46,22 +44,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // getAdddedPlaceList();
-    fetchData();
   }
 
   List<String> banners = [];
   var scaffoldKey = GlobalKey<ScaffoldState>();
-
-  fetchData() async {
-    List<String> banner = [];
-    for (var i = 1; i < 5; i++) {
-      banner.add("assets/images/room$i.jpg");
-    }
-    banners.clear();
-    banners.addAll(banner);
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,28 +60,9 @@ class _HomePageState extends State<HomePage> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          child: const Icon(Icons.menu, color: Colors.grey),
-                          onTap: () => scaffoldKey.currentState?.openDrawer(),
-                        ),
-                        const Text(
-                          "Hello! \nGood morning Caretto",
-                          style: kBXLTextStyle,
-                        ),
-                        CircleAvatar(
-                          radius: 35.0,
-                          backgroundColor: Colors.transparent,
-                          child: Image.asset(
-                            'assets/images/arctanoLogoFull.png',
-                          ),
-                        )
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [],
                   ),
                   PlaceSelectWidget(
                     placeId: placeName ?? "",

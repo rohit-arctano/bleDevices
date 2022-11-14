@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 )
               : _userSignedIn!
-                  ? const Footer()
+                  ? Footer()
                   : const LoginScreen(),
         ),
       ),

@@ -71,8 +71,6 @@ class _SpacesState extends State<Spaces> {
 
   @override
   Widget build(BuildContext ctx) {
-    double deviceHeight = MediaQuery.of(ctx).size.height;
-    double deviceWidth = MediaQuery.of(ctx).size.width;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -88,8 +86,13 @@ class _SpacesState extends State<Spaces> {
                 child: Column(
                   children: [
                     const TabBar(
-                      labelColor: Colors.green,
-                      unselectedLabelColor: Colors.black,
+                      indicator: BoxDecoration(
+                        color: kDarkGreyColor,
+                      ),
+                      physics: ScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics()),
+                      labelColor: kWhiteColor,
+                      unselectedLabelColor: kBlackColor,
                       tabs: [
                         Tab(text: 'Places'),
                         Tab(text: 'Devices'),
@@ -97,7 +100,7 @@ class _SpacesState extends State<Spaces> {
                     ),
                     SizedBox(
                         height: MediaQuery.of(context).size.height *
-                            0.8, //height of TabBarView
+                            0.80, //height of TabBarView
 
                         child: const TabBarView(children: <Widget>[
                           AddDevice(),

@@ -38,7 +38,8 @@ class _BluetoothOffScreenState extends State<BluetoothOffScreen> {
             ),
             Text.rich(
               TextSpan(
-                text: 'Bluetooth is ${widget.state != null ? widget.state!.name.toUpperCase() : 'not available'}.',
+                text:
+                    'Bluetooth is ${widget.state != null ? widget.state!.name.toUpperCase() : 'not available'}.',
                 style: const TextStyle(
                   fontSize: 24,
                 ),

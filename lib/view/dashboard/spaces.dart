@@ -100,11 +100,10 @@ class _SpacesState extends State<Spaces> {
                     ),
                     SizedBox(
                         height: MediaQuery.of(context).size.height *
-                            0.80, //height of TabBarView
+                            0.81, //height of TabBarView
 
                         child: const TabBarView(children: <Widget>[
                           AddDevice(),
-
                           FindDevicesScreen()
                           //   );
                           // }),

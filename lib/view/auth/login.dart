@@ -101,95 +101,163 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  bool passwordVisible = false;
+  @override
+  void initState() {
+    passwordVisible = false;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    double deviceHeight = MediaQuery.of(context).size.height;
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       key: scaffoldKey,
-      body: ListView(
-        children: [
-          const SizedBox(
-            height: 250,
-          ),
-          Form(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomTextField(
-                  data: Icons.person,
-                  controller: _emailController,
-                  hintText: "Enter the email",
-                  isObscure: false,
-                  enabled: true,
-                  onValidation: (String? value) {
-                    if (value == null) {
-                      return 'Required';
-                    } else if (value == '') {
-                      return 'Required';
-                    } else if (!RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(value)) {
-                      return 'Invalid email';
-                    }
-                    return null;
-                  },
-                ),
-                CustomTextField(
-                  data: Icons.lock,
-                  controller: _passwordController,
-                  hintText: "Enter the password",
-                  isObscure: true,
-                  enabled: true,
-                  onValidation: (String? value) {
-                    if (value == null) {
-                      return 'Required';
-                    } else if (value == '') {
-                      return 'Required';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    await _signIn();
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const Footer()));
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: kPrimaryColor,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10)),
-                  child: const Text("Log in"),
-                ),
-                const SizedBox(
-                  height: 150,
-                ),
-                Center(
-                  child: Text.rich(TextSpan(
-                      text: "Don't have an account?",
-                      style: const TextStyle(color: kPrimaryColor),
+                Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        TextSpan(
-                          text: "SignUp",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Register()));
-                            },
+                        Image.asset(
+                          logoImage,
+                          height: deviceHeight * 0.2,
+                          width: deviceWidth * 0.68,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Wrap(
+                            children: const [
+                              Icon(
+                                Icons.home,
+                                size: 30,
+                                color: kPrimaryColor,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  "Smart Home",
+                                  style: kPLTextStyle,
+                                ),
+                              ),
+                            ],
+                          ),
                         )
-                      ])),
-                )
+                      ],
+                    ),
+                    SizedBox(
+                      height: deviceHeight * 0.1,
+                    ),
+                    CustomTextField(
+                      data: Icons.person,
+                      controller: _emailController,
+                      hintText: "Enter the email",
+                      isObscure: false,
+                      enabled: true,
+                      onValidation: (String? value) {
+                        if (value == null) {
+                          return 'Required';
+                        } else if (value == '') {
+                          return 'Required';
+                        } else if (!RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(value)) {
+                          return 'Invalid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: deviceHeight * 0.017,
+                    ),
+                    CustomTextField(
+                      suffixAdd: IconButton(
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            passwordVisible = !passwordVisible;
+                          });
+                        },
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          passwordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                      ),
+                      data: Icons.lock,
+                      controller: _passwordController,
+                      hintText: "Enter the password",
+                      isObscure: passwordVisible,
+                      enabled: true,
+                      onValidation: (String? value) {
+                        if (value == null) {
+                          return 'Required';
+                        } else if (value == '') {
+                          return 'Required';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: deviceHeight * 0.017,
+                    ),
+                    Container(
+                      height: 50,
+                      child: CustomButton(
+                        onTap: () async {
+                          await _signIn();
+
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => const Footer()));
+                        },
+                        colors: kPrimaryColor,
+                        childWidget: const Text(
+                          "Log in",
+                          style: kWhiteLrgTextStyle,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: deviceHeight * 0.017,
+                    ),
+                    Text.rich(TextSpan(
+                        text: "Don't have an account?",
+                        style: const TextStyle(color: kPrimaryColor),
+                        children: [
+                          TextSpan(
+                            text: "SignUp",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Register()));
+                              },
+                          )
+                        ]))
+                  ],
+                ),
               ],
             ),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }

@@ -16,14 +16,15 @@ class CustomButton extends StatelessWidget {
       child: RawMaterialButton(
         fillColor: colors,
         onPressed: onTap,
+        splashColor: Colors.black12,
+        elevation: 2.0,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32.0),
             side: const BorderSide(width: 2, color: kL1)),
-        child: SizedBox(
-          child: Padding(
-              padding: const EdgeInsets.fromLTRB(6, 8, 6, 8),
-              child: childWidget),
-        ),
+        child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 40.0, vertical: 18.0),
+            child: childWidget),
       ),
     );
   }

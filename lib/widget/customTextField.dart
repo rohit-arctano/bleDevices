@@ -1,19 +1,23 @@
-import 'package:bldevice_connection/constant/textstyle_constant.dart';
 import 'package:bldevice_connection/constant/widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    Key? key,
-    required this.controller,
-    required this.data,
-    required this.hintText,
-    this.enabled = true,
-    this.isObscure = true,
-    this.labelText,
-    this.suffixAdd,
-    this.onValidation,
-  }) : super(key: key);
+  const CustomTextField(
+      {Key? key,
+      required this.controller,
+      required this.data,
+      required this.hintText,
+      this.enabled = true,
+      this.isObscure = true,
+      this.labelText,
+      this.suffixAdd,
+      this.onValidation,
+      this.mobileNum,
+      this.keyType,
+      this.inputFormatters,
+      this.onTextChanged})
+      : super(key: key);
 
   final TextEditingController? controller;
   final IconData? data;
@@ -22,7 +26,11 @@ class CustomTextField extends StatelessWidget {
   final bool isObscure;
   final bool enabled;
   final Widget? suffixAdd;
+  final TextInputType? keyType;
+  final int? mobileNum;
   final String? Function(String?)? onValidation;
+  final List<TextInputFormatter>? inputFormatters;
+  final Function(String)? onTextChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +43,6 @@ class CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           // color: kWhiteColor,
           color: Colors.white,
-
           boxShadow: [
             BoxShadow(
               color: kDarkGreyColor.withOpacity(0.4),
@@ -52,6 +59,7 @@ class CustomTextField extends StatelessWidget {
         // margin: const EdgeInsets.all(5),
         child: TextFormField(
           enabled: enabled,
+          inputFormatters: inputFormatters,
           obscureText: isObscure,
           controller: controller,
           cursorColor: Theme.of(context).primaryColor,
@@ -61,6 +69,7 @@ class CustomTextField extends StatelessWidget {
             }
             return null;
           },
+          onChanged: onTextChanged,
           decoration: InputDecoration(
               hintStyle: kGreyTextStyle,
               suffixIcon: suffixAdd,

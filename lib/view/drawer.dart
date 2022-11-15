@@ -41,7 +41,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 currentAccountPicture: CircleAvatar(
                   radius: 70,
                   backgroundColor: kl2,
-                  child: Image.asset('assets/images/arctanoLogoFull.png',
+                  child: Image.asset(logoImage,
                       width: 60, height: 45, fit: BoxFit.fill),
                 ),
                 // currentAccountPictureSize: const Size.square(30.0),

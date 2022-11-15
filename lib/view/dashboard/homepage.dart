@@ -60,9 +60,8 @@ class _HomePageState extends State<HomePage> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [],
+                  SizedBox(
+                    height: deviceHeight * 0.02,
                   ),
                   PlaceSelectWidget(
                     placeId: placeName ?? "",
@@ -71,8 +70,8 @@ class _HomePageState extends State<HomePage> {
                       setState(() {});
                     },
                   ),
-                  const SizedBox(
-                    height: 15,
+                  SizedBox(
+                    height: deviceHeight * 0.02,
                   ),
                   FutureBuilder(
                       future: getData(),
@@ -100,10 +99,10 @@ class _HomePageState extends State<HomePage> {
                                         fireinstance: roomFirebaseInstance,
                                         placeName: placeName ?? "",
                                         snapshotData: snapshot.data,
-                                        imageHeight: deviceHeight * 0.6,
-                                        imageWidth: deviceWidth * 0.7,
-                                        mainboxHeight: deviceHeight * 0.60,
-                                        textcontainerWidth: deviceWidth * 0.7,
+                                        imageHeight: deviceHeight * 0.75,
+                                        imageWidth: deviceWidth * 0.6,
+                                        mainboxHeight: deviceHeight * 0.75,
+                                        textcontainerWidth: deviceWidth * 0.6,
                                       );
                                     } else {
                                       return Text(
@@ -114,28 +113,6 @@ class _HomePageState extends State<HomePage> {
                                   }),
                             ],
                           );
-                          // } else {
-                          //   return Container(
-                          //     height: deviceHeight * 0.5,
-                          //     width: deviceWidth * 0.6,
-                          //     decoration: BoxDecoration(
-                          //         color: kLightBlue,
-                          //         borderRadius: BorderRadius.circular(20)),
-                          //     child: Column(
-                          //       mainAxisAlignment: MainAxisAlignment.center,
-                          //       children: const [
-                          //         Text(
-                          //           "Add Device",
-                          //           style: kBXLTextStyle,
-                          //         ),
-                          //         Icon(
-                          //           Icons.add,
-                          //           size: 50,
-                          //         )
-                          //       ],
-                          //     ),
-                          //   );
-                          // }
                         } else {
                           return const CircularProgressIndicator();
                         }

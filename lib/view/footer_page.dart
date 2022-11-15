@@ -74,13 +74,13 @@ class _FooterState extends State<Footer> {
                     radius: 35.0,
                     backgroundColor: Colors.transparent,
                     child: Image.asset(
-                      'assets/images/arctanoLogoFull.png',
+                      logoImage,
                     ),
                   )
                 ],
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.78,
+                height: MediaQuery.of(context).size.height * 0.85,
                 child: Stack(
                   children: [
                     tabs[_selectedIndex],

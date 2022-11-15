@@ -9,17 +9,14 @@ const TextStyle kSmallTextStyle =
     TextStyle(color: kLightBlack, fontSize: kTextSizeSmall);
 const TextStyle kMediumTextStyle =
     TextStyle(color: kLightBlack, fontSize: kTextSizeSMedium);
-
 const TextStyle kLTextStyle = TextStyle(
   color: kLightBlack,
   fontSize: kTextSizeLargeMedium,
 );
-
 const TextStyle kXLTextStyle = TextStyle(
   color: kLightBlack,
   fontSize: kTextSizeLargeMedium,
 );
-
 const TextStyle kDXLTextStyle = TextStyle(
   color: kLightBlack,
   fontSize: kTXlsize,
@@ -122,4 +119,23 @@ const double kwidth = 80;
 const TextStyle kGreyTextStyle = TextStyle(
   color: kDarkGreyColor,
   fontSize: kTextSizeMedium,
+);
+
+const TextStyle kPXSmallTextStyle =
+    TextStyle(color: kPrimaryColor, fontSize: kTextSiseXSmallText);
+const TextStyle kPSmallTextStyle =
+    TextStyle(color: kPrimaryColor, fontSize: kTextSizeSmall);
+const TextStyle kPMediumTextStyle =
+    TextStyle(color: kPrimaryColor, fontSize: kTextSizeSMedium);
+const TextStyle kPLTextStyle = TextStyle(
+  color: kPrimaryColor,
+  fontSize: kTextSizeLargeMedium,
+);
+const TextStyle kPXLTextStyle = TextStyle(
+  color: kPrimaryColor,
+  fontSize: kTextSizeLargeMedium,
+);
+const TextStyle kPDXLTextStyle = TextStyle(
+  color: kPrimaryColor,
+  fontSize: kTXlsize,
 );

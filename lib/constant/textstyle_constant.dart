@@ -82,8 +82,8 @@ const TextStyle kWXLTextStyle = TextStyle(
     color: kWhiteColor,
     fontSize: kTextSizeLargeMedium,
     fontWeight: FontWeight.w500);
-const TextStyle kWBXLTextStyle = TextStyle(
-    color: kPrimaryColor, fontSize: kTXlsize, fontWeight: FontWeight.w500);
+const TextStyle kWDXLTextStyle = TextStyle(
+    color: kWhiteColor, fontSize: kTXlsize, fontWeight: FontWeight.w500);
 
 //label test
 const TextStyle kLabelTextStyle = TextStyle(

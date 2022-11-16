@@ -57,68 +57,66 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
             key: scaffoldKey,
             drawer: const Drawer(child: DrawerScreen()),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: deviceHeight * 0.02,
-                  ),
-                  PlaceSelectWidget(
-                    placeId: placeName ?? "",
-                    onSelected: () async {
-                      await getData();
-                      setState(() {});
-                    },
-                  ),
-                  SizedBox(
-                    height: deviceHeight * 0.02,
-                  ),
-                  FutureBuilder(
-                      future: getData(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        // if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasData) {
-                          return Column(
-                            children: [
-                              StreamBuilder(
-                                  stream: firebaseIntance,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    // Map<String, dynamic>? data = snapshot.data?.data();
-                                    if (snapshot.hasError) {
-                                      return Text('Error: ${snapshot.error}');
-                                    }
+            body: Column(
+              children: [
+                SizedBox(
+                  height: deviceHeight * 0.02,
+                ),
+                PlaceSelectWidget(
+                  placeId: placeName ?? "",
+                  onSelected: () async {
+                    await getData();
+                    setState(() {});
+                  },
+                ),
+                SizedBox(
+                  height: deviceHeight * 0.02,
+                ),
+                FutureBuilder(
+                    future: getData(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      // if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          children: [
+                            StreamBuilder(
+                                stream: firebaseIntance,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  // Map<String, dynamic>? data = snapshot.data?.data();
+                                  if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  }
 
-                                    if (snapshot.connectionState ==
-                                            ConnectionState.done ||
-                                        snapshot.connectionState ==
-                                            ConnectionState.active) {
-                                      print(
-                                          " the data is ${snapshot.data!.docs}");
-                                      return MainImageWidget(
-                                        fireinstance: roomFirebaseInstance,
-                                        placeName: placeName ?? "",
-                                        snapshotData: snapshot.data,
-                                        imageHeight: deviceHeight * 0.75,
-                                        imageWidth: deviceWidth * 0.6,
-                                        mainboxHeight: deviceHeight * 0.75,
-                                        textcontainerWidth: deviceWidth * 0.6,
-                                      );
-                                    } else {
-                                      return Text(
-                                          'Connection status : ${snapshot.connectionState.name}');
-                                    }
+                                  if (snapshot.connectionState ==
+                                          ConnectionState.done ||
+                                      snapshot.connectionState ==
+                                          ConnectionState.active) {
+                                    print(
+                                        " the data is ${snapshot.data!.docs}");
+                                    return MainImageWidget(
+                                      fireinstance: roomFirebaseInstance,
+                                      placeName: placeName ?? "",
+                                      snapshotData: snapshot.data,
+                                      imageHeight: deviceHeight * 0.65,
+                                      imageWidth: deviceWidth * 0.75,
+                                      mainboxHeight: deviceHeight * 0.65,
+                                      textcontainerWidth: deviceWidth * 0.75,
+                                    );
+                                  } else {
+                                    return Text(
+                                        'Connection status : ${snapshot.connectionState.name}');
+                                  }
 
-                                    // Column(children: getExpenseItems(snapshot));
-                                  }),
-                            ],
-                          );
-                        } else {
-                          return const CircularProgressIndicator();
-                        }
-                      }),
-                ],
-              ),
+                                  // Column(children: getExpenseItems(snapshot));
+                                }),
+                          ],
+                        );
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    }),
+              ],
             )));
   }
 }

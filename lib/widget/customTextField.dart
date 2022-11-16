@@ -36,52 +36,42 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        height: 55,
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          // color: kWhiteColor,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: kDarkGreyColor.withOpacity(0.4),
-              spreadRadius: 2,
-              blurRadius: 2,
-              offset: const Offset(0, 0), // changes position of shadow
+      child: TextFormField(
+        enabled: enabled,
+        inputFormatters: inputFormatters,
+        obscureText: isObscure,
+        controller: controller,
+        cursorColor: Theme.of(context).primaryColor,
+        validator: (String? value) {
+          if (onValidation != null) {
+            return onValidation!(value);
+          }
+          return null;
+        },
+        onChanged: onTextChanged,
+        decoration: InputDecoration(
+            enabledBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+              borderSide: BorderSide(color: kGreyColor, width: 2),
             ),
-          ],
-          border: Border.all(
-            color: kLightGreyColor,
-            width: 1,
-          ),
-        ),
-        // margin: const EdgeInsets.all(5),
-        child: TextFormField(
-          enabled: enabled,
-          inputFormatters: inputFormatters,
-          obscureText: isObscure,
-          controller: controller,
-          cursorColor: Theme.of(context).primaryColor,
-          validator: (String? value) {
-            if (onValidation != null) {
-              return onValidation!(value);
-            }
-            return null;
-          },
-          onChanged: onTextChanged,
-          decoration: InputDecoration(
-              hintStyle: kGreyTextStyle,
-              suffixIcon: suffixAdd,
-              label: labelText,
-              border: InputBorder.none,
-              prefixIcon: Icon(
-                data,
-                color: Colors.cyan,
-              ),
-              focusColor: Theme.of(context).primaryColor,
-              hintText: hintText),
-        ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+              borderSide: BorderSide(color: kredcolor, width: 2),
+            ),
+            focusedBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+              borderSide: BorderSide(color: kPrimaryColor, width: 2),
+            ),
+            hintStyle: kGreyTextStyle,
+            suffixIcon: suffixAdd,
+            label: labelText,
+            border: InputBorder.none,
+            prefixIcon: Icon(
+              data,
+              color: Colors.cyan,
+            ),
+            focusColor: Theme.of(context).primaryColor,
+            hintText: hintText),
       ),
     );
   }

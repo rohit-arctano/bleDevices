@@ -134,31 +134,34 @@ class _AddDeviceState extends State<AddDevice>
                         const SizedBox(
                           height: 10,
                         ),
-                        Center(
-                          child: CustomButton(
-                            colors: kPrimaryColor,
-                            onTap: () {
-                              if (formKey.currentState!.validate()) {
-                                setConfi(placeNameCntrl.text.toLowerCase());
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Place is Added')));
-                              }
-                            },
-                            childWidget: Row(
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Add Place",
-                                    style: kWLTextStyle,
+                        Container(
+                          height: 40,
+                          child: Center(
+                            child: CustomButton(
+                              colors: kPrimaryColor,
+                              onTap: () {
+                                if (formKey.currentState!.validate()) {
+                                  setConfi(placeNameCntrl.text.toLowerCase());
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text('Place is Added')));
+                                }
+                              },
+                              childWidget: Row(
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Add Place",
+                                      style: kWLTextStyle,
+                                    ),
                                   ),
-                                ),
-                                Icon(
-                                  Icons.add,
-                                  color: kWhiteColor,
-                                ),
-                              ],
+                                  Icon(
+                                    Icons.add,
+                                    color: kWhiteColor,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -182,76 +185,78 @@ class _AddDeviceState extends State<AddDevice>
         itemCount: snapshot.data!.docs.length,
         itemBuilder: (context, index) {
           final id = snapshot.data!.docs[index];
-          return Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Slidable(
-              endActionPane: ActionPane(
-                motion: const ScrollMotion(),
-                children: [
-                  SlidableAction(
-                    onPressed: (BuildContext ctx) async {
-                      PlaceFunctionality().deletePlace(id.id);
-                      await fireStorePlaceInstance.doc(id.id).delete();
-                    },
-                    backgroundColor: kl2,
-                    foregroundColor: Colors.white,
-                    icon: Icons.delete,
-                    label: 'Delete',
-                  ),
-                ],
-              ),
-              startActionPane: ActionPane(
-                // A motion is a widget used to control how the pane animates.
-                motion: const ScrollMotion(),
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Slidable(
+                endActionPane: ActionPane(
+                  motion: const ScrollMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (BuildContext ctx) async {
+                        PlaceFunctionality().deletePlace(id.id);
+                        await fireStorePlaceInstance.doc(id.id).delete();
+                      },
+                      backgroundColor: kl2,
+                      foregroundColor: Colors.white,
+                      icon: Icons.delete,
+                      label: 'Delete',
+                    ),
+                  ],
+                ),
+                startActionPane: ActionPane(
+                  // A motion is a widget used to control how the pane animates.
+                  motion: const ScrollMotion(),
 
-                // A pane can dismiss the Slidable.
-                dismissible: DismissiblePane(onDismissed: () {}),
+                  // A pane can dismiss the Slidable.
+                  dismissible: DismissiblePane(onDismissed: () {}),
 
-                // All actions are defined in the children parameter.
-                children: [
-                  // A SlidableAction can have an icon and/or a label.
-                  SlidableAction(
-                    onPressed: (BuildContext ctx) async {
-                      String newplaceName = await Navigator.push(
+                  // All actions are defined in the children parameter.
+                  children: [
+                    // A SlidableAction can have an icon and/or a label.
+                    SlidableAction(
+                      onPressed: (BuildContext ctx) async {
+                        String newplaceName = await Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (context, __, _) => PopUpTemplate(
+                                hintText: "Change the place Name",
+                              ),
+                            ));
+                        await setConfi(newplaceName);
+                        await PlaceFunctionality()
+                            .getThePlace(id.id, newplaceName);
+                        PlaceFunctionality().deletePlace(id.id);
+                        await fireStorePlaceInstance.doc(id.id).delete();
+                      },
+                      backgroundColor: kPrimaryColor,
+                      foregroundColor: Colors.white,
+                      icon: Icons.edit,
+                      label: 'Edit',
+                    ),
+                  ],
+                ),
+                enabled: true,
+                direction: Axis.horizontal,
+                child: Card(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.push(
                           context,
-                          PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (context, __, _) => PopUpTemplate(
-                              hintText: "Change the place Name",
-                            ),
-                          ));
-                      await setConfi(newplaceName);
-                      await PlaceFunctionality()
-                          .getThePlace(id.id, newplaceName);
-                      PlaceFunctionality().deletePlace(id.id);
-                      await fireStorePlaceInstance.doc(id.id).delete();
+                          MaterialPageRoute(
+                              builder: (context) => RoomList(placeId: id.id)));
                     },
-                    backgroundColor: kPrimaryColor,
-                    foregroundColor: Colors.white,
-                    icon: Icons.edit,
-                    label: 'Edit',
-                  ),
-                ],
-              ),
-              enabled: true,
-              direction: Axis.horizontal,
-              child: Card(
-                child: ListTile(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RoomList(placeId: id.id)));
-                  },
-                  title: Text(
-                    snapshot.data!.docs[index].id.toUpperCase(),
-                    style: kBXLTextStyle,
-                  ),
-                  trailing: const CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    child: Icon(
-                      Icons.keyboard_arrow_right,
-                      color: kPrimaryColor,
+                    title: Text(
+                      snapshot.data!.docs[index].id.toUpperCase(),
+                      style: kBXLTextStyle,
+                    ),
+                    trailing: const CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      child: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: kPrimaryColor,
+                      ),
                     ),
                   ),
                 ),

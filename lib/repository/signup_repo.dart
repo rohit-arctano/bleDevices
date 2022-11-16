@@ -32,17 +32,6 @@ class FbAuthSignUp {
       required String password,
       required BuildContext context}) async {
     await currentUser.updateDisplayName(name);
-    // await FirebaseFirestore.instance
-    //     .collection("users")
-    //     .doc(currentUser.uid)
-    //     .set({
-    //   "userID": currentUser.uid,
-    //   "userName": name,
-    //   "userEmail": currentUser.email,
-    //   "phone": mobile,
-    //   "userPassword": password,
-    //   "status": "approved",
-    // });
   }
 }
 

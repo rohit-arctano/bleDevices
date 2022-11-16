@@ -4,10 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class FbUser {
   FbUser({
-    required this.uid,
-    required this.email,
+    this.uid,
     required this.name,
     required this.mobileNo,
+    this.email,
   });
 
   factory FbUser.fromUser({required User user}) {
@@ -43,8 +43,8 @@ class FbUser {
     };
   }
 
-  final String uid;
+  final String? uid;
   final String name;
-  final String mobileNo;
-  final String email;
+  final String? mobileNo;
+  final String? email;
 }

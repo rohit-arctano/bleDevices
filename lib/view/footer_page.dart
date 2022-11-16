@@ -49,46 +49,43 @@ class _FooterState extends State<Footer> {
       key: scaffoldKey,
       drawer: const Drawer(child: DrawerScreen()),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                      child: const Icon(
-                        Icons.menu,
-                        color: kBlackColor,
-                        size: 30,
-                      ),
-                      onTap: () {
-                        scaffoldKey.currentState?.openDrawer();
-                      }),
-                  const Text(
-                    "Hello! \nGood morning ${"Buddy"}",
-                    style: kBXLTextStyle,
-                  ),
-                  CircleAvatar(
-                    radius: 35.0,
-                    backgroundColor: Colors.transparent,
-                    child: Image.asset(
-                      logoImage,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                GestureDetector(
+                    child: const Icon(
+                      Icons.menu,
+                      color: kBlackColor,
+                      size: 30,
                     ),
-                  )
+                    onTap: () {
+                      scaffoldKey.currentState?.openDrawer();
+                    }),
+                const Text(
+                  "Hello! \nGood morning ${"Buddy"}",
+                  style: kBXLTextStyle,
+                ),
+                CircleAvatar(
+                  radius: 35.0,
+                  backgroundColor: Colors.transparent,
+                  child: Image.asset(
+                    logoImage,
+                  ),
+                )
+              ],
+            ),
+            Expanded(
+              child: Stack(
+                children: [
+                  tabs[_selectedIndex],
                 ],
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.85,
-                child: Stack(
-                  children: [
-                    tabs[_selectedIndex],
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: SizedBox(

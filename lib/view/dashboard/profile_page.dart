@@ -1,11 +1,9 @@
 import 'dart:io';
-
-import 'package:bldevice_connection/constant/colors_const.dart';
-import 'package:bldevice_connection/constant/textstyle_constant.dart';
+import 'package:bldevice_connection/constant/widget.dart';
 import 'package:bldevice_connection/model/fb_user.dart';
 import 'package:bldevice_connection/shared_preferences/shared_preferences.dart';
-import 'package:bldevice_connection/widget/custom_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:bldevice_connection/widget/customTextField.dart';
+import 'package:bldevice_connection/widget/loader.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -16,6 +14,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController mobileController = TextEditingController();
+  // final TextEditingController nameController = TextEditingController();
+
   FbUser? data;
   getUser() async {
     // User? auth = FirebaseAuth.instance.currentUser;
@@ -24,113 +27,71 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: SafeArea(
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Stack(
-              children: [
-                FutureBuilder(
-                    future: getUser(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      return Column(
-                        children: [
-                          const SizedBox(
-                            height: 50,
-                          ),
-                          CircleAvatar(
-                            radius: 65,
-                            backgroundColor: kl2,
+        body: SafeArea(
+      child: FutureBuilder(
+          future: getUser(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            // mobileController.text = data?.mobileNo ?? "";
+            if (snapshot.connectionState == ConnectionState.done) {
+              nameController.text = data!.name.toUpperCase();
+              emailController.text = data!.email!;
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      child: DecoratedBox(
+                        decoration: const BoxDecoration(
+                            color: kl2, shape: BoxShape.circle),
+                        child: FittedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
                             child: Image.asset(
-                                'assets/images/arctanoLogoFull.png',
-                                width: 100,
-                                height: 70,
-                                fit: BoxFit.fill),
-                          ),
-                          const SizedBox(
-                            height: 50,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: TextFormField(
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                  hintText: data?.name.toUpperCase() ??
-                                      "Username Found",
-                                  hintStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white70,
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30.0)),
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 2),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30.0)),
-                                    borderSide: BorderSide(
-                                        color: Colors.pink, width: 2),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.person,
-                                    color: Colors.grey[400],
-                                    size: 25,
-                                  )),
+                              logoImage,
+                              height: 190,
+                              width: 100,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: TextFormField(
-                              obscureText: true,
-                              // validator: (value) {},
-                              decoration: InputDecoration(
-                                  hintText: data?.email,
-                                  hintStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white70,
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30.0)),
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 2),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30.0)),
-                                    borderSide: BorderSide(
-                                        color: Colors.pink, width: 2),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.mail,
-                                    color: Colors.grey[400],
-                                    size: 25,
-                                  )),
-                            ),
-                          ),
-                        ],
-                      );
-                    }),
-              ],
-            ),
-          ),
-
-          // _usermodel == null ? Text("no data") : buildFutureBuilder(),
-          // Text("Full name",
-          //     textAlign: TextAlign.left,
-          //     style: TextStyle(color: Colors.pink,
-          //     fontSize: 18,
-          //     fontWeight: FontWeight.w500)),
-        ]),
-      ),
-    );
+                        ),
+                      ),
+                    ),
+                    CustomTextField(
+                      controller: nameController,
+                      data: Icons.person,
+                      hintText: "Enter the name",
+                      isObscure: false,
+                    ),
+                    SizedBox(
+                      height: deviceHeight * 0.02,
+                    ),
+                    CustomTextField(
+                      controller: emailController,
+                      data: Icons.email,
+                      hintText: "Enter the name",
+                      isObscure: false,
+                    ),
+                    SizedBox(
+                      height: deviceHeight * 0.02,
+                    ),
+                    CustomTextField(
+                      controller: mobileController,
+                      data: Icons.phone,
+                      hintText: "Enter the Mobile Number",
+                      isObscure: false,
+                    ),
+                    SizedBox(
+                      height: deviceHeight * 0.02,
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return const Loader();
+            }
+          }),
+    ));
   }
 
   var image = File;

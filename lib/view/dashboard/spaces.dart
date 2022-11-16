@@ -73,19 +73,19 @@ class _SpacesState extends State<Spaces> {
   Widget build(BuildContext ctx) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              DefaultTabController(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: DefaultTabController(
                 length: 2,
                 initialIndex: 0,
                 child: Column(
-                  children: [
-                    const TabBar(
+                  children: const [
+                    TabBar(
                       indicator: BoxDecoration(
                         color: kDarkGreyColor,
                       ),
@@ -98,21 +98,19 @@ class _SpacesState extends State<Spaces> {
                         Tab(text: 'Devices'),
                       ],
                     ),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height *
-                            0.81, //height of TabBarView
-
-                        child: const TabBarView(children: <Widget>[
-                          AddDevice(),
-                          FindDevicesScreen()
-                          //   );
-                          // }),
-                        ])),
+                    Expanded(
+                      child: TabBarView(children: <Widget>[
+                        AddDevice(),
+                        FindDevicesScreen()
+                        //   );
+                        // }),
+                      ]),
+                    ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -99,27 +99,27 @@ class _WifiSetUpState extends State<WifiSetUp> {
                     const SizedBox(
                       height: 100,
                     ),
-                    TextFormField(
-                      controller: userAccountController,
-                      style: const TextStyle(),
-                      decoration: InputDecoration(
-                        label: const Text("User Account"),
-                        labelStyle: MaterialStateTextStyle.resolveWith(
-                            (Set<MaterialState> states) {
-                          return const TextStyle(letterSpacing: 1.3);
-                        }),
-                        contentPadding:
-                            const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                        hintText: "Enter the UserAccount",
-                        hintStyle: const TextStyle(),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                    ),
+                    // TextFormField(
+                    //   controller: userAccountController,
+                    //   style: const TextStyle(),
+                    //   decoration: InputDecoration(
+                    //     label: const Text("User Account"),
+                    //     labelStyle: MaterialStateTextStyle.resolveWith(
+                    //         (Set<MaterialState> states) {
+                    //       return const TextStyle(letterSpacing: 1.3);
+                    //     }),
+                    //     contentPadding:
+                    //         const EdgeInsets.fromLTRB(16, 10, 16, 10),
+                    //     hintText: "Enter the UserAccount",
+                    //     hintStyle: const TextStyle(),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(4),
+                    //     ),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(4),
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(height: 15),
                     TextFormField(
                       controller: ssidController,

@@ -22,7 +22,7 @@ class PopUpTemplate extends StatelessWidget {
         Align(
           alignment: const Alignment(0, 0),
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+            filter: ImageFilter.blur(sigmaX: .5, sigmaY: 0.5),
             child: const DecoratedBox(
               decoration: BoxDecoration(
                 color: Color.fromRGBO(255, 255, 255, 0.1),
@@ -45,31 +45,45 @@ class PopUpTemplate extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: Container(
-                      height: 60,
-                      decoration: productCon,
-                      child: CustomTextField(
-                          isObscure: false,
-                          controller: textController,
-                          data: Icons.room_preferences_sharp,
-                          hintText: hintText),
-                    ),
+                    child: CustomTextField(
+                        isObscure: false,
+                        controller: textController,
+                        data: Icons.room_preferences_sharp,
+                        hintText: hintText),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  CustomButton(
-                    onTap: () {
-                      Navigator.of(context).pop(textController.text);
-                    },
-                    colors: kPrimaryColor,
-                    childWidget: const Padding(
-                      padding: EdgeInsets.only(left: 15, right: 15),
-                      child: Text(
-                        "Save",
-                        style: kWLTextStyle,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CustomButton(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        colors: kPrimaryColor,
+                        childWidget: const Padding(
+                          padding: EdgeInsets.only(left: 15, right: 15),
+                          child: Text(
+                            "Back",
+                            style: kWLTextStyle,
+                          ),
+                        ),
                       ),
-                    ),
+                      CustomButton(
+                        onTap: () {
+                          Navigator.of(context).pop(textController.text);
+                        },
+                        colors: kPrimaryColor,
+                        childWidget: const Padding(
+                          padding: EdgeInsets.only(left: 15, right: 15),
+                          child: Text(
+                            "Save",
+                            style: kWLTextStyle,
+                          ),
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),

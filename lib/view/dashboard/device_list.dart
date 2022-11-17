@@ -60,7 +60,7 @@ class _DeviceSelectState extends State<DeviceSelect> {
                 },
               ),
               const SizedBox(
-                width: 150,
+                width: 120,
               ),
               const Text(
                 "Device List",
@@ -120,31 +120,27 @@ class _DeviceSelectState extends State<DeviceSelect> {
           return Padding(
             padding: const EdgeInsets.only(left: 12.0, right: 12),
             child: Card(
-              margin: const EdgeInsets.all(8),
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: ListTile(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomeSwitch(
-                                placeId: widget.placeId,
-                                roomId: widget.roomId,
-                                deviceId: docs[index].id)));
-                  },
-                  title: Text(
-                    docs[index].id.toUpperCase(),
-                    style: kDBXLTextStyle,
-                  ),
-                  trailing: const CircleAvatar(
-                    radius: 17,
-                    backgroundColor: kLightGreyColor,
-                    child: Icon(
-                      Icons.keyboard_arrow_right,
-                      color: kLightBlack,
-                      size: 30,
-                    ),
+              child: ListTile(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomeSwitch(
+                              placeId: widget.placeId,
+                              roomId: widget.roomId,
+                              deviceId: docs[index].id)));
+                },
+                title: Text(
+                  docs[index].id.toUpperCase(),
+                  style: kBXLTextStyle,
+                ),
+                trailing: const CircleAvatar(
+                  radius: 13,
+                  backgroundColor: kLightGreyColor,
+                  child: Icon(
+                    Icons.keyboard_arrow_right,
+                    color: kPrimaryColor,
+                    size: 25,
                   ),
                 ),
               ),

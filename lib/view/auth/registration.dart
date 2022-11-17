@@ -1,30 +1,36 @@
 import 'dart:async';
-import 'dart:convert';
-
-import 'package:bldevice_connection/constant/colors_const.dart';
 import 'package:bldevice_connection/model/enums/signup_enum.dart';
-import 'package:bldevice_connection/model/fb_user.dart';
 import 'package:bldevice_connection/repository/signup_repo.dart';
-import 'package:bldevice_connection/view/footer_page.dart';
-import 'package:bldevice_connection/widget/customtextField.dart';
+import 'package:bldevice_connection/widget/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../../shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
+import '../../constant/widget.dart';
 import 'login.dart';
 
-class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+class SignUp extends StatefulWidget {
+  const SignUp({required this.signIncall, super.key});
+  final Function() signIncall;
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _RegisterState extends State<Register> {
-  TextEditingController namecontroller = TextEditingController();
-  TextEditingController emailcontroller = TextEditingController();
-  TextEditingController phonecontroller = TextEditingController();
-  TextEditingController passwordcontroller = TextEditingController();
+class _SignUpState extends State<SignUp> {
+  final TextEditingController namecontroller = TextEditingController();
+
+  final TextEditingController emailcontroller = TextEditingController();
+
+  final TextEditingController phonecontroller = TextEditingController();
+
+  final TextEditingController passwordcontroller = TextEditingController();
+
+  final TextEditingController confirmPasswordcontroller =
+      TextEditingController();
+
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  TextEditingController phoneNumberValue = TextEditingController();
 
   Future<void> signUp({required String email, required String password}) async {
     bool isValidated = _formkey.currentState?.validate() ?? false;
@@ -34,9 +40,8 @@ class _RegisterState extends State<Register> {
 
       if (signUpResponse is UserCredential) {
         user = auth.currentUser;
-        // currentUser = (signUpResponse as UserCredential).user;
-        print("the user email is $user");
         await user?.sendEmailVerification();
+
         AlertSnackBar.show(
             errorText: "Please check the email verification has been sent ",
             context: context);
@@ -67,6 +72,17 @@ class _RegisterState extends State<Register> {
     }
   }
 
+  @override
+  void dispose() {
+    namecontroller.text;
+    phonecontroller.text;
+    passwordcontroller.text;
+    emailcontroller.text;
+    confirmPasswordcontroller.text;
+
+    super.dispose();
+  }
+
   Future<void> checkEmailVerified() async {
     user = auth.currentUser;
 
@@ -85,109 +101,183 @@ class _RegisterState extends State<Register> {
   }
 
   @override
-  void dispose() {
-    namecontroller.text;
-    phonecontroller.text;
-    passwordcontroller.text;
-    emailcontroller.text;
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Form(
-                key: _formkey,
-                child: Column(
-                  children: [
-                    CustomTextField(
-                      data: Icons.person,
-                      controller: namecontroller,
-                      hintText: "Enter the username",
-                      isObscure: false,
-                      enabled: true,
-                      onValidation: (String? value) {
-                        if (value == null) {
-                          return 'Name is Required';
-                        } else if (value == '') {
-                          return 'Name is Required';
-                        }
-                        return null;
-                      },
-                    ),
-                    CustomTextField(
-                      data: Icons.email,
-                      controller: emailcontroller,
-                      hintText: "Enter the email",
-                      isObscure: false,
-                      enabled: true,
-                      onValidation: (String? value) {
-                        if (value == null) {
-                          return 'Required';
-                        } else if (value == '') {
-                          return 'Required';
-                        } else if (!RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(value)) {
-                          return 'Invalid email';
-                        }
-                        return null;
-                      },
-                    ),
-                    CustomTextField(
-                      data: Icons.mobile_friendly,
-                      controller: phonecontroller,
-                      hintText: "Enter the Mobile",
-                      isObscure: false,
-                      enabled: true,
-                      onValidation: (String? value) {
-                        if (value == null) {
-                          return 'Mobile Numuber is Required';
-                        } else if (value == '') {
-                          return 'Mobile Numuber is Required';
-                        }
-                        return null;
-                      },
-                    ),
-                    CustomTextField(
-                      data: Icons.lock,
-                      controller: passwordcontroller,
-                      hintText: "Enter the password",
-                      isObscure: true,
-                      enabled: true,
-                      onValidation: (String? value) {
-                        if (value == null) {
-                          return 'Required';
-                        } else if (value == '') {
-                          return 'Required';
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                )),
-            const SizedBox(
-              height: 30,
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await signUp(
-                    email: emailcontroller.text,
-                    password: passwordcontroller.text);
+    double deviceHeight = MediaQuery.of(context).size.height;
+    double deviceWidth = MediaQuery.of(context).size.width;
+    return Form(
+      key: _formkey,
+      child: Column(
+        children: [
+          CustomTextField(
+            data: Icons.person,
+            controller: namecontroller,
+            hintText: "Enter the username",
+            isObscure: false,
+            enabled: true,
+            onValidation: (String? value) {
+              if (value == null) {
+                return 'Name is Required';
+              } else if (value == '') {
+                return 'Name is Required';
+              }
+              return null;
+            },
+          ),
+          SizedBox(
+            height: deviceHeight * 0.01,
+          ),
+          CustomTextField(
+            data: Icons.email,
+            controller: emailcontroller,
+            hintText: "Enter the email",
+            isObscure: false,
+            enabled: true,
+            onValidation: (String? value) {
+              if (value == null) {
+                return 'Required';
+              } else if (value == '') {
+                return 'Required';
+              } else if (!RegExp(
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  .hasMatch(value)) {
+                return 'Invalid email';
+              }
+              return null;
+            },
+          ),
+          SizedBox(
+            height: deviceHeight * 0.01,
+          ),
+          CustomTextField(
+            onTextChanged: (String? mobileNo) {
+              if ((mobileNo ?? "") != "") {
+                phoneNumberValue.value = TextEditingValue(text: mobileNo ?? "");
+                print(
+                    "the mobile no is in if:  $mobileNo, _phoneNumberValue: ${phoneNumberValue.text}");
+              }
+            },
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'(^[0-9]{0,10})'),
+                  replacementString: ""),
+            ],
+            data: Icons.mobile_friendly,
+            controller: phonecontroller,
+            hintText: "Enter the Mobile",
+            isObscure: false,
+            enabled: true,
+            onValidation: (String? value) {
+              print("the value is $value");
+              if (value == null) {
+                return 'Mobile Numuber is Required';
+              } else if (value == '') {
+                return 'Mobile Numuber is Required';
+              }
+              print("the value is $value");
+              return null;
+            },
+          ),
+          SizedBox(
+            height: deviceHeight * 0.01,
+          ),
+          CustomTextField(
+            suffixAdd: IconButton(
+              onPressed: () {
+                // Update the state i.e. toogle the state of passwordVisible variable
+                setState(() {
+                  passwordVisible = !passwordVisible;
+                });
               },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: kPrimaryColor,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10)),
-              child: const Text("Sign up"),
-            )
-          ],
-        ),
+              icon: Icon(
+                // Based on passwordVisible state choose the icon
+                passwordVisible ? Icons.visibility_off : Icons.visibility,
+                color: Theme.of(context).primaryColorDark,
+              ),
+            ),
+            data: Icons.lock,
+            controller: passwordcontroller,
+            hintText: "Enter the password",
+            isObscure: passwordVisible,
+            enabled: true,
+            onValidation: (String? value) {
+              print("the value is $value");
+              if (value!.isEmpty) {
+                print("the value is $value");
+                return "Enter the password";
+              } else if (value.length < 6) {
+                print("the value is $value");
+                return "Password should be atleast 6 String length";
+              } else if (!value.contains(
+                  RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,15}'))) {
+                print("the value is $value");
+                return "Password should be atleast one character and less the 15 string length";
+              } else {
+                print("the value is $value");
+                return null;
+              }
+            },
+          ),
+          SizedBox(
+            height: deviceHeight * 0.01,
+          ),
+          CustomTextField(
+            data: Icons.password,
+            controller: confirmPasswordcontroller,
+            hintText: "Enter the  Confirm password",
+            isObscure: true,
+            enabled: true,
+            onValidation: (String? value) {
+              if (value!.isEmpty) {
+                return "Please Confirm the password";
+              } else if (value.length < 6) {
+                return "Password should be atleast 6 String length";
+              }
+              if (value.isEmpty) {
+                return 'Please re-enter password';
+              }
+
+              if (passwordcontroller.text != confirmPasswordcontroller.text) {
+                return "Password does not match";
+              }
+              return null;
+            },
+          ),
+          SizedBox(
+            height: deviceHeight * 0.01,
+          ),
+          Center(
+            child: CustomButton(
+              colors: kPrimaryColor,
+              onTap: () async {
+                if (_formkey.currentState!.validate()) {
+                  await signUp(
+                      email: emailcontroller.text,
+                      password: passwordcontroller.text);
+                }
+              },
+              childWidget: const Text(
+                "Sign up",
+                style: kWLTextStyle,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          Text.rich(TextSpan(
+              text: "Already have an account?",
+              style: const TextStyle(color: kPrimaryColor),
+              children: [
+                TextSpan(
+                  text: " Sign In",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      print("calling the signup");
+                      widget.signIncall();
+                    },
+                )
+              ])),
+        ],
       ),
     );
   }
@@ -197,4 +287,5 @@ class _RegisterState extends State<Register> {
   final auth = FirebaseAuth.instance;
   User? user;
   User? currentUser;
+  bool passwordVisible = false;
 }

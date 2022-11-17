@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-const kPrimaryColor = Color(0XFF325BF0);
+const kPrimaryColor = Color(0XFF2377B7);
 const kSecondaryColor = Color(0xFF2a3042);
 const kSelectedrawerColor = Color(0XFFF2ECFD);
 const kButtonColor = Color(0x8affffff);
@@ -17,3 +17,4 @@ const kDarkGreyColor = Color(0xff757575);
 const kL1 = Color.fromARGB(255, 201, 236, 187);
 const kl2 = Color(0xFFFFcccb);
 const kLightBlue = Color.fromARGB(255, 223, 233, 237);
+const kredcolor = Color.fromARGB(255, 234, 91, 91);

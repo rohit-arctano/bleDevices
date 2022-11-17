@@ -71,46 +71,46 @@ class _SpacesState extends State<Spaces> {
 
   @override
   Widget build(BuildContext ctx) {
-    double deviceHeight = MediaQuery.of(ctx).size.height;
-    double deviceWidth = MediaQuery.of(ctx).size.width;
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              DefaultTabController(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: DefaultTabController(
                 length: 2,
                 initialIndex: 0,
                 child: Column(
-                  children: [
-                    const TabBar(
-                      labelColor: Colors.green,
-                      unselectedLabelColor: Colors.black,
+                  children: const [
+                    TabBar(
+                      indicator: BoxDecoration(
+                        color: kDarkGreyColor,
+                      ),
+                      physics: ScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics()),
+                      labelColor: kWhiteColor,
+                      unselectedLabelColor: kBlackColor,
                       tabs: [
                         Tab(text: 'Places'),
                         Tab(text: 'Devices'),
                       ],
                     ),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height *
-                            0.8, //height of TabBarView
-
-                        child: const TabBarView(children: <Widget>[
-                          AddDevice(),
-
-                          FindDevicesScreen()
-                          //   );
-                          // }),
-                        ])),
+                    Expanded(
+                      child: TabBarView(children: <Widget>[
+                        AddDevice(),
+                        FindDevicesScreen()
+                        //   );
+                        // }),
+                      ]),
+                    ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

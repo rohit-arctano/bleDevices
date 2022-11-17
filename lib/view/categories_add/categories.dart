@@ -65,8 +65,8 @@ class _CreateCategoriesState extends State<PlaceSelectWidget> {
                                 boxShadow: const [
                                   BoxShadow(
                                     color: Colors.grey,
-                                    blurRadius: 5.0,
-                                    spreadRadius: 0.5,
+                                    blurRadius: 3.0,
+                                    spreadRadius: 0.1,
                                     offset: Offset(1.0, 1.0),
                                   ),
                                 ],

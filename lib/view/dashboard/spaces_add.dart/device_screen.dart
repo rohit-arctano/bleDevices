@@ -3,8 +3,6 @@ import 'package:bldevice_connection/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
-import '../../../widget/dialogbox.dart';
-
 // ignore: must_be_immutable
 class DeviceScreen extends StatelessWidget {
   DeviceScreen({Key? key, required this.device}) : super(key: key);

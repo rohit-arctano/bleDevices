@@ -1,3 +1,4 @@
+import 'package:bldevice_connection/constant/colors_const.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -5,17 +6,26 @@ class CustomButton extends StatelessWidget {
   final GestureTapCallback? onTap;
   final Color? colors;
   Widget childWidget;
+
   CustomButton({Key? key, required this.childWidget, this.onTap, this.colors})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
-      fillColor: colors,
-      onPressed: onTap,
-      shape: const StadiumBorder(),
-      child: Padding(
-          padding: const EdgeInsets.fromLTRB(6, 10, 6, 10), child: childWidget),
+    return FittedBox(
+      child: RawMaterialButton(
+        fillColor: colors,
+        onPressed: onTap,
+        splashColor: Colors.black12,
+        elevation: 2.0,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            side: const BorderSide(width: 2, color: kL1)),
+        child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+            child: childWidget),
+      ),
     );
   }
 }

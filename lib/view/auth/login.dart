@@ -18,7 +18,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool toSignUp = true;
   @override
   Widget build(BuildContext context) {
@@ -69,25 +68,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   AnimatedSize(
                     duration: const Duration(milliseconds: 250),
-                    child: Form(
-                      key: formKey,
-                      child: toSignUp
-                          ? SignIn(
-                              formKey: formKey,
-                              onSignUpPressed: () {
-                                print("the bool value is  $toSignUp");
-                                setState(() {
-                                  toSignUp = false;
-                                });
-                              },
-                            )
-                          : SignUp(signIncall: () {
-                              print("the signupvalue value is  $toSignUp");
+                    child: toSignUp
+                        ? SignIn(
+                            onSignUpPressed: () {
+                              print("the bool value is  $toSignUp");
                               setState(() {
-                                toSignUp = true;
+                                toSignUp = false;
                               });
-                            }),
-                    ),
+                            },
+                          )
+                        : SignUp(signIncall: () {
+                            print("the signupvalue value is  $toSignUp");
+                            setState(() {
+                              toSignUp = true;
+                            });
+                          }),
                   ),
                 ],
               ),
@@ -145,9 +140,8 @@ class AlertSnackBar {
 }
 
 class SignIn extends StatefulWidget {
-  const SignIn(
-      {required this.formKey, required this.onSignUpPressed, super.key});
-  final GlobalKey<FormState> formKey;
+  const SignIn({required this.onSignUpPressed, super.key});
+
   final Function() onSignUpPressed;
   @override
   State<SignIn> createState() => _SignUpState();
@@ -158,64 +152,63 @@ class _SignUpState extends State<SignIn> {
       TextEditingController(text: "");
   final TextEditingController _passwordController =
       TextEditingController(text: "");
-
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   dynamic result;
   User? currentUser;
   User? user;
   Timer? timer;
-  Future<void> _signIn() async {
-    bool isValidated = widget.formKey.currentState?.validate() ?? false;
-    if (isValidated) {
-      result = await AuthUserLogin().signInWithEmailAndPassword(
-          emailAddress: _emailController.text,
-          password: _passwordController.text);
+  Future<void> _signIn(
+      {required String password, required String userName}) async {
+    // bool isValidated = _formkey.currentState?.validate() ?? false;
 
-      if (result is UserCredential) {
-        currentUser = (result as UserCredential).user;
-        print("thhe user name is ${currentUser!.displayName}");
-        if (currentUser != null) {
-          if (currentUser!.emailVerified == true) {
-            await AuthUserLogin().readAndSaveDataLocally(
-                currentUser: currentUser!, context: context);
-          } else if (currentUser!.emailVerified == false) {
-            // show the dialog
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Error"),
-                  content: const Text(emailVerifyError),
-                  actions: [
-                    TextButton(
-                      child: const Text("OK"),
-                      onPressed: () async {
-                        await emailverify();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          }
-        }
-      } else if (result is SignInExceptions) {
-        switch (result) {
-          case SignInExceptions.invalidEmail:
-            AlertSnackBar.show(
-                errorText: "Please check the email", context: context);
+    result = await AuthUserLogin()
+        .signInWithEmailAndPassword(emailAddress: userName, password: password);
 
-            break;
-          case SignInExceptions.user_disabled:
-            break;
-          case SignInExceptions.user_not_found:
-            AlertSnackBar.show(
-                errorText: "User not found in the DataBase", context: context);
-            break;
-          case SignInExceptions.wrong_password:
-            AlertSnackBar.show(
-                errorText: "You have entered Password", context: context);
-            break;
+    if (result is UserCredential) {
+      currentUser = (result as UserCredential).user;
+      print("thhe user name is ${currentUser!.displayName}");
+      if (currentUser != null) {
+        if (currentUser!.emailVerified == true) {
+          await AuthUserLogin().readAndSaveDataLocally(
+              currentUser: currentUser!, context: context);
+        } else if (currentUser!.emailVerified == false) {
+          // show the dialog
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Error"),
+                content: const Text(emailVerifyError),
+                actions: [
+                  TextButton(
+                    child: const Text("OK"),
+                    onPressed: () async {
+                      await emailverify();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         }
+      }
+    } else if (result is SignInExceptions) {
+      switch (result) {
+        case SignInExceptions.invalidEmail:
+          AlertSnackBar.show(
+              errorText: "Please check the email", context: context);
+
+          break;
+        case SignInExceptions.user_disabled:
+          break;
+        case SignInExceptions.user_not_found:
+          AlertSnackBar.show(
+              errorText: "User not found in the DataBase", context: context);
+          break;
+        case SignInExceptions.wrong_password:
+          AlertSnackBar.show(
+              errorText: "You have entered Password", context: context);
+          break;
       }
     }
   }
@@ -249,97 +242,102 @@ class _SignUpState extends State<SignIn> {
     double deviceHeight = MediaQuery.of(context).size.height;
     return Wrap(
       children: [
-        Column(
-          children: [
-            SizedBox(
-              height: deviceHeight * 0.05,
-            ),
-            CustomTextField(
-              data: Icons.person,
-              controller: _emailController,
-              hintText: "Enter the email",
-              isObscure: false,
-              enabled: true,
-              onValidation: (String? value) {
-                if (value == null) {
-                  return 'Required';
-                } else if (value == '') {
-                  return 'Required';
-                } else if (!RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value)) {
-                  return 'Invalid email';
-                }
-                return null;
-              },
-            ),
-            SizedBox(
-              height: deviceHeight * 0.017,
-            ),
-            CustomTextField(
-              suffixAdd: IconButton(
-                onPressed: () {
-                  // Update the state i.e. toogle the state of passwordVisible variable
-                  setState(() {
-                    passwordVisible = !passwordVisible;
-                  });
+        Form(
+          key: _formkey,
+          child: Column(
+            children: [
+              SizedBox(
+                height: deviceHeight * 0.05,
+              ),
+              CustomTextField(
+                data: Icons.person,
+                controller: _emailController,
+                hintText: "Enter the email",
+                isObscure: false,
+                enabled: true,
+                onValidation: (input) =>
+                    input!.isValidEmail() ? null : "Check your email",
+              ),
+              SizedBox(
+                height: deviceHeight * 0.017,
+              ),
+              CustomTextField(
+                suffixAdd: IconButton(
+                  onPressed: () {
+                    // Update the state i.e. toogle the state of passwordVisible variable
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                  icon: Icon(
+                    // Based on passwordVisible state choose the icon
+                    passwordVisible ? Icons.visibility_off : Icons.visibility,
+                    color: Theme.of(context).primaryColorDark,
+                  ),
+                ),
+                data: Icons.lock,
+                controller: _passwordController,
+                hintText: "Enter the password",
+                isObscure: passwordVisible,
+                enabled: true,
+                onValidation: (String? value) {
+                  if (value == null) {
+                    return 'Required';
+                  } else if (value == '') {
+                    return 'Required';
+                  }
+                  return null;
                 },
-                icon: Icon(
-                  // Based on passwordVisible state choose the icon
-                  passwordVisible ? Icons.visibility_off : Icons.visibility,
-                  color: Theme.of(context).primaryColorDark,
+              ),
+              SizedBox(
+                height: deviceHeight * 0.017,
+              ),
+              Container(
+                height: 50,
+                child: CustomButton(
+                  onTap: () async {
+                    if (_formkey.currentState!.validate()) {
+                      await _signIn(
+                          userName: _emailController.text,
+                          password: _passwordController.text);
+                    }
+                  },
+                  colors: kPrimaryColor,
+                  childWidget: const Text(
+                    "Log in",
+                    style: kWhiteLrgTextStyle,
+                  ),
                 ),
               ),
-              data: Icons.lock,
-              controller: _passwordController,
-              hintText: "Enter the password",
-              isObscure: passwordVisible,
-              enabled: true,
-              onValidation: (String? value) {
-                if (value == null) {
-                  return 'Required';
-                } else if (value == '') {
-                  return 'Required';
-                }
-                return null;
-              },
-            ),
-            SizedBox(
-              height: deviceHeight * 0.017,
-            ),
-            Container(
-              height: 50,
-              child: CustomButton(
-                onTap: () async {
-                  await _signIn();
-                },
-                colors: kPrimaryColor,
-                childWidget: const Text(
-                  "Log in",
-                  style: kWhiteLrgTextStyle,
-                ),
+              SizedBox(
+                height: deviceHeight * 0.017,
               ),
-            ),
-            SizedBox(
-              height: deviceHeight * 0.017,
-            ),
-            Text.rich(TextSpan(
-                text: "Don't have an account?",
-                style: const TextStyle(color: kPrimaryColor),
-                children: [
-                  TextSpan(
-                    text: " Sign Up",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        print("calling the signup");
-                        widget.onSignUpPressed();
-                      },
-                  )
-                ]))
-          ],
+              Text.rich(TextSpan(
+                  text: "Don't have an account?",
+                  style: const TextStyle(color: kPrimaryColor),
+                  children: [
+                    TextSpan(
+                      text: " Sign Up",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          print("calling the signup");
+                          widget.onSignUpPressed();
+                        },
+                    )
+                  ]))
+            ],
+          ),
         ),
       ],
     );
+  }
+}
+
+extension EmailValidator on String {
+  bool isValidEmail() {
+    return RegExp(
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(this);
   }
 }

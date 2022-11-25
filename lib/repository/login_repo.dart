@@ -13,6 +13,7 @@ class AuthUserLogin {
     required String emailAddress,
     required String password,
   }) async {
+    print("the email is $emailAddress");
     try {
       return await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailAddress, password: password);
@@ -22,6 +23,7 @@ class AuthUserLogin {
       } else if (e.code == 'wrong-password') {
         Debug.printing('Wrong password provided for that user.');
       }
+      print("the error is $e");
       return SignInExceptions.values
           .firstWhere((element) => _enumToErrorCode(element) == e.code);
     }

@@ -4,6 +4,7 @@ import 'package:bldevice_connection/constant/textstyle_constant.dart';
 import 'package:bldevice_connection/view/auth/wifi_credential/wifi_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FindDevicesScreen extends StatefulWidget {
   const FindDevicesScreen({super.key});
@@ -112,11 +113,11 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                                                   autoConnect: true,
                                                   timeout: const Duration(
                                                       seconds: 2));
+                                              await r.device.requestMtu(512);
 
                                               Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                       builder: (context) {
-                                                r.device.connect();
                                                 return WifiSetUp(
                                                     device: r.device);
                                               }));
@@ -247,9 +248,21 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                     child: const Icon(
                       Icons.search,
                     ),
-                    onPressed: () => FlutterBlue.instance.startScan(
-                        scanMode: ScanMode.lowPower,
-                        timeout: const Duration(seconds: 1)),
+                    onPressed: () async {
+                      PermissionStatus status =
+                          await Permission.bluetoothScan.request();
+                      if (status.isGranted) {
+                        await FlutterBlue.instance.startScan(
+                            scanMode: ScanMode.lowPower,
+                            timeout: const Duration(seconds: 1));
+                        // We didn't ask for permission yet or the permission has been denied before but not permanently.
+                      }
+
+// You can can also directly ask the permission about its status.
+                      if (await Permission.location.isRestricted) {
+                        //
+                      }
+                    },
                     backgroundColor: kPrimaryColor,
                   );
                 }

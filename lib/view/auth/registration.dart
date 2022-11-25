@@ -132,18 +132,8 @@ class _SignUpState extends State<SignUp> {
             hintText: "Enter the email",
             isObscure: false,
             enabled: true,
-            onValidation: (String? value) {
-              if (value == null) {
-                return 'Required';
-              } else if (value == '') {
-                return 'Required';
-              } else if (!RegExp(
-                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                  .hasMatch(value)) {
-                return 'Invalid email';
-              }
-              return null;
-            },
+            onValidation: (input) =>
+                input!.isValidEmail() ? null : "Check your email",
           ),
           SizedBox(
             height: deviceHeight * 0.01,

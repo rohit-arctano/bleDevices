@@ -109,18 +109,20 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                                           padding: const EdgeInsets.all(8.0),
                                           child: ListTile(
                                             onTap: () async {
-                                              await r.device.connect(
-                                                  autoConnect: true,
-                                                  timeout: const Duration(
-                                                      seconds: 2));
-                                              await r.device.requestMtu(512);
-
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) {
-                                                return WifiSetUp(
-                                                    device: r.device);
-                                              }));
+                                              await r.device
+                                                  .connect(
+                                                autoConnect: true,
+                                              )
+                                                  .then(
+                                                (value) async {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) {
+                                                    return WifiSetUp(
+                                                        device: r.device);
+                                                  }));
+                                                },
+                                              );
                                             },
                                             title: Text(r.device.name,
                                                 style: kLTextStyle),

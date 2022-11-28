@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart' as flutter_blue;
-import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'dart:convert';
 import '../../../constant/widget.dart';
 import '../../../model/wifisetup_model.dart';
@@ -10,7 +9,7 @@ import '../../../model/wifisetup_model.dart';
 class WifiSetUp extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   const WifiSetUp({Key? key, required this.device}) : super(key: key);
-  final flutter_blue.BluetoothDevice device;
+  final BluetoothDevice device;
   @override
   State<WifiSetUp> createState() => _WifiSetUpState();
 }
@@ -21,7 +20,7 @@ class _WifiSetUpState extends State<WifiSetUp> {
   final TextEditingController passwordController = TextEditingController();
   List<int> message = [];
   bool _isConnected = false;
-  Stream<List<flutter_blue.BluetoothService>>? services;
+  Stream<List<BluetoothService>>? services;
   @override
   void initState() {
     super.initState();
@@ -71,10 +70,10 @@ class _WifiSetUpState extends State<WifiSetUp> {
 
   Future<void> _login() async {
     await Future.delayed(const Duration(milliseconds: 1000));
-    List<flutter_blue.BluetoothService> services =
+    List<BluetoothService> services =
         await widget.device.discoverServices();
-    for (flutter_blue.BluetoothService service in services) {
-      for (flutter_blue.BluetoothCharacteristic characteristic
+    for (BluetoothService service in services) {
+      for (BluetoothCharacteristic characteristic
           in service.characteristics) {
         if (characteristic.properties.write) {
           final data = await _sendCommandToDevice();
@@ -125,7 +124,7 @@ class _WifiSetUpState extends State<WifiSetUp> {
           children: [
             StreamBuilder<List<BluetoothDevice>>(
                 stream: Stream.periodic(const Duration(seconds: 1))
-                    .asyncMap((_) => FlutterBlue.instance.connectedDevices),
+                    .asyncMap((_) => FlutterBluePlus.instance.connectedDevices),
                 initialData: const [],
                 builder: (c, snapshot) {
                   if (snapshot.hasData) {

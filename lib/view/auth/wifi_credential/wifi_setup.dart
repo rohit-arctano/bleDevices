@@ -31,33 +31,33 @@ class _WifiSetUpState extends State<WifiSetUp> {
         print("mtu size set: 512");
       }
     });
-    widget.device.state.listen((event) {
-      if (event == BluetoothDeviceState.connected) {
-        _isConnected = true;
-        services = widget.device.services;
-        services?.listen(
-          (service) async {
-            print("No of service found : ${service.length}");
-            for (int i = 0; i < service.length; i++) {
-              print(
-                  "$i ${service[i].uuid},  isPrimary: ${service[i].isPrimary}");
-            }
-            BluetoothService ourService = service.firstWhere((element) =>
-                element.uuid.toString() ==
-                "6e400001-b5a3-f393-e0a9-e50e24dcca9e");
-            List<BluetoothCharacteristic> chars = ourService.characteristics;
-            print("No of characteristics found : ${chars.length}");
-            for (int i = 0; i < chars.length; i++) {
-              print(
-                  "$i ${chars[i].uuid}, isNotifying: ${chars[i].isNotifying}");
-            }
-          },
-        );
-      } else {
-        _isConnected = false;
-        services = null;
-      }
-    });
+    // widget.device.state.listen((event) {
+    //   if (event == BluetoothDeviceState.connected) {
+    //     _isConnected = true;
+    //     services = widget.device.services;
+    //     services?.listen(
+    //       (service) async {
+    //         print("No of service found : ${service.length}");
+    //         for (int i = 0; i < service.length; i++) {
+    //           print(
+    //               "$i ${service[i].uuid},  isPrimary: ${service[i].isPrimary}");
+    //         }
+    //         // BluetoothService ourService = service.firstWhere((element) =>
+    //         //     element.uuid.toString() ==
+    //         //     "6e400001-b5a3-f393-e0a9-e50e24dcca9e");
+    //         // List<BluetoothCharacteristic> chars = ourService.characteristics;
+    //       //   print("No of characteristics found : ${chars.length}");
+    //       //   for (int i = 0; i < chars.length; i++) {
+    //       //     print(
+    //       //         "$i ${chars[i].uuid}, isNotifying: ${chars[i].isNotifying}");
+    //       //   }
+    //       // },
+    //     );
+    //   } else {
+    //     _isConnected = false;
+    //     services = null;
+    //   }
+    // });
   }
 
   @override
@@ -69,15 +69,20 @@ class _WifiSetUpState extends State<WifiSetUp> {
   }
 
   Future<void> _login() async {
-    await Future.delayed(const Duration(milliseconds: 1000));
-    List<BluetoothService> services =
-        await widget.device.discoverServices();
-    for (BluetoothService service in services) {
-      for (BluetoothCharacteristic characteristic
-          in service.characteristics) {
-        if (characteristic.properties.write) {
-          final data = await _sendCommandToDevice();
-          await characteristic.write(data, withoutResponse: true);
+    // ignore: unrelated_type_equality_checks
+    if (widget.device.mtu != 512) {
+      await widget.device.requestMtu(512);
+
+      print("mtu size set: 512");
+      await Future.delayed(const Duration(milliseconds: 1000));
+      List<BluetoothService> services = await widget.device.discoverServices();
+      for (BluetoothService service in services) {
+        for (BluetoothCharacteristic characteristic
+            in service.characteristics) {
+          if (characteristic.properties.write) {
+            final data = await _sendCommandToDevice();
+            await characteristic.write(data, withoutResponse: true);
+          }
         }
       }
     }
@@ -236,7 +241,7 @@ class _WifiSetUpState extends State<WifiSetUp> {
                       Expanded(
                           child: ElevatedButton(
                         onPressed: () async {
-                          // await login();
+                          await _login();
                           // await Future.delayed(
                           //     const Duration(milliseconds: 500));
                           await widget.device.discoverServices();
@@ -244,6 +249,15 @@ class _WifiSetUpState extends State<WifiSetUp> {
                         child: const Text("Sign in "),
                       )),
                     ],
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await _readprop();
+                      // await Future.delayed(
+                      //     const Duration(milliseconds: 500));
+                      await widget.device.discoverServices();
+                    },
+                    child: const Text("Read Prop"),
                   ),
                   Text(message.toString(), style: kLTextStyle)
                 ],

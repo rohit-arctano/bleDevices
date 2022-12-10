@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:bldevice_connection/model/permission_utility.dart';
 import 'package:bldevice_connection/view/widget_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,7 +20,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((Duration dur) async {
       _userSignedIn = await SavePreferences().getLogInStatus() ?? false;
-      Timer(const Duration(seconds: 1), () => setState(() {}));
+      Timer(const Duration(seconds: 1), () async{
+        await permissions();
+        setState(() {});
+      });
     });
     super.initState();
   }
@@ -32,8 +37,9 @@ class _SplashScreenState extends State<SplashScreen> {
           duration: const Duration(milliseconds: 500),
           transitionBuilder: (Widget child, Animation<double> animation) {
             Animation<Offset> offsetAnimation = Tween<Offset>(
-                    begin: const Offset(1.1, 0), end: const Offset(0, 0))
-                .animate(animation);
+              begin: const Offset(1.1, 0),
+              end: const Offset(0, 0),
+            ).animate(animation);
             return SlideTransition(
               position: offsetAnimation,
               child: child,
@@ -56,5 +62,16 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> permissions() async {
+    List<Permission> requiredPermissions = [
+      Permission.bluetooth,
+      Permission.bluetoothAdvertise,
+      Permission.bluetoothConnect,
+      Permission.bluetoothScan,
+      Permission.location,
+    ];
+    await PermissionUtility.requiredPermissionsList(permissions: requiredPermissions);
   }
 }

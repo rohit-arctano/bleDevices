@@ -49,10 +49,12 @@ android {
         applicationId "com.example.bldevice_connection"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
+        minSdkVersion 19
+        compileSdkVersion 33
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -74,4 +76,5 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.0.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:multidex:1.0.3'
 }

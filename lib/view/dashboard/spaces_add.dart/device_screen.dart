@@ -1,7 +1,7 @@
 import 'package:bldevice_connection/constant/textstyle_constant.dart';
 import 'package:bldevice_connection/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
 // ignore: must_be_immutable
 class DeviceScreen extends StatelessWidget {

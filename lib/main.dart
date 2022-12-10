@@ -7,7 +7,7 @@
 import 'dart:typed_data';
 import 'package:bldevice_connection/view/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'view/bluetooth_off_screen.dart';
@@ -32,7 +32,7 @@ class FlutterBlueApp extends StatelessWidget {
 
           ),
       home: StreamBuilder<BluetoothState>(
-          stream: FlutterBlue.instance.state,
+          stream: FlutterBluePlus.instance.state,
           initialData: BluetoothState.unknown,
           builder: (c, snapshot) {
             final state = snapshot.data;

@@ -45,7 +45,8 @@ class _AddDeviceState extends State<AddDevice>
     final FirebaseFirestore instance = FirebaseFirestore.instance;
     batch = instance.batch();
     fireStorePlaceInstance =
-        instance.collection("users").doc(userData?.uid).collection("places");
+        instance.collection("users").doc(userData?.uid).
+        collection("places");
 
     fireStoreroomInstance = instance
         .collection("users")

@@ -9,21 +9,24 @@ import '../widget/loader.dart';
 
 class AuthUserLogin {
   User? user;
+
   Future<dynamic> signInWithEmailAndPassword({
     required String emailAddress,
     required String password,
   }) async {
+    print("the email is $emailAddress");
     try {
-      return await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: emailAddress, password: password);
+      UserCredential user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailAddress, password: password);
+      print("User created.");
+      return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Debug.printing('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         Debug.printing('Wrong password provided for that user.');
       }
-      return SignInExceptions.values
-          .firstWhere((element) => _enumToErrorCode(element) == e.code);
+      print("the error is $e");
+      return SignInExceptions.values.firstWhere((element) => _enumToErrorCode(element) == e.code);
     }
   }
 
@@ -31,16 +34,11 @@ class AuthUserLogin {
     return se.name.replaceAll(RegExp(r'_'), '-');
   }
 
-  Future<void> readAndSaveDataLocally(
-      {required User currentUser, required BuildContext context}) async {
+  Future<void> readAndSaveDataLocally({required User currentUser, required BuildContext context}) async {
     // await data.then((value) => value.docs.forEach((element) {
     //       element.currentUser.;
     //     }));
-    FbUser userData = FbUser(
-        uid: currentUser.uid,
-        email: currentUser.email ?? "",
-        name: currentUser.displayName ?? "",
-        mobileNo: currentUser.phoneNumber ?? "");
+    FbUser userData = FbUser(uid: currentUser.uid, email: currentUser.email ?? "", name: currentUser.displayName ?? "", mobileNo: currentUser.phoneNumber ?? "");
     String encodedMap = jsonEncode(userData);
     await SavePreferences().logIn();
     await SavePreferences().setUserData(data: encodedMap);
